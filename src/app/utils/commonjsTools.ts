@@ -60,6 +60,7 @@ export const piLoadDir = (sourceList:string[],flags?:any,fm?:any,suffixCfg?:any,
                     loading.callback(loading.widget);
                     resolve();
                 },  (r) => {
+                    loading.callback(loading.widget);
                     reject(r);
                 }, () => {
                     // console.log();

@@ -20,7 +20,7 @@ export const init = (fl:any,fm:any,sc:any) => {
  * 加载开宝箱资源
  */
 export const loadOpenBoxSource = () => {
-    const fg = getStore('flags').loadOpenBoxSource;
+    const fg = getStore('flags',{}).loadOpenBoxSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'app/components/topBar/',
@@ -42,7 +42,7 @@ export const loadOpenBoxSource = () => {
  * 加载大转盘资源
  */
 export const loadTurntableSource = () => {
-    const fg = getStore('flags').loadTurntableSource;
+    const fg = getStore('flags',{}).loadTurntableSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'earn/client/app/components/lotteryModal/',
@@ -66,7 +66,7 @@ export const loadTurntableSource = () => {
  * 加载我的勋章资源
  */
 export const loadMedalSource = () => {
-    const fg = getStore('flags').loadMedalSource;
+    const fg = getStore('flags',{}).loadMedalSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'app/components/topBar/',
@@ -84,7 +84,7 @@ export const loadMedalSource = () => {
  * 加载挖矿资源
  */
 export const loadMiningSource = () => {
-    const fg = getStore('flags').loadMiningSource;
+    const fg = getStore('flags',{}).loadMiningSource;
     const sourceList = [
         'earn/client/app/view/mining/',
         'earn/client/app/components/mineModalBox/',
@@ -109,7 +109,7 @@ export const loadMiningSource = () => {
  * 加载分享资源
  */
 export const loadShareSource = () => {
-    const fg = getStore('flags').loadShareSource;
+    const fg = getStore('flags',{}).loadShareSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'app/components/topBar/',
@@ -126,7 +126,7 @@ export const loadShareSource = () => {
  * 加载嗨豆商城资源
  */
 export const loadMallSource = () => {
-    const fg = getStore('flags').loadMallSource;
+    const fg = getStore('flags',{}).loadMallSource;
     const sourceList = [
         'earn/client/app/view/mall/',
         'app/components1/blankDiv/',
@@ -142,7 +142,7 @@ export const loadMallSource = () => {
  * 加载关于好嗨相关资源 (公众号 联系我们 关于好嗨 帮助)
  */
 export const loadAboutAppSource = () => {
-    const fg = getStore('flags').loadAboutAppSource;
+    const fg = getStore('flags',{}).loadAboutAppSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'app/components/topBar/',
@@ -162,7 +162,7 @@ export const loadAboutAppSource = () => {
  * 加载红包资源 
  */
 export const loadRedEnvelopeSource = () => {
-    const fg = getStore('flags').loadRedEnvelopeSource;
+    const fg = getStore('flags',{}).loadRedEnvelopeSource;
     const sourceList = [
         'app/view/redEnvelope/',
         'app/components/selectBox/',
@@ -188,7 +188,7 @@ export const loadRedEnvelopeSource = () => {
  * 加载分红资源 
  */
 export const loadDividendSource = () => {
-    const fg = getStore('flags').loadDividendSource;
+    const fg = getStore('flags',{}).loadDividendSource;
     const sourceList = [
         'app/components1/blankDiv/',
         'app/components/topBar/',
@@ -204,7 +204,7 @@ export const loadDividendSource = () => {
  * 加载用户信息资源 
  */
 export const loadAccountSource = () => {
-    const fg = getStore('flags').loadAccountSource;
+    const fg = getStore('flags',{}).loadAccountSource;
     const sourceList = [
         'app/view/account/',
         'app/components1/checkSex/',
@@ -223,7 +223,7 @@ export const loadAccountSource = () => {
  * 加载设置资源 
  */
 export const loadSettingSource = () => {
-    const fg = getStore('flags').loadSettingSource;
+    const fg = getStore('flags',{}).loadSettingSource;
     const sourceList = [
         'app/view/setting/',
         'app/components1/blankDiv/',
@@ -250,7 +250,7 @@ export const loadSettingSource = () => {
  * 加载嗨嗨号资源
  */
 export const loadHaihaiSource = () => {
-    const fg = getStore('flags').loadHaihaiSource;
+    const fg = getStore('flags',{}).loadHaihaiSource;
     const sourceList = [
         'chat/client/app/view/info/',
         'chat/client/app/widget/topBar/',
