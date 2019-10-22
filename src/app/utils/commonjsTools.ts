@@ -52,7 +52,7 @@ export const piLoadDir = (sourceList:string[],flags?:any,fm?:any,suffixCfg?:any,
             if (isLoadDir) {
                 resolve();
             } else {
-                const loading = popNew('app-components1-loading-loading1');
+                const loading = popNew('app-publicComponents-loading-loading1');
                 util.loadDir(sourceList, flags, fm, suffixCfg,  (fileMap) => {                
                     const tab = util.loadCssRes(fileMap);
                     tab.timeout = 90000;

@@ -94,7 +94,7 @@ export class AccountHome extends Widget {
     }
 
     public uploadAvatar() {
-        const loading = popNew('app-components1-loading-loading1');
+        const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             const imagePicker = selectImage((width, height, url) => {
                 console.log('selectImage url = ',url);
@@ -122,17 +122,17 @@ export class AccountHome extends Widget {
      */
     public changePhone() {
         if (!this.props.phone) {  // 绑定
-            const loading = popNew('app-components1-loading-loading1');
+            const loading = popNew('app-publicComponents-loading-loading1');
             loadSettingSource().then(() => {
                 popNew('app-view-setting-phone');
                 loading.callback(loading.widget);
             });
         } else { // 重新绑定
-            const loading = popNew('app-components1-loading-loading1');
-            loadSettingSource().then(() => {
-                popNew('app-view-setting-unbindPhone');
-                loading.callback(loading.widget);
-            });
+            // const loading = popNew('app-publicComponents-loading-loading1');
+            // loadSettingSource().then(() => {
+            //     popNew('app-view-setting-unbindPhone');
+            //     loading.callback(loading.widget);
+            // });
         }
     }
 
@@ -174,7 +174,7 @@ export class AccountHome extends Widget {
      * 修改名称
      */
     public changeName() {
-        const loading = popNew('app-components1-loading-loading1');
+        const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             // tslint:disable-next-line:max-line-length
             popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.props.nickName,maxLength:10 },async (res:any) => {
@@ -191,7 +191,7 @@ export class AccountHome extends Widget {
      * 修改个性签名
      */
     public changeSignature() {
-        const loading = popNew('app-components1-loading-loading1');
+        const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.props.note,maxLength:100 },(res:any) => {
                 changeWalletNote(res.content);
@@ -208,7 +208,7 @@ export class AccountHome extends Widget {
      * 注销账户
      */
     public logOutDel() {
-        const loading = popNew('app-components1-loading-loading1');
+        const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
                 // 添加一张背景图

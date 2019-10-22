@@ -22,9 +22,9 @@ export const init = (fl:any,fm:any,sc:any) => {
 export const loadOpenBoxSource = () => {
     const fg = getStore('flags',{}).loadOpenBoxSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
-        'app/components1/loading/',
+        'app/publicComponents/loading/',
         'earn/client/app/view/openBox/',
         'earn/client/app/components/lotteryModal/',
         'earn/client/app/view/myProduct/',
@@ -44,10 +44,10 @@ export const loadOpenBoxSource = () => {
 export const loadTurntableSource = () => {
     const fg = getStore('flags',{}).loadTurntableSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'earn/client/app/components/lotteryModal/',
         'app/components/topBar/',
-        'app/components1/loading/',
+        'app/publicComponents/loading/',
         'earn/client/app/view/turntable/',
         'earn/client/app/view/myProduct/',
         'earn/client/app/xls/dataCfg.c.js',
@@ -68,7 +68,7 @@ export const loadTurntableSource = () => {
 export const loadMedalSource = () => {
     const fg = getStore('flags',{}).loadMedalSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'earn/client/app/view/medal/',
         'earn/server/rpc/',
@@ -88,8 +88,8 @@ export const loadMiningSource = () => {
     const sourceList = [
         'earn/client/app/view/mining/',
         'earn/client/app/components/mineModalBox/',
-        'app/components1/blankDiv/',
-        'app/components1/loading/',
+        'app/publicComponents/blankDiv/',
+        'app/publicComponents/loading/',
         'earn/client/app/xls/mineType.c.js',
         'earn/client/app/xls/mineType.s.js',
         'earn/xlsx/item.c.js',
@@ -111,7 +111,7 @@ export const loadMiningSource = () => {
 export const loadShareSource = () => {
     const fg = getStore('flags',{}).loadShareSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components/qrcode/',
         'earn/client/app/view/share/'
@@ -129,7 +129,7 @@ export const loadMallSource = () => {
     const fg = getStore('flags',{}).loadMallSource;
     const sourceList = [
         'earn/client/app/view/mall/',
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/'
     ];
 
@@ -144,7 +144,7 @@ export const loadMallSource = () => {
 export const loadAboutAppSource = () => {
     const fg = getStore('flags',{}).loadAboutAppSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/view/aboutApp/',
         'app/components/basicItem/',
@@ -169,10 +169,10 @@ export const loadRedEnvelopeSource = () => {
         'app/components/basicInput/',
         'app/components1/input/',
         'app/components1/btn/',
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components1/img/',
-        'app/components1/loading/',
+        'app/publicComponents/loading/',
         'earn/client/app/components/noviceTaskAward/',
         'earn/client/app/xls/',
         'app/net/',
@@ -190,7 +190,7 @@ export const loadRedEnvelopeSource = () => {
 export const loadDividendSource = () => {
     const fg = getStore('flags',{}).loadDividendSource;
     const sourceList = [
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/view/dividend/'
     ];
@@ -208,7 +208,7 @@ export const loadAccountSource = () => {
     const sourceList = [
         'app/view/account/',
         'app/components1/checkSex/',
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components/basicItem/',
         'app/components1/img/'
@@ -226,14 +226,14 @@ export const loadSettingSource = () => {
     const fg = getStore('flags',{}).loadSettingSource;
     const sourceList = [
         'app/view/setting/',
-        'app/components1/blankDiv/',
+        'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components/switch/',
         'app/components/basicItem/',
         'app/components1/input/',
         'app/components/bindPhone/',
         'app/components/modalBox/',
-        'app/components1/loading/',
+        'app/publicComponents/loading/',
         'chat/client/app/widget/pageEdit/',
         'chat/client/app/widget/topBar/',
         'chat/client/app/widget/input/',
@@ -254,7 +254,7 @@ export const loadHaihaiSource = () => {
     const sourceList = [
         'chat/client/app/view/info/',
         'chat/client/app/widget/topBar/',
-        'app/components1/blankDiv/'
+        'app/publicComponents/blankDiv/'
     ];
 
     return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {    

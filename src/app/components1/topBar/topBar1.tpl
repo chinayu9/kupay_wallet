@@ -1,6 +1,6 @@
 {{let opca = it.scrollHeight/200 || 0}}
 <div style="{{opca>0?'background:rgba(255, 255, 255, '+ opca +');border-bottom: 1px solid #cccccc;':''}}" w-class="topBar">
-    <app-components1-blankDiv-topDiv></app-components1-blankDiv-topDiv>
+    <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
     <div w-class="topBar-content">
         <div style=" display: flex;align-items: center;">
             <div on-tap="showMine" on-down="onShow" >

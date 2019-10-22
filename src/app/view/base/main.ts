@@ -20,12 +20,12 @@ import { getScreenModify } from '../../utils/native';
 // ============================== 导出
 export const run = (cb): void =>  {
     addWidget(document.body, 'pi-ui-root');
-    initReport({
-        reported:true,
-        interval:10 * 1000,
-        deadline:30 * 1000,
-        ip:sourceIp
-    });
+    // initReport({
+    //     reported:true,
+    //     interval:10 * 1000,
+    //     deadline:30 * 1000,
+    //     ip:sourceIp
+    // });
     // 数据检查  
     checkUpdate();  
     getScreenModify();
