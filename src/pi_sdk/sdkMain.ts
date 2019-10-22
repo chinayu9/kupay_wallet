@@ -215,10 +215,12 @@ const setWebviewManager = (path:string) => {
 /**
  * 初始化
  */
-const piSdkInit = (cb:any) => {
+const piSdkInit = (cb:any, isPC?:boolean) => {
     createThirdBaseStyle();
     createThirdApiStyleTag();
-    piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
+    if(!isPC){
+        piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
+    }
     buttonModInit()();
     // getFreeSecret();
 };

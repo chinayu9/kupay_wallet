@@ -1,5 +1,4 @@
-import { closePopBox, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
-import { createSignInPage, createSignInStyle, createModalBox } from './signIn';
+import { closePopBox, createSignInPage, createSignInStyle, createModalBox, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
 /**
  * 获取是否开启免密支付
