@@ -110,7 +110,7 @@ export const getUserInfo = (userInfo1?:any) => {
             if (avatar.slice(0,4) === 'http') {
                 avatar = avatar;   
             } else {
-                avatar = `${uploadFilexceUrlPrefix}${avatar}`;
+                avatar = `${uploadFileUrlPrefix}${avatar}`;
             }
             
         } else {
