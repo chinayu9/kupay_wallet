@@ -240,11 +240,13 @@ winit.initNext = function () {
 			"app/components1/btn/",
 			"app/components1/img/",
 			"app/components1/topBar/",
-			"app/components1/blankDiv/",
-			"app/components1/offlineTip/",
-			"app/components1/loading/loading1.js",
-			"app/components1/loading/loading1.wcss",
-			"app/components1/loading/loading1.tpl",  
+
+			"app/publicComponents/blankDiv/",
+
+			"app/publicComponents/offlineTip/",
+			"app/publicComponents/loading/loading1.js",
+			"app/publicComponents/loading/loading1.wcss",
+			"app/publicComponents/loading/loading1.tpl",  
 			"app/res/css/",
 			'earn/client/app/res/css/',
 			'earn/xlsx/item.c.js',
@@ -276,6 +278,7 @@ winit.initNext = function () {
 			if(!pi_update.inApp){
 				vmLoad(util,fm);
 			}
+			// enterApp();
 			loadPiSdk();
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);

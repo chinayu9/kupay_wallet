@@ -247,7 +247,7 @@ export const popNew3 = (name: string, props?: any, ok?: Callback, cancel?: Callb
     if (level_3_page_loaded) {
         popNew(name,props,ok,cancel);
     } else {
-        const loading = popNew('app-components1-loading-loading1');
+        const loading = popNew('app-publicComponents-loading-loading1');
         const level3SourceList = [
             'app/middleLayer/',
             'app/publicLib/',

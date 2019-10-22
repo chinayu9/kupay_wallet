@@ -2,7 +2,7 @@
 {{let flag1=it.background && it.background!=''}}
 {{let backImg = it.backImg || "../../res/image/" + (flag ? 'left_arrow_white.png' : 'left_arrow_blue.png') }}
 <div w-class="outer {{flag1?'':'outer-bottom'}}" style="background: {{it.background}}">
-    <app-components1-blankDiv-topDiv></app-components1-blankDiv-topDiv>
+    <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
     <div w-class="ga-top-banner" >
         <div w-class="left-container" on-down="onShow">
             <img on-tap="backPrePage" src="{{ backImg }}" w-class="ga-back" />

@@ -11,7 +11,7 @@ import { Forelet } from '../../../../pi/widget/forelet';
 import { loadDir } from '../../../../pi/widget/util';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
-import { OfflienType } from '../../../components1/offlineTip/offlineTip';
+import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { getStore, register } from '../../../store/memstore';
 import { popNewMessage, setPopPhoneTips } from '../../../utils/pureUtils';
 import { activityList, gameList } from './gameConfig';

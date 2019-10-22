@@ -1,4 +1,5 @@
 import { request } from '../../pi/net/ui/con_mgr';
+import { getStoreData } from '../api/walletApi';
 import { setStore } from '../store/memstore';
 
 /**
@@ -26,12 +27,15 @@ export const requestAsync = (msg: any):Promise<any> => {
 
 // 钱包登录
 export const walletLogin = (cb:Function) => {
-    (<any>window).pi_sdk.api.authorize({ appId:101 },(err, result) => {
+    (<any>window).pi_sdk.api.authorize({ appId:101 },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
         if (err === 0) { // 网络未连接
             console.log('网络未连接');
+            cb();
         } else {
-            console.log('钱包登录成功',result);
+
+            console.log('钱包注册成功',result);
+            console.log('用户的uid',await getStoreData('user'));
             setStore('user/info',result);
             cb();
         }

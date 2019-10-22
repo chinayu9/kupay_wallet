@@ -80,7 +80,7 @@ export const popNewMessage = (content: any) => {
 
 // 弹出loading
 export const popNewLoading = (text: any) => {
-    return popNew('app-components1-loading-loading', { text });
+    return popNew('app-publicComponents-loading-loading', { text });
 };
 
  // 水波纹动画效果展示
@@ -110,7 +110,7 @@ export const getUserInfo = (userInfo1?:any) => {
             if (avatar.slice(0,4) === 'http') {
                 avatar = avatar;   
             } else {
-                avatar = `${uploadFileUrlPrefix}${avatar}`;
+                avatar = `${uploadFilexceUrlPrefix}${avatar}`;
             }
             
         } else {

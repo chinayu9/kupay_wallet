@@ -1,6 +1,6 @@
 {{let opca = it.scrollHeight/200 || 0}}
 <div style="{{opca>0?'background:rgba(255, 255, 255, '+ opca +');border-bottom: 1px solid #cccccc;':''}}">
-    <app-components1-blankDiv-topDiv></app-components1-blankDiv-topDiv>
+    <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
     <div w-class="ga-top-banner">
         <div w-class="left-container" on-down="onShow">
             <img on-tap="backPrePage" src="../../res/image/{{opca>0 ? 'left_arrow_blue.png' : 'left_arrow_white.png'}}" w-class="ga-back" />

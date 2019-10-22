@@ -60,10 +60,8 @@ export const  sendRedEnvlope = async (rtype: string, ctype: number, totalAmount:
             desc: lm
         }
     };
-    debugger;
     try {
         const res = await requestAsyncRpc(msg);
-        debugger;
         return res.value;
     } catch (err) {
         showError(err && (err.result || err.type));
