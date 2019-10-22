@@ -19,7 +19,7 @@ export const sourceIp =  '192.168.31.226';   // 本地服务器
 
 // erlang逻辑服务器ip
 // app.herominer.net
-export const erlangLogicIp = sourceIp; 
+export const erlangLogicIp = '39.98.200.23'; 
 
 // erlang逻辑服务器port
 export const erlangLogicPort = '2081';
@@ -958,8 +958,11 @@ export type LANGUAGE = 'english' | 'chinese_simplified' | 'chinese_traditional' 
  * config file
  */
 
+ // 发红包的接口名
+export const redEnvelope = 'redEnvelope';
+
 // 分享链接前缀
-export const sharePerUrl = `http://${sourceIp}/browser/phoneRedEnvelope/openRedEnvelope.html`;
+export const sharePerUrl = `http://${sourceIp}/wallet/earn/client/rpc_client/index.html`;
 
 // 分享下载链接
 export const shareDownload = `http://${sourceIp}/browser/phoneRedEnvelope/download.html?${Math.random()}`;

@@ -2,7 +2,7 @@
     <div w-class="topBack" ev-myHome="myHome">
         <app-components1-topBar-topBar1>{avatar:{{it.userInfo.avatar}},title:"游戏" }</app-components1-topBar-topBar1>
     </div>
-    <app-components1-offlineTip-offlineTip>{ offlienType:{{it.offlienType}} }</app-components1-offlineTip-offlineTip>
+    <app-publicComponents-offlineTip-offlineTip>{ offlienType:{{it.offlienType}} }</app-publicComponents-offlineTip-offlineTip>
     <div w-class="body">
         <div w-class="oftenPlay">
             <div w-class="oftenList">

@@ -1,6 +1,6 @@
 <div class="new-page" w-class="new-page">
     <div w-class="body">
-        <app-components1-blankDiv-topDiv></app-components1-blankDiv-topDiv>
+        <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
         <div w-class="myInfoBox">
             <div w-class="avatarBox">
                 <widget w-tag="app-components1-img-img" w-class="userHead" on-tap="userInfoSet">{imgURL:{{it.userInfo.avatar}},width:"140px;"}</widget>
