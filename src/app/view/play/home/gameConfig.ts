@@ -36,7 +36,7 @@ export const gameList = [
         title:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
         desc:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
         // img:['app/res/image1/fairyChivalry1.jpg','app/res/image1/fairyChivalry.jpg','app/res/image1/fairyChivalry.jpg'],
-        img:['app/res/image1/open_box1.png','app/res/image1/fairyChivalry.jpg','app/res/image1/fairyChivalry.jpg'],
+        img:['app/res/image1/fairyChivalry.jpg','app/res/image1/fairyChivalry.jpg'],
         url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
         apkDownloadUrl:shareDownload,
         webviewName:'chairMan',
