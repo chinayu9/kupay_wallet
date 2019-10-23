@@ -27,7 +27,7 @@ export const gameList = [
         apkDownloadUrl:shareDownload,
         webviewName:'fairyChivalry',
         buttonMod:ButtonMods.FLOATBUTTON2,   // 当前按钮模式
-        accId:'268828',
+        accId:'737441',
         groupId:10001,
         appid:'102',
         screenMode:screenMode.portrait // 竖屏
@@ -41,9 +41,9 @@ export const gameList = [
         apkDownloadUrl:shareDownload,
         webviewName:'chairMan',
         buttonMod:ButtonMods.WXBUTTON,   // 当前按钮模式
-        accId:'268828',
+        accId:'737441',
         groupId:10001,
-        appid:'102',
+        appid:'103',
         screenMode:screenMode.landscape// 横屏
 
     }

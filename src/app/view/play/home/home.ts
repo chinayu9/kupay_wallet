@@ -171,12 +171,6 @@ export class PlayHome extends Widget {
      * 点击游戏
      */
     public async gameClick(num:number) {
-        // closePopFloatBox();
-        // const id = getStore('user/id');
-        // if (!id) return;
-        // popNew3('earn-client-app-view-openBox-openBox');
-        
-        // return;
         const isLogin = await getStoreData('flags/isLogin');
         if (!isLogin) {
             popNewMessage('登录中,请稍后再试');

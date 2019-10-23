@@ -1,43 +1,7 @@
 import { closePopBox, createSignInPage, createSignInStyle, createModalBox, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
-/**
- * 获取是否开启免密支付
- */
-export const getFreeSecret = () => {
-    console.log('getFreeSecret called');
-    window["pi_sdk"].pi_RPC_Method(window["pi_sdk"].config.jsApi, 'querySetNoPassword', window["pi_sdk"].config.appid,  (error, startFreeSecret) => {
-        console.log('getFreeSecret called callback',startFreeSecret);
-        window["pi_sdk"].store.freeSecret = startFreeSecret;
-    });
-};
-
-// 第三方设置免密支付
-// openFreeSecret:设置免密支付状态  
-// 0:关闭，1:开启
-export const setFreeSecrectPay =  (openFreeSecret) => {
-    closePopBox();
-    const title = openFreeSecret ? '设置免密支付' : '关闭免密支付'; 
-    popInputBox(title,(value) => {
-        const sendData = {
-            appid: window["pi_sdk"].config.appid,
-            noPSW: openFreeSecret ? 1 : 0,
-            password:value
-        };
-        popNewLoading('设置中...');
-        window["pi_sdk"].pi_RPC_Method(window["pi_sdk"].config.jsApi, 'setFreeSecrectPay', sendData,  (resCode1, msg1) => {
-            if (msg1) {
-                window["pi_sdk"].store.freeSecret = !window["pi_sdk"].store.freeSecret;
-                popNewMessage('设置成功');
-            } else {
-                popNewMessage('设置失败');
-            }
-            closePopBox();
-        });
-    });
-};
-
-let authorizeParams;
-let authorizeCallBack;
+let authorizeParams;  // 授权参数
+let authorizeCallBack;   // 授权回调
 
 // 执行授权监听回调
 export const runAuthorizeListener = () => {
@@ -68,6 +32,14 @@ export const runKickOffline = (param)=>{
         // window["pi_sdk"].pi_RPC_Method(window["pi_sdk"].config.jsApi, 'runKickOffline',param);
     });
 }
+
+// 关闭钱包后台
+export const closeWalletWebview = () => {
+    window["pi_sdk"].pi_RPC_Method(window["pi_sdk"].config.jsApi, 'closeWalletWebview',null, (error, result) => {
+        console.log('closeWalletWebview call success');
+    });
+};
+
 
 // ----------对外接口-----------------------------------------------------------------------
 
@@ -145,13 +117,6 @@ const openNewWebview = (param) => {
     });
 };
 
-// 关闭钱包后台
-const closeWalletWebview = () => {
-    window["pi_sdk"].pi_RPC_Method(window["pi_sdk"].config.jsApi, 'closeWalletWebview',null, (error, result) => {
-        console.log('closeWalletWebview call success');
-    });
-};
-
 // 打开注册登录页面
 const openSignInPage = () => {
     if(!document.querySelector('.signIn_page')){
@@ -177,12 +142,9 @@ const piApi = {
     authorize,
     thirdPay,
     openNewWebview,
-    closeWalletWebview,
-    openSignInPage,
     inviteUser
 }; 
 
-// tslint:disable-next-line: no-unsafe-any
 piSdk.api = piApi;
 
 window["pi_sdk"] = piSdk;

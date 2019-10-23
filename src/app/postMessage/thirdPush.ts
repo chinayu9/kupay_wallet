@@ -4,7 +4,6 @@
 import { HandlerMap } from '../../pi/util/event';
 import { ThirdPushArgs } from '../public/constant';
 
-
 /**
  * 消息处理列表
  */

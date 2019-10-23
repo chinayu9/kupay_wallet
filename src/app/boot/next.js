@@ -228,35 +228,31 @@ winit.initNext = function () {
 			"pi/ui/html.tpl",
 			"pi/ui/lang.js",
 			"pi/ui/lang.tpl",
+
 			"app/store/memstore.js",
 			"app/view/base/sourceLoaded.js",
-			"earn/client/app/net/login.js",
-			"chat/client/app/net/login.js",
 			"app/net/login.js",
 			"app/view/base/",
 			"app/view/play/home/",
-			"earn/client/app/view/home/",
-			"chat/client/app/view/home/test.tpl",
 			"app/components1/btn/",
 			"app/components1/img/",
 			"app/components1/topBar/",
-
-			"app/publicComponents/blankDiv/",
-
-			"app/publicComponents/offlineTip/",
-			"app/publicComponents/loading/loading1.js",
-			"app/publicComponents/loading/loading1.wcss",
-			"app/publicComponents/loading/loading1.tpl",  
+			"app/publicComponents/",
+			"app/postMessage/",
+			"app/api/",
 			"app/res/css/",
+
 			'earn/client/app/res/css/',
 			'earn/xlsx/item.c.js',
 			'earn/xlsx/item.s.js',
 			'earn/xlsx/awardCfg.c.js',
 			'earn/xlsx/awardCfg.s.js',
-			"app/postMessage/",
 			"earn/client/app/components/noviceTaskAward/",
+			"earn/client/app/view/home/",
+			"earn/client/app/net/login.js",
 
 			"chat/client/app/view/home/",
+			"chat/client/app/net/login.js",
 			"chat/client/app/view/contactList/contactList.tpl",
 			"chat/client/app/view/contactList/contactList.js",
 			"chat/client/app/view/contactList/contactList.wcss",
@@ -294,6 +290,7 @@ winit.initNext = function () {
 		index.run(function () {
 			// 关闭读取界面
 			document.body.removeChild(document.getElementById('rcmj_loading_log'));
+			loadLeftChatSource();
 		});
 		// 活动登录
 		pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin(()=>{
@@ -301,6 +298,16 @@ winit.initNext = function () {
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
 		});
 		
+	}
+
+	// 加载剩余的聊天资源
+	var loadLeftChatSource = function(){
+		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/"], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore.js").exports.setStore('level_3_page_loaded',true);
+			
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
 	}
 
 	

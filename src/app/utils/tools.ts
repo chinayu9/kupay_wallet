@@ -1,12 +1,12 @@
 import { setStore as earnSetStore } from '../../earn/client/app/store/memstore';
-import { closeCon, setBottomLayerReloginMsg } from '../../pi/net/ui/con_mgr';
+import { closeCon } from '../../pi/net/ui/con_mgr';
 import { popNew } from '../../pi/ui/root';
 import { getLang } from '../../pi/util/lang';
 import { cryptoRandomInt } from '../../pi/util/math';
 import { Callback } from '../../pi/util/util';
 import { resize } from '../../pi/widget/resize/resize';
 import { getStoreData, setStoreData } from '../api/walletApi';
-import { logoutWalletSuccess, openConnect } from '../net/login';
+import { logoutWalletSuccess } from '../net/login';
 import { getAccountDetail } from '../net/pull';
 // tslint:disable-next-line:max-line-length
 import { Config, defalutShowCurrencys, ERC20Tokens, MainChainCoin, notSwtichShowCurrencys, preShowCurrencys, resendInterval } from '../public/config';
@@ -249,21 +249,8 @@ export const popNew3 = (name: string, props?: any, ok?: Callback, cancel?: Callb
     } else {
         const loading = popNew('app-publicComponents-loading-loading1');
         const level3SourceList = [
-            'app/middleLayer/',
-            'app/publicLib/',
-            'app/viewLogic/',
-            'app/components/',
-            'app/res/',
-            'app/view/',
             'chat/client/app/view/',
-            'chat/client/app/widget/',
-            'chat/client/app/res/',
-            'earn/client/app/view/',
-            'earn/client/app/test/',
-            'earn/client/app/components/',
-            'earn/client/app/res/',
-            'earn/client/app/xls/',
-            'earn/xlsx/'
+            'chat/client/app/widget/'
         ];
         piLoadDir(level3SourceList).then(() => {
             console.log('popNew3 ------ all resource loaded');
@@ -684,12 +671,12 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
     setStore('activity',activity);
     setStore('setting/lockScreen',lockScreen);
     setStore('flags/saveAccount', false);  
-    setBottomLayerReloginMsg('','','');
+    // setBottomLayerReloginMsg('','','');
     closeCon();
     logoutWalletSuccess();
-    setTimeout(() => {
-        openConnect();
-    },100);
+    // setTimeout(() => {
+    //     openConnect();
+    // },100);
     if (!noLogin) {
         closeAllPage();
         popNew('app-view-base-entrance');

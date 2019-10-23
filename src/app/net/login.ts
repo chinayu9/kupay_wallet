@@ -31,14 +31,12 @@ export const walletLogin = (cb:Function) => {
         console.log('authorize',err,JSON.stringify(result));
         if (err === 0) { // 网络未连接
             console.log('网络未连接');
-            cb();
         } else {
-
             console.log('钱包注册成功',result);
             console.log('用户的uid',await getStoreData('user'));
             setStore('user/info',result);
-            cb();
         }
+        cb && cb();
     });
 };
 
