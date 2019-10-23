@@ -11,6 +11,7 @@ import { Forelet } from '../../../../pi/widget/forelet';
 import { loadDir } from '../../../../pi/widget/util';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
+import { getAllGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { getStore, register } from '../../../store/memstore';
 import { popNewMessage, setPopPhoneTips } from '../../../utils/pureUtils';
@@ -101,8 +102,25 @@ export class PlayHome extends Widget {
             { name:'仙之侠道',icon:'../../../res/image/game/xianzhixiadao.png',desc:'2019LPL春季赛常规赛' },
             { name:'倩女幽魂',icon:'../../../res/image/game/qiannvyouhun.png',desc:'2019LPL春季赛常规赛' }
         ];
+        // this.getRecommendations();
+        // this.allGame();
     }
 
+    /**
+     * 获取推荐应用
+     */
+    public getRecommendations() {
+        getRealUser(0).then(r => {
+        });
+    }
+
+    /**
+     * 获取全部游戏
+     */
+    public allGame() {
+        getAllGame().then(r => {
+        });
+    }
     public attach() {
         super.attach();
         this.defaultEnterGame();

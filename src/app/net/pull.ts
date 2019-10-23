@@ -763,3 +763,28 @@ export const getMining = () => {
         return mining;
     });
 };
+
+export const getRecommendationsList = (count:number) => {
+    debugger;
+    const msg = {
+        type:'wallet/oAuth@get_recommend_app',
+        param:{
+            count
+        }
+    };
+
+    return requestAsyncRpc(msg).then(data => {
+        debugger;
+    });
+};
+
+export const getAllGame = () => {
+    const msg = {
+        type:'wallet/oAuth@get_all_app',
+        param:{}
+    };
+    
+    return requestAsyncRpc(msg).then(data => {
+        debugger;
+    });
+};

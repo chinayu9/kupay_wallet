@@ -150,7 +150,12 @@ export const loadAboutAppSource = () => {
         'app/components/basicItem/',
         'app/components/collapse/',
         'earn/client/app/view/share/inviteFriend/',
-        'app/components/share/'
+        'app/components/share/',
+        'app/view/aboutApp/privacypolicy.tpl',
+        'app/view/aboutApp/privacypolicy.ts',
+        'app/view/aboutApp/privacypolicy.wcss',
+        'app/view/aboutApp/privacyPolicyText.ts',
+        'app/components/topBar/'
     ];
 
     return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {     
