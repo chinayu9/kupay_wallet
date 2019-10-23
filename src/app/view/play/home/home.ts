@@ -11,7 +11,7 @@ import { Forelet } from '../../../../pi/widget/forelet';
 import { loadDir } from '../../../../pi/widget/util';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
-import { getAllGame, getGameInfo, getHotGame, getRecommendationsList } from '../../../net/pull';
+import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { getStore, register } from '../../../store/memstore';
 import { popNewMessage, setPopPhoneTips } from '../../../utils/pureUtils';
@@ -91,6 +91,7 @@ export class PlayHome extends Widget {
         this.getRecommendations();
         this.allGame();
         this.hotGame();
+        this.getRecentGame();
     }
 
     /**
@@ -98,6 +99,7 @@ export class PlayHome extends Widget {
      */
     public getRecommendations() {
         getRecommendationsList().then(r => {
+            r = ['102'];
             if (r.length) {
                 const appId = r;
                 getGameInfo(appId).then(r => {
@@ -136,6 +138,25 @@ export class PlayHome extends Widget {
                 });
             }
         });
+    }
+
+    /**
+     * 获取最近在玩
+     */
+    public getRecentGame() {
+        const acc_id = this.props.userInfo.acc_id;
+        if (acc_id) {
+            getUserRecentGame(acc_id,10).then(r => {
+                r = ['101'];
+                if (r.length) {
+                    const appId = r;
+                    getGameInfo(appId).then(r => {
+                        this.props.oftenList = r;
+                        this.paint();
+                    });
+                }
+            });
+        }
     }
     public attach() {
         super.attach();

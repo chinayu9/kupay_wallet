@@ -354,14 +354,14 @@ export const getUserRecentGame = (accid:string,count:number) => {
     };
 
     return requestAsyncRpc(msg).then(r => {
-        if (r.list) {
-            const list = [];
-            r.list.forEach(v => {  // appid
-                list.push([]);
+        const list = [];
+        if (r.result === 1 && r.app_login) {
+            r.app_login.forEach(v => {
+                list.push(v[1]);
             });
-
-            return list;
         }
+        
+        return list;
     });
 };
 
