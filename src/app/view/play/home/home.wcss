@@ -14,16 +14,17 @@
     -webkit-overflow-scrolling: touch;
 }
 .oftenPlay{
+    width: 100%;
     border-bottom: 1px solid #CCC;
     box-sizing: border-box;
-    display: flex;
-}
-.oftenList{
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+}
+.oftenList{
+    display: flex;
 }
 .listItem{
     height: 238px;
