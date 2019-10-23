@@ -344,7 +344,7 @@ export const getAppleGoods = () => {
 /**
  * 获取用户最近玩的游戏
  */
-export const getUserRecentGame = (accid:number,count:number) => {
+export const getUserRecentGame = (accid:string,count:number) => {
     const msg = {
         type:'wallet/oAuth@get_recent_login',
         param:{
@@ -354,14 +354,14 @@ export const getUserRecentGame = (accid:number,count:number) => {
     };
 
     return requestAsyncRpc(msg).then(r => {
-        if (r.list) {
-            const list = [];
-            r.list.forEach(v => {  // appid
-                list.push([]);
+        const list = [];
+        if (r.result === 1 && r.app_login) {
+            r.app_login.forEach(v => {
+                list.push(v[1]);
             });
-
-            return list;
         }
+        
+        return list;
     });
 };
 
@@ -761,5 +761,103 @@ export const getMining = () => {
         setStore('activity/mining/total', mining);
 
         return mining;
+    });
+};
+
+/**
+ * 获取推荐游戏的APPid
+ */
+export const getRecommendationsList = () => {
+    const msg = {
+        type:'wallet/oAuth@get_recommend_app',
+        param:{
+        }
+    };
+
+    return requestAsyncRpc(msg).then(data => {
+        if (data.result === 1) {
+            return data.app_ids;
+        }
+    });
+};
+
+/**
+ * 批量获取游戏信息
+ * @param appId 游戏ID
+ */
+export const getGameInfo = (appId:any) => {
+    const msg = {
+        type:'wallet/oAuth@get_app_detail',
+        param:{
+            app_ids:appId
+        }
+    };
+
+    return requestAsyncRpc(msg).then(data => {
+        // debugger;
+        // tslint:disable-next-line:no-unnecessary-local-variable
+        const gameList = [
+            [
+                '仙之侠道',
+                { icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+                {
+                    usePi:false,
+                    desc:'2019最热唯美奇幻手游',
+                    webviewName:'fairyChivalry',
+                    buttonMod:3,
+                    accId:'268828',
+                    groupId:10001,
+                    appid:'102',
+                    screenMode:'portrait'
+                },
+                'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+            ],
+            [
+                '一代掌门',
+                { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+                {
+                    usePi:true,
+                    desc:'2019最热唯美奇幻手游',
+                    webviewName:'fairyChivalry',
+                    buttonMod:2,
+                    accId:'268828',
+                    groupId:10001,
+                    appid:'102',
+                    screenMode:'landscape'
+                },
+                'http://gcydzm.17youx.cn:8777/client/boot/haohai.html'
+            ]
+        ];
+
+        return gameList;
+    });
+};
+/**
+ * 获取全部游戏
+ */
+export const getAllGame = () => {
+    const msg = {
+        type:'wallet/oAuth@get_all_app',
+        param:{}
+    };
+    
+    return requestAsyncRpc(msg).then(data => {
+        if (data.result === 1) {
+            return data.app_ids;
+        }
+    });
+};
+
+// 获取热门游戏
+export const getHotGame = () => {
+    const msg = {
+        type:'wallet/oAuth@get_hot_app',
+        param:{}
+    };
+    
+    return requestAsyncRpc(msg).then(data => {
+        if (data.result === 1) {
+            return data.app_ids;
+        }
     });
 };

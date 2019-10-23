@@ -27,7 +27,7 @@ export const requestAsync = (msg: any):Promise<any> => {
 
 // 钱包登录
 export const walletLogin = (cb:Function) => {
-    (<any>window).pi_sdk.api.authorize({ appId:101 },async (err, result) => {
+    (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
         if (err === 0) { // 网络未连接
             console.log('网络未连接');

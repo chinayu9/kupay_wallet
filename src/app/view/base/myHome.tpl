@@ -29,11 +29,13 @@
         </div>
         
         <div w-class="friendList">
+            {{if 1==2}}
             {{for i,v of it.showDataList}}
             <div w-class="fan">
                 <div w-class="num">{{v.num}}</div>
                 <div w-class="fanName">{{v.name}}</div>
             </div>
+            {{end}}
             {{end}}
         </div>
         <div w-class="moreTitle" on-tap="test">更多</div>

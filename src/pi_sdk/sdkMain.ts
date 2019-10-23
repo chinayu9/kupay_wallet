@@ -1,5 +1,4 @@
-import { createThirdApiStyleTag, createThirdBaseStyle, buttonModInit } from './sdkTools';
-import { setFreeSecrectPay } from './sdkApi';
+import { createThirdApiStyleTag, createThirdBaseStyle, buttonModInit, closePopBox, popNewMessage, popNewLoading, popInputBox } from './sdkTools';
 import { confData } from './sdkConf';
 
 /**
@@ -63,6 +62,7 @@ const showButtons = [{
     clickedClose:true,
     clickCb:() => {
         console.log('click 游戏客服');
+        miniWebview('/wallet/chat/client/boot/index.html');
         pi_RPC_Method(piConfig.jsApi, 'gotoGameService', piConfig.webviewName,  (error, result) => {
             console.log('gotoGameService call success');
         });
@@ -75,6 +75,7 @@ const showButtons = [{
     clickedClose:true,
     clickCb:() => {
         console.log('click 官方群聊');
+        miniWebview('/wallet/chat/client/boot/index.html');
         pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
             console.log('gotoOfficialGroupChat call success');
         });
@@ -112,8 +113,7 @@ const showButtons = [{
     clickedClose:true,
     clickCb:() => {
         console.log('click 最小化');
-        const exs = pi_modules[webviewManagerPath].exports;
-        exs.WebViewManager.minWebView(piConfig.webviewName);
+        miniWebview('');
     }
 },{
     id:ButtonId.EXITGAME,
@@ -128,6 +128,12 @@ const showButtons = [{
         });
     }
 }];
+
+// 最小化webview
+const miniWebview = (webUrl:string)=>{
+    const exs = pi_modules[webviewManagerPath].exports;
+    exs.WebViewManager.minWebView(piConfig.webviewName,webUrl);
+}
 
 /**
  * @param timeMS: 超时时间
@@ -195,6 +201,42 @@ const piService = {
 };
 
 /**
+ * 获取是否开启免密支付
+ */
+const getFreeSecret = () => {
+    console.log('getFreeSecret called');
+    pi_RPC_Method(piConfig.jsApi, 'querySetNoPassword', piConfig.appid,  (error, startFreeSecret) => {
+        console.log('getFreeSecret called callback',startFreeSecret);
+        piStore.freeSecret = startFreeSecret;
+    });
+};
+
+// 第三方设置免密支付
+// openFreeSecret:设置免密支付状态  
+// 0:关闭，1:开启
+const setFreeSecrectPay =  (openFreeSecret) => {
+    closePopBox();
+    const title = openFreeSecret ? '设置免密支付' : '关闭免密支付'; 
+    popInputBox(title,(value) => {
+        const sendData = {
+            appid: piConfig.appid,
+            noPSW: openFreeSecret ? 1 : 0,
+            password:value
+        };
+        popNewLoading('设置中...');
+        pi_RPC_Method(piConfig.jsApi, 'setFreeSecrectPay', sendData, (resCode1, msg1) => {
+            if (msg1) {
+                piStore.freeSecret = !piStore.freeSecret;
+                popNewMessage('设置成功');
+            } else {
+                popNewMessage('设置失败');
+            }
+            closePopBox();
+        });
+    });
+};
+
+/**
  * 设置webviewManager路径
  */
 const setWebviewManager = (path:string) => {
@@ -215,24 +257,27 @@ const setWebviewManager = (path:string) => {
 /**
  * 初始化
  */
-const piSdkInit = (cb:any) => {
+const piSdkInit = (cb:any, isPC?:boolean) => {
     createThirdBaseStyle();
     createThirdApiStyleTag();
-    piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
+    if(!isPC){
+        piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
+    }
     buttonModInit()();
     // getFreeSecret();
 };
+// 按钮模式
+enum ButtonMods { 
+    SPOTBUTTON = 1,   // 三个点 可拖动
+    WXBUTTON = 2,     // 微信小程序样式
+    ICONBUTTON = 3    // 图标 可拖动
+}
 
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
 piConfig.jsApi = 'app/remote/JSAPI';
 piConfig.imgUrlPre = 'http://192.168.31.226/wallet/app/res/image/third/';
-piConfig.buttonMod = 1;   // 悬浮按钮样式
-piConfig.buttonMods = {
-    FLOATBUTTON:1,
-    WXBUTTON:2,
-    FLOATBUTTON2:3
-}
+piConfig.buttonMods = ButtonMods
 piConfig = {
     ...confData,
     ...piConfig

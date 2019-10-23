@@ -236,7 +236,6 @@ winit.initNext = function () {
 			"app/view/base/",
 			"app/view/play/home/",
 			"earn/client/app/view/home/",
-			"chat/client/app/view/home/test.tpl",
 			"app/components1/btn/",
 			"app/components1/img/",
 			"app/components1/topBar/",
