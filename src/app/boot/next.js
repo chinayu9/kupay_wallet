@@ -189,7 +189,7 @@ winit.initNext = function () {
 	var suffixCfg = {
 		png: 'down', jpg: 'down', jpeg: 'down', webp: 'down', gif: 'down', xlsx:'none',rs:'none'
 	};
-
+	console.time("firstStageLoaded success");
 	// app下载入口函数
 	var appLoadEntrance = function(){
 		pi_modules.commonjs.exports.require(["pi/util/html", "pi/widget/util","pi/util/lang","pi/browser/webview"], {}, function (mods, tmpfm) {
@@ -262,7 +262,7 @@ winit.initNext = function () {
 			"chat/client/app/widget/imgShow/"
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
-			console.log("firstStageLoaded success-----------------");
+			console.timeEnd("firstStageLoaded success");
 			pi_modules.commonjs.exports.relativeGet("app/view/base/sourceLoaded").exports.init(flags,fm,suffixCfg);
 			// 聊天登录
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/init").exports.registerRpcStruct(fm);
@@ -303,7 +303,7 @@ winit.initNext = function () {
 	// 加载剩余的聊天资源
 	var loadLeftChatSource = function(){
 		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/"], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore.js").exports.setStore('level_3_page_loaded',true);
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('level_3_page_loaded',true);
 			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);

@@ -810,7 +810,8 @@ export const getGameInfo = (appId:any) => {
                     appid:'102',
                     screenMode:'portrait'
                 },
-                'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+                // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+                'http://192.168.31.226/game/app/boot/index.html'
             ],
             [
                 '一代掌门',
@@ -818,11 +819,11 @@ export const getGameInfo = (appId:any) => {
                 {
                     usePi:true,
                     desc:'2019最热唯美奇幻手游',
-                    webviewName:'fairyChivalry',
+                    webviewName:'chairMan',
                     buttonMod:2,
                     accId:'268828',
                     groupId:10001,
-                    appid:'102',
+                    appid:'103',
                     screenMode:'landscape'
                 },
                 'http://gcydzm.17youx.cn:8777/client/boot/haohai.html'

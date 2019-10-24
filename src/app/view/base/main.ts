@@ -7,9 +7,10 @@ import { getStore as chatGetStore } from '../../../chat/client/app/data/store';
 import { chatManualReconnect } from '../../../chat/client/app/net/init';
 import { earnManualReconnect } from '../../../earn/client/app/net/init';
 import { getStore as earnGetStore } from '../../../earn/client/app/store/memstore';
-import { addActivityBackPressed, addAppBackPressed } from '../../../pi/browser/app_comon_event';
+import { addActivityBackPressed } from '../../../pi/browser/app_comon_event';
 import { ExitApp } from '../../../pi/browser/exitApp';
-import { backCall, backList, lastBack, popNew } from '../../../pi/ui/root';
+import { initReport } from '../../../pi/collection/collection';
+import { backCall, backList, popNew } from '../../../pi/ui/root';
 import { addWidget } from '../../../pi/widget/util';
 import { sourceIp } from '../../public/config';
 import { LockScreen } from '../../public/interface';
@@ -19,12 +20,12 @@ import { getScreenModify } from '../../utils/native';
 // ============================== 导出
 export const run = (cb): void =>  {
     addWidget(document.body, 'pi-ui-root');
-    // initReport({
-    //     reported:true,
-    //     interval:10 * 1000,
-    //     deadline:30 * 1000,
-    //     ip:sourceIp
-    // });
+    initReport({
+        reported:true,
+        interval:10 * 1000,
+        deadline:30 * 1000,
+        ip:sourceIp
+    });
 
     // 数据检查  
     checkUpdate();  
@@ -47,16 +48,16 @@ export const run = (cb): void =>  {
 /**
  * 界面入口
  */
-const popNewPage = () => {
-    ifNeedUnlockScreen().then(locked => {
-        if (locked) {
-            popNew('app-components1-lockScreenPage-lockScreenPage', {
-                openApp: true
-            });
-        }
+// const popNewPage = () => {
+//     ifNeedUnlockScreen().then(locked => {
+//         if (locked) {
+//             popNew('app-components1-lockScreenPage-lockScreenPage', {
+//                 openApp: true
+//             });
+//         }
         
-    });
-};
+//     });
+// };
 
 // /**
 //  * 预先从底层获取一些数据

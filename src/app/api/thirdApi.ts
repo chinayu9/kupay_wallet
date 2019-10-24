@@ -2,7 +2,7 @@
  * 钱包提供给第三方的方法
  */
 import { GENERATOR_TYPE } from '../../chat/server/data/db/user.s';
-import { screenMode, WebViewManager } from '../../pi/browser/webview';
+import { WebViewManager } from '../../pi/browser/webview';
 import { popNew } from '../../pi/ui/root';
 import { addThirdPushListener } from '../postMessage/thirdPush';
 import { ThirdCmd } from '../public/constant';
@@ -23,7 +23,7 @@ const gotoGameService = (webviewName: string) => {
     curWebviewName = webviewName;
     const item:any = getGameItem(webviewName);
     popNew('chat-client-app-view-chat-chat',{ uid:'10046',chatType: GENERATOR_TYPE.USER,name:`${item.title.zh_Hans}官方客服`,okCB:() => {
-        WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', screenMode.landscape);
+        WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', item.screenMode);
     } });
 };
 
@@ -35,7 +35,7 @@ const gotoOfficialGroupChat = (webviewName: string) => {
     const item:any = getGameItem(webviewName);
     curWebviewName = webviewName;
     popNew('chat-client-app-view-chat-chat',{ gid:item.groupId, chatType: GENERATOR_TYPE.GROUP,name:`${item.title.zh_Hans}官方群`,okCB:() => {
-        WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', screenMode.landscape);
+        WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', item.screenMode);
     } }); 
 };
 

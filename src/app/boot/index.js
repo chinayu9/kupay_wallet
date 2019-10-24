@@ -35,5 +35,3 @@ if (winit.httpDomains) {
 	dependFile = "depend";
 }
 winit.loadJS(winit.getLoadDomain(dependFile), winit.path + dependFile + '?' + Math.random(), "utf8", winit.initFail, "load list error");
-
-//winit.debug=false;
