@@ -28,7 +28,7 @@ export const erlangLogicPort = '2081';
 export const erlangLogicPayPort = 8099;
 
 // 活动逻辑服务器ip
-export const activeLogicIp = '39.98.71.177';
+export const activeLogicIp = '39.98.200.23';
 // export const activeLogicIp = sourceIp;
 
 // 活动逻辑服务器port

@@ -2,19 +2,18 @@
  * play home 
  */
  // ================================ 导入
-import { screenMode, WebViewManager } from '../../../../pi/browser/webview';
+import { WebViewManager } from '../../../../pi/browser/webview';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
 import { notify } from '../../../../pi/widget/event';
 import { Forelet } from '../../../../pi/widget/forelet';
-import { loadDir } from '../../../../pi/widget/util';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { getStore, register } from '../../../store/memstore';
-import { popNewMessage, setPopPhoneTips } from '../../../utils/pureUtils';
+import { popNewMessage } from '../../../utils/pureUtils';
 import { activityList } from './gameConfig';
 
 // ================================ 导出
@@ -22,6 +21,41 @@ import { activityList } from './gameConfig';
 declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
+
+const gameList = [
+    [
+        '仙之侠道',
+        { icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+        {
+            usePi:false,
+            desc:'2019最热唯美奇幻手游',
+            webviewName:'fairyChivalry',
+            buttonMod:3,
+            accId:'268828',
+            groupId:10001,
+            appid:'102',
+            screenMode:'portrait'
+        },
+        // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+        'http://192.168.31.226/game/app/boot/index.html'
+    ],
+    [
+        '一代掌门',
+        { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+        {
+            usePi:true,
+            desc:'2019最热唯美奇幻手游',
+            webviewName:'chairMan',
+            buttonMod:2,
+            accId:'268828',
+            groupId:10001,
+            appid:'103',
+            screenMode:'landscape'
+        },
+        'http://gcydzm.17youx.cn:8777/client/boot/haohai.html'
+    ]
+];
+
 /**
  * 玩游戏
  */
@@ -75,19 +109,19 @@ export class PlayHome extends Widget {
         this.props.activityList = activityList;
         this.props.loaded = false;
         // 最近在玩
-        this.props.oftenList = [];
+        this.props.oftenList = gameList;
         // 推荐
-        this.props.recommend = [];
+        this.props.recommend = gameList;
         // 今日推荐
         // tslint:disable-next-line:max-line-length
         this.props.recommendedToday =  { name:'仙之侠道',icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png',desc:'2019最热唯美奇幻手游' };
         // 热门
-        this.props.popular = [];
+        this.props.popular = gameList;
         // 编辑推荐
         // tslint:disable-next-line:max-line-length
         this.props.editRecommend = { name:'一起吃鸡',icon:'../../../res/image/game/bullfighting.png',bg:'../../../res/image/game/eatingChicken.png',desc:'2019LPL春季赛常规赛' };
         // 全部游戏
-        this.props.allGame = [];
+        this.props.allGame = gameList;
         this.getRecommendations();
         this.allGame();
         this.hotGame();
@@ -332,7 +366,7 @@ export class PlayHome extends Widget {
 
     // 进入最近在玩的游戏
     public oftenGame(index:number) {
-        this.goGame(index,this.props.ofenList);
+        this.goGame(index,this.props.oftenList);
     }
 
     // 进入推荐游戏
