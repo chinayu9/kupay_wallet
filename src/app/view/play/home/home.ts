@@ -336,14 +336,7 @@ export class PlayHome extends Widget {
             }
         });
     }
-
-    /**
-     * 去个人主页
-     */
-    public myHome(e:any) {
-        notify(e.node,'ev-myHome',null);
-    }
-
+    
     public async goGame(num:number,gameList:any) {
         const isLogin = await getStoreData('flags/isLogin');
         if (!isLogin) {

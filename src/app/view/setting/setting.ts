@@ -64,28 +64,6 @@ export class Setting extends Widget {
         this.ok && this.ok();
     }
     /**
-     * 处理锁屏开关切换
-     */
-    public async onSwitchChange() {
-        if (this.props.openLockScreen) {   // 如果锁屏开关打开则直接关闭
-            const ls = await getStore('setting/lockScreen');
-            ls.open = !ls.open;
-            this.props.openLockScreen = false;
-            setStore('setting/lockScreen', ls);
-        } else {
-            popNew('app-components1-lockScreenPage-lockScreenPage', { setting: true }, (r) => {
-                if (!r) {
-                    this.props.openLockScreen = false;
-                } else {
-                    this.props.openLockScreen = true;
-                }
-            });
-        }
-
-        this.paint(true);
-    }
-
-    /**
      * 点击切换基础属性 
      */
     public itemClick(ind: number) {
@@ -115,13 +93,6 @@ register('setting/changeColor', () => {
         w.initData();
     }
 });
-register('setting/lockScreen', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.initData();
-    }
-});
-
 register('user',() => {
     const w: any = forelet.getWidget(WIDGET_NAME);
     if (w) {

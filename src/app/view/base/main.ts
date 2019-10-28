@@ -145,19 +145,6 @@ const addAppEvent = () => {
 
 // ============================== 立即执行
 
-/**
- * 是否需要解锁屏幕
- */
-const ifNeedUnlockScreen = async () => {
-    const unlockScreen = document.getElementById('keyboard');
-    if (unlockScreen) return false;
-    const ls: LockScreen = await getStore('setting/lockScreen',{});
-    const lockScreenPsw = ls.psw;
-    const openLockScreen = ls.open !== false;
-
-    return lockScreenPsw && openLockScreen;
-};
-
 let hasEnterGame = false;   // 是否进入游戏  锁屏判断是否从游戏退出，是就不展示锁屏界面
 
 /**

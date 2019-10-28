@@ -6,7 +6,6 @@
 import { appLanguageList, LocalLanguageMgr } from '../../pi/browser/localLanguage';
 import { HandlerMap } from '../../pi/util/event';
 import { setLang } from '../../pi/util/lang';
-import { cryptoRandomInt } from '../../pi/util/math';
 import { defaultSetting, topHeight } from '../public/config';
 // tslint:disable-next-line:max-line-length
 import { BtcMinerFee, CloudCurrencyType, CloudWallet, Currency2USDT, GasPrice, Setting, Silver, Store, UserInfo } from '../public/interface';
@@ -23,7 +22,6 @@ export const initStore = () => {
 
     return initFile().then(() => {
         initSettings();         // 设置初始化
-        initThird();            // 三方数据初始化
         initInviteUsers();      // 邀请好友数据初始化
 
         return initAccount().then(() => { // 账户初始化
@@ -129,27 +127,6 @@ export const unregister = (keyName: string, cb: Function): void => {
 };
 
 /**
- * 获取云端余额
- */
-export const getCloudBalances = () => {
-    const cloudWallets = store.cloud.cloudWallets;
-    const cloudBalances = new Map<CloudCurrencyType | String, number>();
-    for (const [key, val] of cloudWallets) {
-        cloudBalances.set(key, val.balance || 0);
-    }
-
-    return cloudBalances;
-};
-
-/**
- * vm 中JSON.stringify 对map 使用返回"{}"
- * rpc调用的时候会使用JSON.stringify 需要转一下
- */
-export const getCloudBalances1 = () => {
-    return [...getCloudBalances()];
-};
-
-/**
  * 初始化cloudWallets
  */
 export const initCloudWallets = () => {
@@ -231,21 +208,6 @@ const initAccount = () => {
             // store.user init
             store.user.id = fileUser.id;
             store.user.token = fileUser.token;
-            store.user.salt = fileUser.salt;
-            store.user.info = {
-                ...store.user.info,
-                ...fileUser.info
-            };
-
-            // store.cloud init
-            const localCloudWallets = new Map<CloudCurrencyType, LocalCloudWallet>(curAccount.cloud.cloudWallets);
-            for (const [key, value] of localCloudWallets) {
-                const cloudWallet = store.cloud.cloudWallets.get(key);
-                cloudWallet.balance = localCloudWallets.get(key).balance;
-
-            }
-        } else {
-            store.user.salt = cryptoRandomInt().toString();
         }
     });
 
@@ -297,22 +259,6 @@ const initSettings = () => {
             ...setting
         };
         setLang(setting.language);
-    });
-
-};
-
-/**
- * 三方数据初始
- */
-const initThird = () => {
-    getLocalStorage('third').then(third => {
-        if (!third) return;
-        store.third.gasPrice = third.gasPrice;
-        store.third.btcMinerFee = third.btcMinerFee;
-        store.third.rate = third.rate;
-        store.third.silver = third.silver;
-        store.third.gasLimitMap = new Map<string, number>(third.gasLimitMap);
-        store.third.currency2USDTMap = new Map<string, Currency2USDT>(third.currency2USDTMap);
     });
 
 };
@@ -463,9 +409,7 @@ const thirdChange = () => {
 const settingChange = () => {
     const localSetting: Setting = {
         language: getStore('setting/language'),
-        changeColor: getStore('setting/changeColor'),
         currencyUnit: getStore('setting/currencyUnit'),
-        lockScreen: getStore('setting/lockScreen'),
         deviceId: getStore('setting/deviceId'),
         deviceInfo: getStore('setting/deviceInfo'),
         topHeight: getStore('setting/topHeight'),
@@ -491,22 +435,7 @@ const store: Store = {
         isLogin: false,              // 登录状态
         allIsLogin: false,            // 所有服务登录状态  (钱包  活动  聊天)
         token: '',                   // 自动登录token
-        conUid: '',                   // 服务器连接uid
-        salt: '',                    // 加密 盐值
-        info: {                      // 用户基本信息
-            nickName: '',           // 昵称
-            avatar: '',             // 头像
-            phoneNumber: '',        // 手机号
-            areaCode: '86',          // 区域码
-            isRealUser: false,       // 是否是真实用户
-            acc_id: '',                // 好嗨号
-            sex: 2,                    // 性别  0男 1女 2中性
-            note: ''                   // 个性签名
-        }
-    },
-    
-    cloud: {
-        cloudWallets: initCloudWallets()     // 云端钱包相关数据, 余额  充值提现记录...
+        conUid: ''                   // 服务器连接uid  
     },
     activity: {
         luckyMoney: {
@@ -520,32 +449,12 @@ const store: Store = {
         }
     },
     setting: {
-        lockScreen: {         // 锁屏
-            psw: '',
-            open: false,
-            locked: false
-        },
         language: '',             // 语言
-        changeColor: '',          // 涨跌颜色设置，默认：红跌绿张
         currencyUnit: '',         // 显示哪个国家的货币
         deviceId: '',             // 设备唯一ID
         deviceInfo: null,           // 设备信息
         topHeight,              // 设备头部应空出来的高度
         bottomHeight: 0            // 设备底部应空出来的高度
-    },
-    third: {
-        gasPrice: null,                             // gasPrice分档次
-        btcMinerFee: null,                          // btc minerfee 分档次
-        gasLimitMap: new Map<string, number>(),     // 各种货币转账需要的gasLimit
-
-        // changelly
-        changellyCurrencies: [],                                  // changelly 支持的币种
-        rate: 0,                                            // 货币的美元汇率
-        silver: {                                         // 黄金价格
-            price: 0,
-            change: 0
-        },
-        currency2USDTMap: new Map<string, Currency2USDT>()  // k线  --> 计算涨跌幅
     },
     flags: {},
     inviteUsers: {

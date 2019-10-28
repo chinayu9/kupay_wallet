@@ -8,11 +8,10 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { getStoreData } from '../../api/walletApi';
-import { getServerCloudBalance } from '../../net/pull';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
 import { CloudCurrencyType, CloudType, LuckyMoneyType } from '../../public/interface';
-import { getCloudBalances, register, setStore } from '../../store/memstore';
+import { register, setStore } from '../../store/memstore';
 import { currencyType, getUserInfo, popNewLoading, popNewMessage } from '../../utils/pureUtils';
 import { largeUnit2SmallUnit } from '../../utils/unitTools';
 // ================================================导出
@@ -277,7 +276,6 @@ export class WriteRedEnv extends Widget {
             this.props.totalNum = 0;
             this.props.totalAmount = 0;
             this.props.message = '';
-            getServerCloudBalance();// 更新余额
             setStore('activity/luckyMoney/sends', undefined);// 更新红包记录
             this.paint(true);
         });

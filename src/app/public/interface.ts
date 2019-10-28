@@ -35,11 +35,9 @@ export enum TaskSid {
  */
 export interface Store {
     user: User;          // 账号
-    cloud: Cloud;        // 云端
     activity: Activity;  // 活动：红包，挖矿，分成，理财
 
     setting: Setting;     // 设置
-    third: Third;        // 第三方通信数据，如：changelly...
 
     flags: object;       // 全局的标识
     inviteUsers:object;  // 邀请好友
@@ -99,9 +97,7 @@ export interface User {
     token: string;         // 自动登录token
     conUid: string;        // 服务器连接uid
 
-    salt: string;          // 加密 盐值
 
-    info: UserInfo;        // 基本信息
 }
 
 /**
@@ -131,9 +127,7 @@ export interface Third {
  * 用户设置
  */
 export interface Setting {
-    lockScreen: LockScreen;       // 锁屏
     language: string;             // 语言
-    changeColor: string;          // 涨跌颜色设置，默认：红跌绿张
     currencyUnit: string;         // 显示哪个国家的货币
     deviceId:string;              // 设备唯一id
     deviceInfo:any;               // 设备信息 
