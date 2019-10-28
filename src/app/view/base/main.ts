@@ -5,7 +5,9 @@
 
 import { getStore as chatGetStore } from '../../../chat/client/app/data/store';
 import { chatManualReconnect } from '../../../chat/client/app/net/init';
+import { chatLogin } from '../../../chat/client/app/net/login';
 import { earnManualReconnect } from '../../../earn/client/app/net/init';
+import { earnLogin } from '../../../earn/client/app/net/login';
 import { getStore as earnGetStore } from '../../../earn/client/app/store/memstore';
 import { addActivityBackPressed } from '../../../pi/browser/app_comon_event';
 import { ExitApp } from '../../../pi/browser/exitApp';
@@ -19,6 +21,10 @@ import { getScreenModify } from '../../utils/native';
 
 // ============================== 导出
 export const run = (cb): void =>  {
+    const root = document.querySelector('[w-tag="pi-ui-root"]');
+    if (root) {
+        document.body.removeChild(root);
+    }
     addWidget(document.body, 'pi-ui-root');
     initReport({
         reported:true,
@@ -26,7 +32,10 @@ export const run = (cb): void =>  {
         deadline:30 * 1000,
         ip:sourceIp
     });
-
+    // 活动登录
+    earnLogin(() => {
+        chatLogin();
+    });
     // 数据检查  
     checkUpdate();  
     getScreenModify();

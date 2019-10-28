@@ -7,7 +7,7 @@ import { getStoreData } from '../api/walletApi';
 // tslint:disable-next-line:max-line-length
 import { Config, defalutShowCurrencys, ERC20Tokens, getModulConfig, inJSVM, MainChainCoin, uploadFileUrlPrefix, USD2CNYRateDefault } from '../public/config';
 import { CloudCurrencyType, Currency2USDT, CurrencyRecord } from '../public/interface';
-import { getCloudBalances, getStore } from '../store/memstore';
+import { getStore } from '../store/memstore';
 import { piLoadDir } from './commonjsTools';
 
 /**
@@ -489,19 +489,6 @@ export const fetchSTGain = () => {
 };
 
 /**
- * 获取云端总资产
- */
-export const fetchCloudTotalAssets = () => {
-    const cloudBalances = getCloudBalances();
-    let totalAssets = 0;
-    for (const [k, v] of cloudBalances) {
-        totalAssets += fetchBalanceValueOfCoin(CloudCurrencyType[<any>k], v);
-    }
-
-    return totalAssets;
-};
-
-/**
  * 获取本地钱包资产列表
  */
 export const fetchWalletAssetList = () => {
@@ -533,54 +520,6 @@ export const fetchWalletAssetList = () => {
             item.balanceValue = formatBalanceValue(fetchBalanceValueOfCoin(k, balance));
             item.rate = formatBalanceValue(fetchBalanceValueOfCoin(k,1));
             item.gain = fetchCoinGain(k);
-            assetList.push(item);
-        }
-    }
-
-    return assetList;
-};
-
-/**
- * 获取云端钱包资产列表
- */
-export const fetchCloudWalletAssetList = () => {
-    const assetList = [];
-    const cloudBalances = getCloudBalances();
-    const ktBalance = cloudBalances.get(CloudCurrencyType.KT) || 0;
-    const ktItem = {
-        currencyName: 'KT',
-        description: 'KT Token',
-        balance: formatBalance(ktBalance),
-        balanceValue: formatBalanceValue(fetchBalanceValueOfCoin('KT', ktBalance)),
-        gain: fetchCloudGain(),
-        rate:formatBalanceValue(0)
-    };
-    assetList.push(ktItem);
-    const scBalance = cloudBalances.get(CloudCurrencyType.SC) || 0;
-    const gtItem = {
-        currencyName: 'SC',
-        description: 'SC',
-        balance: formatBalance(scBalance),
-        balanceValue: formatBalanceValue(fetchBalanceValueOfCoin('SC',scBalance)),
-        gain: fetchCloudGain(),
-        rate:formatBalanceValue(fetchBalanceValueOfCoin('SC',1))
-    };
-    assetList.push(gtItem);
-    for (const k in CloudCurrencyType) {
-        let hidden = [];
-        if (getModulConfig('IOS')) {
-            hidden = getModulConfig('IOSCLOUDASSETSHIDDEN');
-        }
-        if (hidden.indexOf(k) >= 0) continue;
-        const item: any = {};
-        if (MainChainCoin.hasOwnProperty(k)) {
-            item.currencyName = k;
-            item.description = MainChainCoin[k].description;
-            const balance = cloudBalances.get(CloudCurrencyType[k]) || 0;
-            item.balance = formatBalance(balance);
-            item.balanceValue = formatBalanceValue(fetchBalanceValueOfCoin(k, balance));
-            item.gain = fetchCoinGain(k);
-            item.rate = formatBalanceValue(fetchBalanceValueOfCoin(k,1));
             assetList.push(item);
         }
     }

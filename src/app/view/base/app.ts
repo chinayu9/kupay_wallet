@@ -184,10 +184,10 @@ export const gotoEarn = () => {
     w && w.switchToEarn();
 };
 
-registerStoreData('user/info',(user => {
+registerStoreData('user',(user => {
     const w: any = forelet.getWidget(WIDGET_NAME);
     if (w) {
-        getUserInfo(user.info).then(userInfo => {
+        getUserInfo().then(userInfo => {
             w.props.userInfo = userInfo;
             w.paint();
         });

@@ -16,6 +16,7 @@ import { piLoadDir, piRequire } from './commonjsTools';
 // tslint:disable-next-line:max-line-length
 import { arrayBuffer2File, closeAllPage, delPopPhoneTips, popNewMessage, unicodeArray2Str } from './pureUtils';
 import { gotoRecharge } from './recharge';
+import { disconnect } from '../../chat/client/app/net/init';
 
 /**
  * arrayBuffer图片压缩
@@ -672,15 +673,8 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
     setStore('setting/lockScreen',lockScreen);
     setStore('flags/saveAccount', false);  
     // setBottomLayerReloginMsg('','','');
-    closeCon();
     logoutWalletSuccess();
     // setTimeout(() => {
     //     openConnect();
     // },100);
-    if (!noLogin) {
-        closeAllPage();
-        popNew('app-view-base-entrance');
-    }
-    delPopPhoneTips();
-   
 };

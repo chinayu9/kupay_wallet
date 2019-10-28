@@ -4,6 +4,7 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { clearUser } from '../../api/walletApi';
+import { logoutWallet } from '../../net/login';
 import { uploadFile } from '../../net/pull';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getStore, initStore, register } from '../../store/memstore';
@@ -219,7 +220,7 @@ export class AccountHome extends Widget {
                 // 清除账号数据
                 clearUser().then(() => {
                     // 初始化数据
-                    initStore();
+                    logoutAccount();
                     // 监听重新登录
                     registerStoreData('flags/isLogin',(r:boolean) => {
                         const loginBg = document.querySelector('.haohaiLoginDiv');

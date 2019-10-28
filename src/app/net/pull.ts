@@ -862,3 +862,18 @@ export const getHotGame = () => {
         }
     });
 };
+
+export const getOpenId = (appId:string) => {
+    const msg = { type: 'get_openid', param: { appid:appId } };
+
+    return requestAsyncRpc(msg).then(async res => {
+        const info = await getStoreData('user/info',{});
+        // tslint:disable-next-line:no-unnecessary-local-variable
+        const data = {
+            openId: res.openid, 
+            ...info
+        };
+        
+        return data;
+    });
+};
