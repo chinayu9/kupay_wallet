@@ -289,15 +289,12 @@ winit.initNext = function () {
 		var index = pi_modules.commonjs.exports.relativeGet("app/view/base/main").exports;
 		index.run(function () {
 			// 关闭读取界面
-			document.body.removeChild(document.getElementById('rcmj_loading_log'));
+			var rcmj = document.getElementById('rcmj_loading_log');
+			if(rcmj){
+				document.body.removeChild(document.getElementById('rcmj_loading_log'));
+			}
 			loadLeftChatSource();
 		});
-		// 活动登录
-		pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin(()=>{
-			// 聊天登录
-			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
-		});
-		
 	}
 
 	// 加载剩余的聊天资源

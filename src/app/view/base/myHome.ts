@@ -1,17 +1,16 @@
 import { getStore as earnGetStore } from '../../../earn/client/app/store/memstore';
 import { getMedalList } from '../../../earn/client/app/utils/tools';
-import { getCompleteTask } from '../../../earn/client/app/view/home/home';
 import { CoinType } from '../../../earn/client/app/xls/dataEnum.s';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
-import { clearUser, getStoreData, goRecharge } from '../../api/walletApi';
+import { getStoreData, goRecharge } from '../../api/walletApi';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
-import { initStore, register, setStore } from '../../store/memstore';
-import { fetchCloudWalletAssetList, getUserInfo, rippleShow } from '../../utils/pureUtils';
+import { register, setStore } from '../../store/memstore';
+import { getUserInfo, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
-import { loadAboutAppSource, loadAccountSource, loadCloudRechargeSource, loadDividendSource, loadHaihaiSource, loadMallSource, loadMedalSource, loadMiningSource, loadOpenBoxSource, loadPersonalInfoSource, loadRedEnvelopeSource, loadShareSource, loadTurntableSource } from './sourceLoaded';
+import { loadAboutAppSource, loadAccountSource, loadDividendSource, loadHaihaiSource, loadMallSource, loadMedalSource, loadMiningSource, loadOpenBoxSource, loadPersonalInfoSource, loadRedEnvelopeSource, loadShareSource, loadTurntableSource } from './sourceLoaded';
 
 export const forelet = new Forelet();
 // tslint:disable-next-line:no-reserved-keywords

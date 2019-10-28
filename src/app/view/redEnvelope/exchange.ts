@@ -57,7 +57,6 @@ export class Exchange extends Widget {
         close.callback(close.widget);
         if (res.reslutCode !== 1) return;
         setStore('activity/luckyMoney/exchange',undefined);
-        getServerCloudBalance();
         const r: any = await this.queryDesc(code);
         const ktShow = getModulConfig('KT_SHOW');
         const redInfo = JSON.parse(res.msg);
