@@ -272,7 +272,7 @@ winit.initNext = function () {
 			tab.timeout = 90000;
 			tab.release();
 			if(!pi_update.inApp){
-				vmLoad(util,fm);
+				// vmLoad(util,fm);
 			}
 			// enterApp();
 			loadPiSdk();
@@ -328,9 +328,13 @@ winit.initNext = function () {
 
 	var loadPiSdk = function(){
 		util.loadDir(["pi_sdk/"], flags, fm, undefined, function (fileMap) {
+			console.time('pisdk init complete');
+
 			pi_sdk.setWebviewManager("pi/browser/webview");
 			pi_sdk.piSdkInit((res)=>{
-				console.log('bind vm success', res);
+				console.timeEnd('pisdk init complete');
+				console.log('bind vm result: ', res);
+
 				//钱包登录
 				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(enterApp);	
 			});
