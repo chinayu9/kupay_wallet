@@ -259,7 +259,7 @@ winit.initNext = function () {
 			"chat/client/app/view/contactList/contactItem.tpl",
 			"chat/client/app/view/contactList/contactItem.js",
 			"chat/client/app/view/contactList/contactItem.wcss",
-			"chat/client/app/widget/imgShow/"
+			"chat/client/app/widget1/imgShow/"
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
@@ -272,9 +272,9 @@ winit.initNext = function () {
 			tab.timeout = 90000;
 			tab.release();
 			if(!pi_update.inApp){
-				vmLoad(util,fm);
+				// vmLoad(util,fm);
 			}
-			// enterApp();
+			enterApp();
 			loadPiSdk();
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);
@@ -299,7 +299,7 @@ winit.initNext = function () {
 
 	// 加载剩余的聊天资源
 	var loadLeftChatSource = function(){
-		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/"], flags, fm, undefined, function (fileMap) {
+		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/","chat/client/app/widget1/"], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('level_3_page_loaded',true);
 			
 		}, function (r) {
@@ -325,11 +325,15 @@ winit.initNext = function () {
 
 	var loadPiSdk = function(){
 		util.loadDir(["pi_sdk/"], flags, fm, undefined, function (fileMap) {
+			console.time('pisdk init complete');
+
 			pi_sdk.setWebviewManager("pi/browser/webview");
 			pi_sdk.piSdkInit((res)=>{
-				console.log('bind vm success', res);
+				console.timeEnd('pisdk init complete');
+				console.log('bind vm result: ', res);
+
 				//钱包登录
-				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(enterApp);	
+				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin();	
 			});
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);

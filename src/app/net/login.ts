@@ -36,6 +36,7 @@ export const walletLogin = (cb:Function) => {
             const user = await getStoreData('user');
             setStore('user/isLogin',true);
             setStore('user/id',user.conUid);
+            debugger;
         }
         cb && cb();
     });

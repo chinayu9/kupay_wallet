@@ -37,7 +37,7 @@ export class OfflineTip extends Widget {
             this.updateDate(OfflienType.CHAT,isLogin);
         });
 
-        if (this.state === null) {
+        if (!this.state) {
             forelet.paint(getStore('user/id'));
         }
         

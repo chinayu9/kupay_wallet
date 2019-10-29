@@ -242,9 +242,9 @@ export const loadSettingSource = () => {
         'app/components/bindPhone/',
         'app/components/modalBox/',
         'app/publicComponents/loading/',
-        'chat/client/app/widget/pageEdit/',
-        'chat/client/app/widget/topBar/',
-        'chat/client/app/widget/input/',
+        'chat/client/app/widget1/pageEdit/',
+        'chat/client/app/widget1/topBar/',
+        'chat/client/app/widget1/input/',
         'earn/xlsx/',
         'earn/client/app/components/noviceTaskAward/'
     ];
@@ -261,7 +261,7 @@ export const loadHaihaiSource = () => {
     const fg = getStore('flags',{}).loadHaihaiSource;
     const sourceList = [
         'chat/client/app/view/info/',
-        'chat/client/app/widget/topBar/',
+        'chat/client/app/widget1/topBar/',
         'app/publicComponents/blankDiv/'
     ];
 
