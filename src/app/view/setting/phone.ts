@@ -7,7 +7,6 @@ import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { getStoreData, setStoreData } from '../../api/walletApi';
 import { regPhone, unbindPhone } from '../../net/pull';
-import { getStore, setStore } from '../../store/memstore';
 import { delPopPhoneTips, getUserInfo, popNewMessage } from '../../utils/pureUtils';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords

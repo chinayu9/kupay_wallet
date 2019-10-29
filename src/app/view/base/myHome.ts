@@ -116,6 +116,7 @@ export class MyHome extends Widget {
             this.props.user.avatar = userInfo.avatar;
             this.props.user.userLevel = userInfo.level;
             this.props.user.acc_id = userInfo.acc_id ? userInfo.acc_id :'000000';
+            this.props.user.sex = userInfo.sex;
             this.props.uid = await getStoreData('user').uid;
             this.paint();
             this.medalest();

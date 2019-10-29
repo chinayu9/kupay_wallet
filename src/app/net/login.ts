@@ -33,8 +33,10 @@ export const walletLogin = (cb:Function) => {
             console.log('网络未连接');
         } else {
             console.log('钱包注册成功',result);
-            console.log('用户的uid',await getStoreData('user'));
-            setStore('user/info',result);
+            const user = await getStoreData('user');
+            setStore('user/isLogin',true);
+            setStore('user/id',user.conUid);
+            debugger;
         }
         cb && cb();
     });

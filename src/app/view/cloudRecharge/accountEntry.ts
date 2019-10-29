@@ -5,7 +5,6 @@ import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { getRealNode } from '../../../pi/widget/painter';
 import { Widget } from '../../../pi/widget/widget';
-import { getAccountDetail } from '../../net/pull';
 import { getModulConfig } from '../../public/config';
 import { CloudCurrencyType } from '../../public/interface';
 import { getStore, register } from '../../store/memstore';
