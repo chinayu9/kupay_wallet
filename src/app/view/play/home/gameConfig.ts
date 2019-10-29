@@ -84,7 +84,7 @@ export const getGameItem = (webviewName:string) => {
         return item.webviewName === webviewName;
     });
     
-    const gameItem =  JSON.parse(localStorage.getItem('officialService')).gameList[index]; 
+    const gameItem = localStorage.getItem('officialService') ? JSON.parse(localStorage.getItem('officialService')).gameList[index] :{}; 
     console.log('获取游戏配置信息', gameList[index], gameItem);
 
     return {

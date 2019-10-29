@@ -1072,6 +1072,8 @@ export const createSignInStyle = () => {
 // 创建注册界面
 // tslint:disable-next-line:max-func-body-length
 export const createSignInPage = () => {
+    const div = document.createElement('div');
+    div.setAttribute('style','background-position: center;background-repeat: no-repeat;background-size: cover;background-image: url(http://192.168.31.226/wallet/app/res/image1/haohaiLogin.jpg);width:100%;height:100%;');
     const elem = document.createElement('div');
     elem.classList.add('signIn_page');
     const title = `
@@ -1366,6 +1368,7 @@ export const createSignInPage = () => {
     elem.innerHTML = window.pi_sdk.config.isHorizontal ? content :(title + content + userDiv);
     const piRoot = document.createElement('div');
     piRoot.classList.add('pi-root');
+    piRoot.appendChild(div);
     piRoot.appendChild(elem);
     document.body.appendChild(piRoot);
 

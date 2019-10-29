@@ -247,7 +247,8 @@ export const popNew3 = (name: string, props?: any, ok?: Callback, cancel?: Callb
         const loading = popNew('app-publicComponents-loading-loading1');
         const level3SourceList = [
             'chat/client/app/view/',
-            'chat/client/app/widget/'
+            'chat/client/app/widget/',
+            'chat/client/app/widget1/'
         ];
         piLoadDir(level3SourceList).then(() => {
             console.log('popNew3 ------ all resource loaded');
