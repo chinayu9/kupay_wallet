@@ -211,7 +211,10 @@ export const loadDividendSource = () => {
 export const loadAccountSource = () => {
     const fg = getStore('flags',{}).loadAccountSource;
     const sourceList = [
-        'app/view/account/',
+        'app/view/account/home.tpl',
+        'app/view/account/home.js',
+        'app/view/account/home.wcss',
+        'app/view/account/home.cfg',
         'app/components1/checkSex/',
         'app/publicComponents/blankDiv/',
         'app/components/topBar/',
@@ -230,7 +233,7 @@ export const loadAccountSource = () => {
 export const loadSettingSource = () => {
     const fg = getStore('flags',{}).loadSettingSource;
     const sourceList = [
-        'app/view/setting/',
+        'app/view/setting/setting/',
         'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components/switch/',

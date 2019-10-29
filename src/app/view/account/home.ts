@@ -4,11 +4,10 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { clearUser } from '../../api/walletApi';
-import { logoutWallet } from '../../net/login';
 import { uploadFile } from '../../net/pull';
 import { registerStoreData } from '../../postMessage/listenerStore';
-import { getStore, initStore, register } from '../../store/memstore';
-import { selectImage } from '../../utils/native';
+import { register } from '../../store/memstore';
+import { piRequire } from '../../utils/commonjsTools';
 import { getUserInfo, popNewMessage, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
 import { changeWalletName, changeWalletNote, changeWalletSex, imgResize, logoutAccount, walletNameAvailable } from '../../utils/tools';
@@ -95,10 +94,12 @@ export class AccountHome extends Widget {
     }
 
     public uploadAvatar() {
-        const loading = popNew('app-publicComponents-loading-loading1');
-        loadSettingSource().then(() => {
-            const imagePicker = selectImage((width, height, url) => {
+        piRequire(['app/utils/native']).then((r) => {
+            const imagePicker = r[0].selectImage((width, height, url) => {
                 console.log('selectImage url = ',url);
+                if (!url) {
+                    return;
+                }
                 // tslint:disable-next-line:max-line-length
                 this.props.avatarHtml = `<div style="background-image: url(${url});width: 80px;height: 80px;background-size: cover;background-position: center;background-repeat: no-repeat;border-radius:50%"></div>`;
                 this.props.chooseImage = true;
@@ -113,7 +114,6 @@ export class AccountHome extends Widget {
                     }
                 });
             });
-            loading.callback(loading.widget);
         });
         
     }

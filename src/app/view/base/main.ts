@@ -15,8 +15,6 @@ import { initReport } from '../../../pi/collection/collection';
 import { backCall, backList, popNew } from '../../../pi/ui/root';
 import { addWidget } from '../../../pi/widget/util';
 import { sourceIp } from '../../public/config';
-import { LockScreen } from '../../public/interface';
-import { getStore } from '../../store/memstore';
 import { getScreenModify } from '../../utils/native';
 
 // ============================== 导出
