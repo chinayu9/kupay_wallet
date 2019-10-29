@@ -58,23 +58,14 @@ export class OfflineTip extends Widget {
         this.props.reconnecting = true;   // 正在连接
         const offlienType = this.props.offlienType;
         if (offlienType === OfflienType.WALLET) {  // 钱包重连
-            walletManualReconnect();
+
         } else if (offlienType === OfflienType.CHAT) {  // 聊天重连
-            getStore('user/isLogin').then(isLogin => {
-                if (!isLogin) {
-                    walletManualReconnect();
-                }
-            });
-           
+            const create = getStore('user/isLogin');
+               
             if (!chatGetStore('isLogin')) {
                 chatManualReconnect();
             }
         } else {   // 活动重连
-            getStore('user/isLogin').then(isLogin => {
-                if (!isLogin) {
-                    walletManualReconnect();
-                }
-            });
             if (!earnGetStore('userInfo/isLogin')) {
                 earnManualReconnect();
             }
@@ -88,11 +79,7 @@ export class OfflineTip extends Widget {
             this.props.reconnecting = false;
             this.paint();
         }
-        
     }
 }
 
 // ===========================================================
-// registerStoreData('user',(user:any) => {
-//     forelet.paint(user.id);
-// });
