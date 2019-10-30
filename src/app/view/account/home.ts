@@ -24,6 +24,7 @@ interface Props {
     editName:string;
     chooseImage:boolean;
     avatarHtml:string;
+    avatar:string;
 }
 /**
  * account home
@@ -37,7 +38,8 @@ export class AccountHome extends Widget {
         canEditName: false,
         chooseImage: false,
         avatarHtml: '',
-        editName:''
+        editName:'',
+        avatar: ''
 
     };
     public create() {
@@ -45,6 +47,14 @@ export class AccountHome extends Widget {
         this.language = this.config.value[getLang()];
         this.state = STATE;
         this.init();
+    }
+
+    public setProps(props:any) {
+        this.props = {
+            ...this.props,
+            ...props
+        };
+        super.setProps(this.props);
     }
     public init() {
         Promise.all([getUserInfo()]).then(([userInfo]) => {
@@ -54,7 +64,7 @@ export class AccountHome extends Widget {
             }
             this.state.nickName = userInfo.nickName ? userInfo.nickName : this.language.defaultName;
             this.props.editName = this.state.nickName;
-            this.state.avatar = userInfo.avatar;
+            this.props.avatar = userInfo.avatar;
             this.state.sex = userInfo.sex;
             this.state.note = userInfo.note ? userInfo.note :'';
             this.paint();
@@ -107,7 +117,7 @@ export class AccountHome extends Widget {
                 // tslint:disable-next-line:max-line-length
                 this.props.avatarHtml = `<div style="background-image: url(${url});width: 80px;height: 80px;background-size: cover;background-position: center;background-repeat: no-repeat;border-radius:50%"></div>`;
                 this.props.chooseImage = true;
-                this.state.avatar = url;
+                this.props.avatar = url;
                 this.paint();
                 imagePicker.getContent({
                     quality:70,
@@ -253,7 +263,6 @@ export class AccountHome extends Widget {
 }
 
 let STATE = {
-    avatar: '',
     nickName: '',
     phone: '',
     sex:2,
@@ -266,7 +275,6 @@ registerStoreData('user', (r) => {
         phone = r.info.phoneNumber.replace(str, '******');
     }
     STATE = {
-        avatar: getUserAvatar(r.info.avatar),
         nickName: r.info.nickName,
         phone,
         sex:r.info.sex,

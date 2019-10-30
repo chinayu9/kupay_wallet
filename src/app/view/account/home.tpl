@@ -14,7 +14,7 @@
                 
                 {{: phone = {"zh_Hans":it1.phone,"zh_Hant":it1.phone,"en":""} }}
                 {{: bindPhone = {"zh_Hans":"未设置","zh_Hant":"未設置","en":""} }}
-                <app-components-basicItem-basicItem>{name:{{itemTitle[0]}},img:true,chooseImage:{{it.chooseImage}},avatarHtml:{{it.avatarHtml}},avatar:{{it1.avatar}} }</app-components-basicItem-basicItem>
+                <app-components-basicItem-basicItem>{name:{{itemTitle[0]}},img:true,chooseImage:{{it.chooseImage}},avatarHtml:{{it.avatarHtml}},avatar:{{it.avatar}} }</app-components-basicItem-basicItem>
             </div>
             <div on-tap="changeName" on-down="onShow">
                 <app-components-basicItem-basicItem>{name:{{itemTitle[1]}},describe:{{it1.nickName}} }</app-components-basicItem-basicItem>
