@@ -3,7 +3,7 @@
     <app-components-topBar-topBar>{title:{{topBarTitle}} }</app-components-topBar-topBar>
     <div w-class="body">
         <div w-class="other">
-            <div on-tap="uploadAvatar" on-down="onShow">
+            <div on-tap="uploadAvatar" on-down="onShow" ev-uploadAvatar="uploadAvatar">
                 {{: itemTitle = [
                 {"zh_Hans":"头像","zh_Hant":"頭像","en":""},
                 {"zh_Hans":"昵称","zh_Hant":"暱稱","en":""}, 
