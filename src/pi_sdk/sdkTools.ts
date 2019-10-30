@@ -1073,7 +1073,7 @@ export const createSignInStyle = () => {
 // tslint:disable-next-line:max-func-body-length
 export const createSignInPage = () => {
     const div = document.createElement('div');
-    div.setAttribute('style','background-position: center;background-repeat: no-repeat;background-size: cover;background-image: url(http://192.168.31.226/wallet/app/res/image1/haohaiLogin.jpg);width:100%;height:100%;');
+    div.setAttribute('style','background-position: center;background-repeat: no-repeat;background-size: cover;background-image: url(http://39.98.200.23/wallet/app/res/image1/haohaiLogin.jpg);width:100%;height:100%;');
     const elem = document.createElement('div');
     elem.classList.add('signIn_page');
     const title = `

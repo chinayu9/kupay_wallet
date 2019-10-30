@@ -40,8 +40,7 @@ winit.initNext = function () {
 	pi_update.inAndroidApp = winit.inAndroidApp;
 	pi_update.inIOSApp = winit.inIOSApp;
 	pi_update.inApp = winit.inApp;
-	winit = undefined; //一定要立即释放，保证不会重复执行
-	//先登录
+	pi_update.bootPath = winit.bootPath;
 
 	var modProcess = pi_modules.commonjs.exports.getProcess();
 	var dirProcess = pi_modules.commonjs.exports.getProcess();
@@ -104,7 +103,7 @@ winit.initNext = function () {
 			}
 		});
 
-		h5UpdateMod.setServerInfo("app/boot/");
+		h5UpdateMod.setServerInfo(pi_update.bootPath);
 		h5UpdateMod.checkUpdate(function (updateFlag) {
 
 			isH5NeedUpdate = updateFlag;
@@ -170,8 +169,9 @@ winit.initNext = function () {
 			}, function () {
 				setTimeout(()=>{
 					pi_update.closePop();
+					console.log(`更新重启location.pathname is ${location.pathname}`);
 					// 重启
-					h5UpdateMod.reload();
+					h5UpdateMod.reload('/wallet/app/boot/index.html');
 				},200);
 			});
 		} else {
@@ -180,6 +180,8 @@ winit.initNext = function () {
 			appLoadEntrance();
 		}
 	}
+
+	winit = undefined;//一定要立即释放，保证不会重复执行
 
 // ====================================更新结束=============================================================
 	
@@ -239,27 +241,13 @@ winit.initNext = function () {
 			"app/components1/topBar/",
 			"app/publicComponents/",
 			"app/postMessage/",
-			"app/api/",
+			"app/api/thirdApi.js",
 			"app/res/css/",
 
-			'earn/client/app/res/css/',
-			'earn/xlsx/item.c.js',
-			'earn/xlsx/item.s.js',
-			'earn/xlsx/awardCfg.c.js',
-			'earn/xlsx/awardCfg.s.js',
-			"earn/client/app/components/noviceTaskAward/",
-			"earn/client/app/view/home/",
-			"earn/client/app/net/login.js",
-
-			"chat/client/app/view/home/",
-			"chat/client/app/net/login.js",
-			"chat/client/app/view/contactList/contactList.tpl",
-			"chat/client/app/view/contactList/contactList.js",
-			"chat/client/app/view/contactList/contactList.wcss",
-			"chat/client/app/view/contactList/contactItem.tpl",
-			"chat/client/app/view/contactList/contactItem.js",
-			"chat/client/app/view/contactList/contactItem.wcss",
-			"chat/client/app/widget1/imgShow/"
+			"earn/client/app/net/init.js",
+			
+			"chat/client/app/net/init.js",
+			
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
@@ -293,14 +281,36 @@ winit.initNext = function () {
 			if(rcmj){
 				document.body.removeChild(document.getElementById('rcmj_loading_log'));
 			}
+			loadFirstPageLeftSource();
 			loadLeftChatSource();
 		});
+	}
+
+	// 加载钱包首页剩余资源
+	var loadFirstPageLeftSource = function(){
+		util.loadDir([ 
+			"earn/xlsx/item.c.js",
+			"earn/xlsx/item.s.js",
+			"earn/xlsx/awardCfg.c.js",
+			"earn/xlsx/awardCfg.s.js",
+			"earn/client/app/components/noviceTaskAward/",
+			"earn/client/app/res/css/",
+			"earn/client/app/view/home/",
+			"chat/client/app/res/css/",
+			"chat/client/app/view/home/",
+			"chat/client/app/widget1/imgShow/"
+		], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/firstPageLoaded',true);
+			
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
 	}
 
 	// 加载剩余的聊天资源
 	var loadLeftChatSource = function(){
 		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/","chat/client/app/widget1/"], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('level_3_page_loaded',true);
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
 			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
