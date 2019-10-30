@@ -7,7 +7,7 @@ import { getStoreData, setStoreData } from '../api/walletApi';
 import { logoutWalletSuccess } from '../net/login';
 import { getAccountDetail } from '../net/pull';
 // tslint:disable-next-line:max-line-length
-import { Config, defalutShowCurrencys, ERC20Tokens, MainChainCoin, notSwtichShowCurrencys, preShowCurrencys, resendInterval } from '../public/config';
+import { Config, defalutShowCurrencys, ERC20Tokens, MainChainCoin, notSwtichShowCurrencys, preShowCurrencys, resendInterval, uploadFileUrlPrefix } from '../public/config';
 import { CurrencyRecord, MinerFeeLevel, TxHistory, TxStatus, TxType, Wallet } from '../public/interface';
 import { getStore,initCloudWallets, setStore } from '../store/memstore';
 import { piLoadDir, piRequire } from './commonjsTools';
@@ -633,4 +633,22 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
     // setTimeout(() => {
     //     openConnect();
     // },100);
+};
+
+/**
+ * 处理用户头像 
+ */
+export const getUserAvatar = (avatar:string) => {
+    if (avatar && avatar.indexOf('data:image') < 0) {
+        if (avatar.slice(0,4) === 'http') {
+            avatar = avatar;   
+        } else {
+            avatar = `${uploadFileUrlPrefix}${avatar}`;
+        }
+            
+    } else {
+        avatar = 'app/res/image/default_avater_big.png';
+    }
+
+    return avatar;
 };

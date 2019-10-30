@@ -233,7 +233,7 @@ export const loadAccountSource = () => {
 export const loadSettingSource = () => {
     const fg = getStore('flags',{}).loadSettingSource;
     const sourceList = [
-        'app/view/setting/setting/',
+        'app/view/setting/',
         'app/publicComponents/blankDiv/',
         'app/components/topBar/',
         'app/components/switch/',
