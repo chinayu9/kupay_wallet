@@ -26,8 +26,10 @@ let piConfig:any = pi_sdk.config || {};  // 配置信息
  */
 enum ButtonId {
     INVITEFRIENDS = 'pi-invite',                 // 邀请好友
+    BULLETIN= 'PI-bulletin',                     // 公告
     GAMESSERVICE = 'pi-service',                 // 游戏客服
     OFFICIALGROUPCHAT = 'pi-official-chat',      // 官方群聊
+    DIVIDEND= 'pi-dividend',                     // 分红
     RECHARGE = 'pi-recharg',                     // 充值
     FREESECRET = 'pi-free-secret',               // 免密支付
     MINWINDOW = 'pi-min-window',                 // 最小化
@@ -41,6 +43,23 @@ const showButtons = [{
     id:ButtonId.INVITEFRIENDS,
     img:'wx.png',
     text:'邀请好友',
+    show:false,
+    clickedClose:true,
+    clickCb:() => {
+        console.log('click 邀请好友');
+        pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
+            nickName:'测试',
+            inviteCode:'123456',
+            apkDownloadUrl:'http://xxxxx',
+            webviewName:piConfig.webviewName
+        }, (error, result) => {
+            console.log('inviteFriends call success');
+        });
+    }
+},{
+    id:ButtonId.BULLETIN,
+    img:'bulletin.png',
+    text:'公告',
     show:true,
     clickedClose:true,
     clickCb:() => {
@@ -56,8 +75,8 @@ const showButtons = [{
     }
 },{
     id:ButtonId.GAMESSERVICE,
-    img:'game_customer_service.png',
-    text:'游戏客服',
+    img:'gameService.png',
+    text:'客服',
     show:true,
     clickedClose:true,
     clickCb:() => {
@@ -71,6 +90,19 @@ const showButtons = [{
     id:ButtonId.OFFICIALGROUPCHAT,
     img:'official_group_chat.png',
     text:'官方群聊',
+    show:false,
+    clickedClose:true,
+    clickCb:() => {
+        console.log('click 官方群聊');
+        miniWebview('/wallet/chat/client/boot/index.html');
+        pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
+            console.log('gotoOfficialGroupChat call success');
+        });
+    }
+},{
+    id:ButtonId.DIVIDEND,
+    img:'shareMoney.png',
+    text:'分红',
     show:true,
     clickedClose:true,
     clickCb:() => {
@@ -84,7 +116,7 @@ const showButtons = [{
     id:ButtonId.RECHARGE,
     img:'recharg.png',
     text:'去充值',
-    show:true,
+    show:false,
     clickedClose:true,
     clickCb:() => {
         console.log('click 去充值');
@@ -107,8 +139,8 @@ const showButtons = [{
     }
 },{
     id:ButtonId.MINWINDOW,
-    img:'min_window.png',
-    text:'最小化',
+    img:'home.png',
+    text:'主页',
     show:true,
     clickedClose:true,
     clickCb:() => {
@@ -119,7 +151,7 @@ const showButtons = [{
     id:ButtonId.EXITGAME,
     img:'exit_game.png',
     text:'退出游戏',
-    show:true,
+    show:false,
     clickedClose:true,
     clickCb:() => {
         console.log('click 退出游戏');
@@ -263,7 +295,7 @@ const piSdkInit = (cb:any, isPC?:boolean) => {
     if (!isPC) {
         piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
     }
-    // buttonModInit()();
+    buttonModInit()();
     // getFreeSecret();
 };
 // 按钮模式
@@ -276,7 +308,7 @@ enum ButtonMods {
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
 piConfig.jsApi = 'app/remote/JSAPI';
-piConfig.imgUrlPre = 'http://39.98.200.23/wallet/app/res/image/third/';
+piConfig.imgUrlPre = 'http://192.168.33.13/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 piConfig = {
     ...confData,
