@@ -110,36 +110,37 @@ export const createThirdBaseStyle = () => {
         border-radius: 50%;
     }
     .pi-bottom-box{
-        background:#fff;
-        border-radius:20px 20px 0px 0px;
+        background:rgba(0,0,0,0.5);
+        border-radius:48px;
         position: absolute;
         bottom: -400px;
-        left: 20px;
-        right: 20px;
         display: flex;
         flex-wrap: wrap;
-        padding-bottom: 30px;
         transition: all .3s ease-in-out;
     }
     .pi-bottom-item{
         display: flex;
-        width:25%;
+        width:50px;
         flex-direction: column;
         align-items: center;
-        margin-top: 10px;
+        margin: 10px 15px;
     }
     .pi-img-box{
-        width: 100px;
-        height: 100px;
+        width: 50px;
+        height: 50px;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .pi-item-img{
+        width: 50px;
+        height: 50px;
     }
     .pi-text{
         font-size:24px;
         font-family:"PingFangSC-Regular";
         font-weight:400;
-        color:rgba(136,136,136,1);
+        color:rgba(255,255,255,1);
         line-height:33px;
         margin-top: 10px;
     }

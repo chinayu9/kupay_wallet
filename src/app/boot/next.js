@@ -253,6 +253,7 @@ winit.initNext = function () {
 
 			"chat/client/app/view/home/",
 			"chat/client/app/net/login.js",
+			'chat/client/app/res/css/',
 			"chat/client/app/view/contactList/contactList.tpl",
 			"chat/client/app/view/contactList/contactList.js",
 			"chat/client/app/view/contactList/contactList.wcss",

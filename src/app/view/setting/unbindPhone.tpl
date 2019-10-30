@@ -5,7 +5,7 @@
         {{: desc = {"zh_Hans":"我的手机号","zh_Hant":"我的手機號","en":""} }}
         <div w-class="desc"><pi-ui-lang>{{desc}}</pi-ui-lang></div>
         <div w-class="box"><span w-class="num">+{{it.areaCode}}</span><span w-class="phone">{{it.phoneNumber}}</span></div>
-        {{: unbind = {"zh_Hans":"解除绑定手机号","zh_Hant":"解除綁定手機號","en":""} }}
+        {{: unbind = {"zh_Hans":"更换手机号","zh_Hant":"更换手機號","en":""} }}
         <div w-class="unbind" on-tap="unbindClick"><pi-ui-lang>{{unbind}}</pi-ui-lang></div>
     </div>
 </div>

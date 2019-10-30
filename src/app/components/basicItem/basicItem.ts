@@ -50,4 +50,8 @@ export class BasicItem extends Widget {
     public doTap(event:any) {
         notify(event.node,'ev-btn-tap',{});
     }
+
+    public uploadAvatar(e:any) {
+        notify(e.node,'ev-uploadAvatar',null);
+    }
 }

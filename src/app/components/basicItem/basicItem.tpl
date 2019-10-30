@@ -16,7 +16,7 @@
     {{if it.img}}
     <div style="margin-right:10px;height:80px;">
         {{if !it.chooseImage}}
-            <widget w-tag="app-components1-img-img" on-tap="uploadAvatar">{imgURL:{{it.avatar?it.avatar:'../../res/image/avatar1.png'}},width:"80px;"}</widget>
+            <widget w-tag="app-components1-img-img" on-tap="uploadAvatar">{imgURL:{{it.avatar'}},width:"80px;"}</widget>
         {{else}}
             <widget w-tag="pi-ui-html" on-tap="uploadAvatar" w-class="ui-html">{{it.avatarHtml}}</widget>
         {{end}}

@@ -10,49 +10,63 @@ import { register } from '../../store/memstore';
 import { piRequire } from '../../utils/commonjsTools';
 import { getUserInfo, popNewMessage, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
-import { changeWalletName, changeWalletNote, changeWalletSex, imgResize, logoutAccount, walletNameAvailable } from '../../utils/tools';
+import { changeWalletName, changeWalletNote, changeWalletSex, getUserAvatar, imgResize, logoutAccount, walletNameAvailable } from '../../utils/tools';
 import { loadSettingSource } from '../base/sourceLoaded';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords 
 declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
-
+interface Props {
+    isTourist:boolean;
+    backup:boolean;
+    canEditName: boolean;
+    editName:string;
+    chooseImage:boolean;
+    avatarHtml:string;
+    avatar:string;
+}
 /**
  * account home
  */
 export class AccountHome extends Widget {
     public ok: () => void;
     public language: any;
+    public props:Props = {
+        isTourist:false,
+        backup:false,
+        canEditName: false,
+        chooseImage: false,
+        avatarHtml: '',
+        editName:'',
+        avatar: ''
+
+    };
     public create() {
         super.create();
         this.language = this.config.value[getLang()];
+        this.state = STATE;
         this.init();
     }
-    public init() {
+
+    public setProps(props:any) {
         this.props = {
-            isTourist:false,
-            avatar: '',
-            nickName: '',
-            phone: '',
-            backup:false,
-            canEditName: false,
-            editName:'',
-            chooseImage: false,
-            avatarHtml: '',
-            sex:2,
-            note:''
+            ...this.props,
+            ...props
         };
+        super.setProps(this.props);
+    }
+    public init() {
         Promise.all([getUserInfo()]).then(([userInfo]) => {
             if (userInfo.phoneNumber) {
                 const str = String(userInfo.phoneNumber).substr(3, 6);
-                this.props.phone = userInfo.phoneNumber.replace(str, '******');
+                this.state.phone = userInfo.phoneNumber.replace(str, '******');
             }
-            this.props.nickName = userInfo.nickName ? userInfo.nickName : this.language.defaultName;
-            this.props.editName = this.props.nickName;
-            this.props.avatar = userInfo.avatar ? userInfo.avatar : 'app/res/image/default_avater_big.png';
-            this.props.sex = userInfo.sex;
-            this.props.note = userInfo.note ? userInfo.note :'';
+            this.state.nickName = userInfo.nickName ? userInfo.nickName : this.language.defaultName;
+            this.props.editName = this.state.nickName;
+            this.props.avatar = userInfo.avatar;
+            this.state.sex = userInfo.sex;
+            this.state.note = userInfo.note ? userInfo.note :'';
             this.paint();
         });
     }
@@ -80,8 +94,8 @@ export class AccountHome extends Widget {
 
             return;
         }
-        if (v !== this.props.nickName) {
-            this.props.nickName = v;
+        if (v !== this.state.nickName) {
+            this.state.nickName = v;
             changeWalletName(v);
         }
         this.paint();
@@ -122,18 +136,18 @@ export class AccountHome extends Widget {
      * 绑定手机号
      */
     public changePhone() {
-        if (!this.props.phone) {  // 绑定
+        if (!this.state.phone) {  // 绑定
             const loading = popNew('app-publicComponents-loading-loading1');
             loadSettingSource().then(() => {
                 popNew('app-view-setting-phone');
                 loading.callback(loading.widget);
             });
         } else { // 重新绑定
-            // const loading = popNew('app-publicComponents-loading-loading1');
-            // loadSettingSource().then(() => {
-            //     popNew('app-view-setting-unbindPhone');
-            //     loading.callback(loading.widget);
-            // });
+            const loading = popNew('app-publicComponents-loading-loading1');
+            loadSettingSource().then(() => {
+                popNew('app-view-setting-unbindPhone');
+                loading.callback(loading.widget);
+            });
         }
     }
 
@@ -148,8 +162,8 @@ export class AccountHome extends Widget {
     
                 return;
             } else {
-                if (v !== this.props.nickName) {
-                    this.props.nickName = v;
+                if (v !== this.state.nickName) {
+                    this.state.nickName = v;
                     changeWalletName(v);
                     popNewMessage(this.language.tips[2]);
                     this.props.canEditName = false;
@@ -178,9 +192,9 @@ export class AccountHome extends Widget {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             // tslint:disable-next-line:max-line-length
-            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.props.nickName,maxLength:10 },async (res:any) => {
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.state.nickName,maxLength:10 },async (res:any) => {
                 await changeWalletName(res.content);
-                this.props.nickName = res.content;
+                this.state.nickName = res.content;
                 popNewMessage('修改昵称成功');
                 this.paint();
             });
@@ -194,9 +208,9 @@ export class AccountHome extends Widget {
     public changeSignature() {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
-            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.props.note,maxLength:100 },(res:any) => {
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:100 },(res:any) => {
                 changeWalletNote(res.content);
-                this.props.note = res.content;
+                this.state.note = res.content;
                 popNewMessage('修改个性签名成功');
                 this.paint();
             });
@@ -240,24 +254,33 @@ export class AccountHome extends Widget {
      * 选择性别
      */
     public changeSex() {
-        popNew('app-components1-checkSex-checkSex', { title:'选择性别',active:this.props.sex }, async (r: any) => {
+        popNew('app-components1-checkSex-checkSex', { title:'选择性别',active:this.state.sex }, async (r: any) => {
             await changeWalletSex(r);
             popNewMessage('修改性别成功');
             this.paint();
         });
     }
-
-    // // 黑名单管理
-    // public blacklist() {
-    //     popNew('chat-client-app-view-contactList-blacklist',{ title:'黑名单管理' ,addType:'放出' });
-    // }
 }
 
-registerStoreData('user', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
+let STATE = {
+    nickName: '',
+    phone: '',
+    sex:2,
+    note:''
+};
+registerStoreData('user', (r) => {
+    let phone = '';
+    if (r.info.phoneNumber) {
+        const str = String(r.info.phoneNumber).substr(3, 6);
+        phone = r.info.phoneNumber.replace(str, '******');
     }
+    STATE = {
+        nickName: r.info.nickName,
+        phone,
+        sex:r.info.sex,
+        note:r.info.note ? r.info.note :''
+    };
+    forelet.paint(STATE);    
 });
 
 register('setting/language', (r) => {
