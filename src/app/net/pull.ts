@@ -229,14 +229,11 @@ export const regPhone = async (phone: string, num:number, code: string) => {
 };
 
 /**
- * 验证旧手机
+ * 解绑手机
  */
-export const checkPhoneCode = async (phone: string, code: string,cmd?:string) => {
-    const param:any = { phone, code };
-    if (cmd) {
-        param.cmd = cmd;
-    }
-    const msg = { type: 'wallet/user@check_phoneCode', param };
+export const unbindPhone = async (code: string) => {
+    const param:any = { code };
+    const msg = { type: 'wallet/user@unset_phone', param };
     try {
         return await requestAsyncRpc(msg);
     } catch (err) {
@@ -246,12 +243,10 @@ export const checkPhoneCode = async (phone: string, code: string,cmd?:string) =>
     }
 };
 
-/**
- * 解绑手机
- */
-export const unbindPhone = async (phone: string, code: string,num:string) => {
-    const param:any = { phone, code,num };
-    const msg = { type: 'wallet/user@unset_phone', param };
+// 更换手机号码
+export const changePhone = async (phone:string,code:string) => {
+    const param:any = { phone,code };
+    const msg = { type:'wallet/user@change_phone',param };
     try {
         return await requestAsyncRpc(msg);
     } catch (err) {

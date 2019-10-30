@@ -6,7 +6,7 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { getStoreData, setStoreData } from '../../api/walletApi';
-import { regPhone, unbindPhone } from '../../net/pull';
+import { changePhone, regPhone, unbindPhone } from '../../net/pull';
 import { delPopPhoneTips, getUserInfo, popNewMessage } from '../../utils/pureUtils';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
@@ -22,7 +22,8 @@ export class BindPhone extends Widget {
             phone:'',
             code:[],
             isSuccess:true,
-            hasSendCode:false
+            hasSendCode:false,
+            changePhone:false
         };
         super.create();
     }
@@ -58,6 +59,22 @@ export class BindPhone extends Widget {
             return;
         }
         
+        if (this.props.changePhone) {
+            const data = await changePhone(this.props.phone,this.props.code.join(''));
+            if (data && data.result === 1) {
+                const userinfo = await getStoreData('user/info');
+                userinfo.phoneNumber = this.props.phone;
+                userinfo.areaCode = this.props.areaCode;
+                setStoreData('user/info',userinfo);
+                this.ok && this.ok();
+                popNewMessage('绑定成功');
+            } else {
+                this.props.code = [];
+                this.setCode();
+            }
+
+            return;
+        }
         if (!this.props.unbind) {
             const data = await regPhone(this.props.phone, 0,this.props.code.join(''));
             if (data && data.result === 1) {
@@ -74,14 +91,10 @@ export class BindPhone extends Widget {
             }
         } else {
             // 解绑
-            const data = await unbindPhone(this.props.phone, this.props.code.join(''),this.props.areaCode);
+            const data = await unbindPhone(this.props.code.join(''));
             if (data && data.result === 1) {
+                popNewMessage('验证成功');
                 this.ok && this.ok();
-                const userinfo = await getStoreData('user/info');
-                userinfo.phoneNumber = '';
-                userinfo.areaCode = '';
-                setStoreData('user/info',userinfo);
-                popNewMessage('解绑成功');
             } else {
                 this.props.code = [];
                 this.setCode();

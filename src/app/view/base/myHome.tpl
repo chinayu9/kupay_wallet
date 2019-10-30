@@ -9,6 +9,8 @@
                         <div w-class="userName">{{it.userInfo.nickName}}</div>
                         {{if it.user.sex!=2}}
                         <img src="../../res/image/{{it.user.sex==0?'boy.png':'girl.png'}}" alt="" w-class="sex"/>
+                        {{else}}
+                        <img src="../../res/image/neutral.png" alt="" w-class="sex"/>
                         {{end}}
                         <img src="{{it.medalest}}" alt="" w-class="medal" on-tap="showMyMedal"/>
                     </div>

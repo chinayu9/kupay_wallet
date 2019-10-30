@@ -181,7 +181,7 @@ export class MyHome extends Widget {
      */
     public userInfoSet() {
         loadAccountSource().then(() => {
-            popNew('app-view-account-home');
+            popNew('app-view-account-home',{ avatar:this.props.user.avatar });
         });
         
     }
