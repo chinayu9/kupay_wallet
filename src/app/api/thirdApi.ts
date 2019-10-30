@@ -22,7 +22,7 @@ const gotoGameService = (webviewName: string) => {
     console.log('wallet gotoGameService called');
     curWebviewName = webviewName;
     const item:any = getGameItem(webviewName);
-    popNew('chat-client-app-view-chat-chat',{ uid:'10046',chatType: GENERATOR_TYPE.USER,name:`${item.title.zh_Hans}官方客服`,okCB:() => {
+    popNew('chat-client-app-view-chat-chat',{ accId:item.accId,chatType: GENERATOR_TYPE.USER,name:`${item.title.zh_Hans}官方客服`,okCB:() => {
         WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', item.screenMode);
     } });
 };
