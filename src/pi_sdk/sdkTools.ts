@@ -112,37 +112,96 @@ export const createThirdBaseStyle = () => {
     .pi-bottom-box{
         background:rgba(0,0,0,0.5);
         border-radius:48px;
-        position: absolute;
-        bottom: -400px;
+        position: fixed;
         display: flex;
         flex-wrap: wrap;
         transition: all .3s ease-in-out;
+        padding-left:15px;
     }
     .pi-bottom-item{
         display: flex;
-        width:50px;
+        width:25px;
         flex-direction: column;
         align-items: center;
-        margin: 10px 15px;
+        margin: 5px 15px 5px 0;
     }
     .pi-img-box{
-        width: 50px;
-        height: 50px;
+        width: 25px;
+        height: 25px;
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
     }
     .pi-item-img{
-        width: 50px;
-        height: 50px;
+        width: 25px;
+        height: 25px;
+    }
+    .pi-item-redSpot{
+        position: absolute;
+        top:0;
+        right:0;
+        width:8px;
+        height:8px;
+    }
+    .pi-float-redSpot{
+        position: absolute;
+        top:0;
+        left:0;
+        width:8px;
+        height:8px;
     }
     .pi-text{
-        font-size:24px;
+        font-size:12px;
         font-family:"PingFangSC-Regular";
         font-weight:400;
         color:rgba(255,255,255,1);
-        line-height:33px;
-        margin-top: 10px;
+    }
+    .bulletin{
+        width:300px;
+        height:225px;
+        background:rgba(0,0,0,0.6);
+        border-radius:6px;
+        position: fixed;
+        top:50%;
+        left:50%;
+        z-index:999999;
+        transform: translate(-50%, -50%);
+    }
+    .bulletinTitle{
+        width:148px;
+        heigth:50px;
+        line-height:50px;
+        font-size:18px;
+        font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+        font-weight:500;
+        color:rgba(255,255,255,1);
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+        margin: 0 auto;
+    }
+    .closeButton{
+        width:25px;
+        height:25px;
+        position:absolute;
+        top:10px;
+        right:12px;
+    }
+    .bulletinContentBox{
+        width:250px;
+        height:164px;
+        font-size:14px;
+        font-family:SourceHanSansCN-Normal,SourceHanSansCN;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        overflow-x:hidden;
+        overflow-y:auto;
+        line-height:20px;
+        margin: 0 auto;
+    }
+    .publisher{
+        margin-top: 26px;
     }
     `;
     // tslint:disable-next-line:variable-name
@@ -673,6 +732,7 @@ const floatButtonInit = () => {
     <span class="pi-dot1"></span>
     <span class="pi-dot2"></span>
     <span class="pi-dot1"></span>
+    <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-float-redSpot"/>
     `;
     $floatButton.addEventListener('click',popNewPanel());
     document.querySelector('body').appendChild($floatButton);
@@ -747,6 +807,7 @@ const popNewPanel = () => {
             e.stopPropagation();
             e.preventDefault();
         });
+
         window.pi_sdk.config.showButtons.forEach((item,index) => {
             if (!item.show) return;
             const $bottomItem = document.createElement('div');
@@ -764,8 +825,21 @@ const popNewPanel = () => {
             }
           
             // tslint:disable-next-line:no-inner-html
-            $bottomItem.innerHTML = `<div class="pi-img-box"><img src="${window.pi_sdk.config.imgUrlPre}${imgUrl}" class="pi-item-img"/></div>
-              <div class="pi-text">${text}</div>`;
+            
+            if (item.redSpot) {
+                // tslint:disable-next-line:no-inner-html
+                $bottomItem.innerHTML = `<div class="pi-img-box">
+                <img src="${window.pi_sdk.config.imgUrlPre}${imgUrl}" class="pi-item-img"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-item-redSpot"/>
+                </div>
+                  <div class="pi-text">${text}</div>`;
+            } else {
+                // tslint:disable-next-line:no-inner-html
+                $bottomItem.innerHTML = `<div class="pi-img-box">
+                <img src="${window.pi_sdk.config.imgUrlPre}${imgUrl}" class="pi-item-img"/>
+                </div>
+                  <div class="pi-text">${text}</div>`;
+            }
             $bottomItem.addEventListener('click',() => {
                 (throttle(item.clickCb))();
                 if (item.clickedClose) {
@@ -775,19 +849,43 @@ const popNewPanel = () => {
   
             $bottomBox.appendChild($bottomItem);
         });
-  
-        const $root = document.createElement('div');
-        $root.setAttribute('id','pi-root');
-        $root.addEventListener('click',() => {
-            (<any>document.querySelector('.pi-bottom-box')).style.bottom = '-400px';
+        // 获取相关CSS属性
+        const getCss = (o,key) => {
+            return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o,<any>false)[key];     
+        };
+        const bottomBox = document.querySelector('.pi-bottom-box');
+        const floatBall = document.querySelector('.pi-float-button');
+        const screenWidth = document.documentElement.clientWidth;    // 屏幕宽度
+        const floatBallLeft = parseFloat(getCss(floatBall,'left'));
+        if (bottomBox) {
+            document.querySelector('body').removeChild(bottomBox); 
+        } else {
+            document.querySelector('body').appendChild($bottomBox);
+            $bottomBox.style.top = `${parseFloat(floatBall.style.top ? floatBall.style.top :100) - 5}px`;
+        }
+        $bottomBox.addEventListener('click',() => {
+            // 获取相关CSS属性
+            if (floatBallLeft >= screenWidth / 2) {
+                // 左侧展开  右侧收回
+                $bottomBox.style.left = `${(floatBallLeft - $bottomBox.clientWidth)}px`;
+            } else {
+                // 右侧展开  左侧收回
+                $bottomBox.style.left = `${-floatBallLeft * 2}px`;
+            }
             setTimeout(() => {
-                document.querySelector('body').removeChild(document.querySelector('#pi-root'));
+                document.querySelector('body').removeChild(document.querySelector('.pi-bottom-box'));
             },300);
         });
-        $root.appendChild($bottomBox);
-        document.querySelector('body').appendChild($root);
         requestAnimationFrame(() => {
-            $bottomBox.style.bottom = '0px';
+            $bottomBox.style.top = `${parseFloat(floatBall.style.top) - 5}px`;
+            if (floatBallLeft >= screenWidth / 2) {
+                // 左侧展开
+                $bottomBox.style.left = `${(floatBallLeft - $bottomBox.clientWidth - 18)}px`;
+            } else {
+                // 右侧展开
+                $bottomBox.style.left = `${-floatBallLeft * 2 + 18}px`;
+            }
+            
         });
   
     });
@@ -857,10 +955,12 @@ const throttle = (func) => {
  * 拖动悬浮框
  */
 const dragDom = (element, callback?) => {
+    let nowLeft = -1;
+    let disX = 0;
     const screenWidth = document.documentElement.clientWidth;    // 屏幕宽度
     const screenHeigth = document.documentElement.clientHeight;  // 屏幕高度
     const elementWidth = element.clientWidth;
-    const elementHeight = element.clientHeight;
+    const elementHeight = element.clientHeight;    
     const params = {
         left: 0,
         top: 0,
@@ -884,6 +984,7 @@ const dragDom = (element, callback?) => {
     }
     // o是移动对象
     element.ontouchstart = (event) => {
+        if (document.querySelector('.pi-bottom-box')) return;
         console.log('onmousedown');
         params.flag = true;
         event = event || window.event;
@@ -892,6 +993,11 @@ const dragDom = (element, callback?) => {
     };
     element.ontouchend = () => {
         console.log('onmouseup');
+        if (nowLeft !== -1) {
+            nowLeft = nowLeft < screenWidth / 2 ? -elementWidth / 3 :params.leftLimit + (elementWidth / 3);
+            element.style.left =  `${nowLeft}px`;
+            nowLeft = -1;
+        }
         params.flag = false;    
         if (getCss(element, 'left') !== 'auto') {
             params.left = getCss(element, 'left');
@@ -904,13 +1010,14 @@ const dragDom = (element, callback?) => {
     document.ontouchmove = (event:any) => {
         console.log('onmousemove');
         event = event || window.event;
+        // tslint:disable-next-line:one-variable-per-declaration
+        const nowX = event.changedTouches[0].clientX, nowY = event.changedTouches[0].clientY;
+        // tslint:disable-next-line:one-variable-per-declaration
+        disX = nowX - params.currentX;
+        const disY = nowY - params.currentY;
         if (params.flag) {
-            // tslint:disable-next-line:one-variable-per-declaration
-            const nowX = event.changedTouches[0].clientX, nowY = event.changedTouches[0].clientY;
-            // tslint:disable-next-line:one-variable-per-declaration
-            const disX = nowX - params.currentX, disY = nowY - params.currentY;
-            // tslint:disable-next-line:one-variable-per-declaration
-            let nowLeft = parseInt(<any>params.left,10) + disX,nowTop = parseInt(<any>params.top,10) + disY;
+            nowLeft = parseInt(<any>params.left,10) + disX;
+            let nowTop = parseInt(<any>params.top,10) + disY;
             nowLeft = nowLeft < 0 ? 0 : (nowLeft > params.leftLimit ? params.leftLimit : nowLeft);
             nowTop = nowTop < 0 ? 0 : (nowTop > params.topLimit ? params.topLimit : nowTop);
             element.style.left =  `${nowLeft}px`;
@@ -1540,6 +1647,7 @@ export const createModalBox = (title:string,msg:string,btnName:string,okCB?:any)
         </div>`;
     const piRoot = document.createElement('div');
     piRoot.setAttribute('id', 'pi-root');
+    // tslint:disable-next-line:no-inner-html
     piRoot.innerHTML = htmlText;
     document.body.appendChild(piRoot);
 
@@ -1555,4 +1663,26 @@ const userProtocol = () => {
 
 const backPrePage = () => {
     document.querySelector('#usersProtocol').style.display = 'none';
+};
+
+export const openBulletin = () => {
+    const bulletin = document.createElement('div');
+    const html = `
+        <div class="bulletin">
+            <div class="bulletinTitle">仙之侠道全平台公测正</div>
+            <img src="${window.pi_sdk.config.imgUrlPre}/close.png" class="closeButton"/>
+            <div class="bulletinContentBox">
+                <div class="bulletinContent">感谢您对仙之侠道的关注与支持，仙之侠道与10月1日上午10:00正式开启全平台公测。感谢您对仙之侠道的关注与支持，仙之侠道与10月1日上午10:00正式开启全平台公测。</div>
+                <div class="publisher">仙之侠道 运营组</div>
+                <div>2019-年9月30日</div>
+            </div>
+        </>
+    `;
+    // tslint:disable-next-line:no-inner-html
+    bulletin.innerHTML = html;
+    document.querySelector('body').appendChild(bulletin);
+    const close = document.querySelector('.closeButton');
+    close.addEventListener('click',() => {
+        document.querySelector('body').removeChild(bulletin);
+    });
 };

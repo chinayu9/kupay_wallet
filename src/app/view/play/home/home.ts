@@ -104,11 +104,6 @@ export class PlayHome extends Widget {
         };
         super.setProps(this.props);
         console.log(props);
-        this.props.userInfo = {};
-        getStoreData('user',{}).then(res => {
-            this.props.userInfo = res;
-            this.paint();
-        });
         this.props.refresh = false;
         this.props.activityList = activityList;
         this.props.loaded = false;

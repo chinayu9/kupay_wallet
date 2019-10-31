@@ -247,7 +247,7 @@ winit.initNext = function () {
 			"earn/client/app/net/init.js",
 			
 			"chat/client/app/net/init.js",
-			
+			"chat/client/app/res/css/"
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
@@ -341,9 +341,13 @@ winit.initNext = function () {
 			pi_sdk.piSdkInit((res)=>{
 				console.timeEnd('pisdk init complete');
 				console.log('bind vm result: ', res);
-
-				//钱包登录
-				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin();	
+				//钱包注册
+				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(()=>{
+					//聊天注册
+					pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
+					//聊天注册
+					pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
+				});	
 			});
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);
