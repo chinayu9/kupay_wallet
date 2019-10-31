@@ -1,5 +1,5 @@
 import { confData } from './sdkConf';
-import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
+import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
 /**
  * pi sdk 入口文件
@@ -45,6 +45,7 @@ const showButtons = [{
     text:'邀请好友',
     show:false,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 邀请好友');
         pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
@@ -62,16 +63,9 @@ const showButtons = [{
     text:'公告',
     show:true,
     clickedClose:true,
+    redSpot:true,
     clickCb:() => {
-        console.log('click 邀请好友');
-        pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
-            nickName:'测试',
-            inviteCode:'123456',
-            apkDownloadUrl:'http://xxxxx',
-            webviewName:piConfig.webviewName
-        }, (error, result) => {
-            console.log('inviteFriends call success');
-        });
+        openBulletin();
     }
 },{
     id:ButtonId.GAMESSERVICE,
@@ -79,6 +73,7 @@ const showButtons = [{
     text:'客服',
     show:true,
     clickedClose:true,
+    redSpot:true,
     clickCb:() => {
         console.log('click 游戏客服');
         miniWebview('/wallet/chat/client/boot/index.html');
@@ -92,6 +87,7 @@ const showButtons = [{
     text:'官方群聊',
     show:false,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 官方群聊');
         miniWebview('/wallet/chat/client/boot/index.html');
@@ -105,6 +101,7 @@ const showButtons = [{
     text:'分红',
     show:true,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 官方群聊');
         miniWebview('/wallet/chat/client/boot/index.html');
@@ -118,6 +115,7 @@ const showButtons = [{
     text:'去充值',
     show:false,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 去充值');
         pi_RPC_Method(piConfig.jsApi, 'gotoRecharge', piConfig.webviewName,  (error, result) => {
@@ -133,6 +131,7 @@ const showButtons = [{
     closeText:'打开免密支付',
     show:false,
     clickedClose:false,
+    redSpot:false,
     clickCb:() => {
         console.log('click 免密支付');
         setFreeSecrectPay(!piStore.freeSecret);
@@ -143,6 +142,7 @@ const showButtons = [{
     text:'主页',
     show:true,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 最小化');
         miniWebview('');
@@ -153,6 +153,7 @@ const showButtons = [{
     text:'退出游戏',
     show:false,
     clickedClose:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 退出游戏');
         pi_RPC_Method(piConfig.jsApi, 'closeWebview', piConfig.webviewName, (error, result) => {
