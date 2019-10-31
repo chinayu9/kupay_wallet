@@ -19,7 +19,6 @@
 
 'use strict';
 document.body.style.backgroundColor="#2F2F2F";
-winit.path="/" + winit.walletName + "/";//"/pi/0.1/";
 winit.loadJS(winit.getLoadDomain("init.js"), 
 	winit.path + 'pi/boot/init.js?' + Math.random(), "utf8", winit.initFail, "load init error");
 
@@ -34,4 +33,6 @@ var dependFile = ".depend";
 if (winit.httpDomains) {  
 	dependFile = "depend";
 }
+
+console.log("------------------- winit.getLoadDomain(dependFile) = ", winit.getLoadDomain(dependFile));
 winit.loadJS(winit.getLoadDomain(dependFile), winit.path + dependFile + '?' + Math.random(), "utf8", winit.initFail, "load list error");

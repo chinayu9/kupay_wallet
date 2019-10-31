@@ -628,12 +628,12 @@ export const getGameInfo = (appId:any) => {
                     appid:'102',
                     screenMode:'portrait'
                 },
-                // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-                'http://192.168.31.226/game/app/boot/index.html'
+                'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+                // 'http://192.168.31.226/game/app/boot/index.html'
             ],
             [
                 '一代掌门',
-                { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+                { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/yidaizhangmen.png' },
                 {
                     usePi:true,
                     desc:'2019最热唯美奇幻手游',

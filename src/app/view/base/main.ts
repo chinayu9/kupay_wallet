@@ -31,9 +31,10 @@ export const run = (cb): void =>  {
         ip:sourceIp
     });
     // 活动登录
-    earnLogin(() => {
-        chatLogin();
-    });
+    earnLogin();
+    // 聊天登录
+    chatLogin();
+
     // 数据检查  
     checkUpdate();  
     getScreenModify();

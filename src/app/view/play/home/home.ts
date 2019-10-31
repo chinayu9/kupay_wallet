@@ -6,7 +6,6 @@ import { WebViewManager } from '../../../../pi/browser/webview';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
-import { notify } from '../../../../pi/widget/event';
 import { Forelet } from '../../../../pi/widget/forelet';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
@@ -36,12 +35,12 @@ const gameList = [
             appid:'102',
             screenMode:'portrait'
         },
-        // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-        'http://192.168.31.226/game/app/boot/index.html'
+        'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+        // 'http://192.168.31.226/game/app/boot/index.html'
     ],
     [
         '一代掌门',
-        { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
+        { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/yidaizhangmen.png' },
         {
             usePi:true,
             desc:'2019最热唯美奇幻手游',
@@ -105,6 +104,11 @@ export class PlayHome extends Widget {
         };
         super.setProps(this.props);
         console.log(props);
+        this.props.userInfo = {};
+        getStoreData('user',{}).then(res => {
+            this.props.userInfo = res;
+            this.paint();
+        });
         this.props.refresh = false;
         this.props.activityList = activityList;
         this.props.loaded = false;
