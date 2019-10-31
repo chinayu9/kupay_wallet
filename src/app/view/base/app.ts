@@ -88,7 +88,6 @@ export class App extends Widget {
     }
 
     public async tabBarChangeListener(event: any, index: number) {
-        debugger;
         if (!getStore('flags',{}).firstPageLoaded) {
             const loading = popNew('app-publicComponents-loading-loading1');
             const firstPage = [

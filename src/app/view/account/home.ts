@@ -1,4 +1,6 @@
 
+import { chatLogin } from '../../../chat/client/app/net/login';
+import { earnLogin } from '../../../earn/client/app/net/login';
 import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
@@ -237,7 +239,12 @@ export class AccountHome extends Widget {
                     logoutAccount();
                     // 监听重新登录
                     registerStoreData('flags/isLogin',(r:boolean) => {
+                        console.log('切换账号————————————————————————————————————');
                         const loginBg = document.querySelector('.haohaiLoginDiv');
+                        // 活动登录
+                        earnLogin();
+                        // 聊天登录
+                        chatLogin();
                         if (r && loginBg) {
                             document.querySelector('[w-tag="pi-ui-root"]').removeChild(loginBg);
                         }
@@ -269,6 +276,7 @@ let STATE = {
     note:''
 };
 registerStoreData('user', (r) => {
+    const w: any = forelet.getWidget(WIDGET_NAME);
     let phone = '';
     if (r.info.phoneNumber) {
         const str = String(r.info.phoneNumber).substr(3, 6);
@@ -280,6 +288,10 @@ registerStoreData('user', (r) => {
         sex:r.info.sex,
         note:r.info.note ? r.info.note :''
     };
+    if (w) {
+        w.props.avatar = getUserAvatar(r.info.avatar);
+        w.paint();
+    }
     forelet.paint(STATE);    
 });
 

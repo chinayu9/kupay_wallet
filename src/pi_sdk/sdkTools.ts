@@ -990,7 +990,6 @@ const dragDom = (element, callback?) => {
         event = event || window.event;
         params.currentX = event.changedTouches[0].clientX;
         params.currentY = event.changedTouches[0].clientY;
-        console.log(`nowleft:${nowLeft}`);
     };
     element.ontouchend = () => {
         console.log('onmouseup');
@@ -1016,9 +1015,6 @@ const dragDom = (element, callback?) => {
         // tslint:disable-next-line:one-variable-per-declaration
         disX = nowX - params.currentX;
         const disY = nowY - params.currentY;
-        // tslint:disable-next-line:one-variable-per-declaration
-        // nowLeft = parseInt(<any>params.left,10) + disX;
-        // let nowTop = parseInt(<any>params.top,10) + disY;
         if (params.flag) {
             nowLeft = parseInt(<any>params.left,10) + disX;
             let nowTop = parseInt(<any>params.top,10) + disY;
@@ -1027,13 +1023,6 @@ const dragDom = (element, callback?) => {
             element.style.left =  `${nowLeft}px`;
             element.style.top =   `${nowTop}px`;
         }
-        console.log(`nowX : ${nowX},currentX:${ params.currentX},disX:${disX},
-        paramleft: ${params.left},nowLeft:${nowLeft}, style.left:${element.style.left}`);
-        // setTimeout(() => {
-        //     nowLeft = nowLeft < screenWidth / 2 ? 0 :params.leftLimit;
-        //     element.style.left =  `${nowLeft}px`;
-        // },200);
-
     };    
 };
 
