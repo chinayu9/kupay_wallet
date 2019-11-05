@@ -26,18 +26,20 @@ export const requestAsync = (msg: any):Promise<any> => {
 };
 
 // 钱包登录
-export const walletLogin = (cb:Function) => {
+export const walletLogin = (cb?:Function) => {
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
+        cb && cb();
+        
         if (err === 0) { // 网络未连接
             console.log('网络未连接');
         } else {
             console.log('钱包注册成功',result);
             const user = await getStoreData('user');
+
             setStore('user/isLogin',true);
             setStore('user/id',user.conUid);
         }
-        cb && cb();
     });
 };
 

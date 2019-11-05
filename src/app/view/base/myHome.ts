@@ -337,6 +337,7 @@ const STATE = {
 };
 // 云端余额变化
 registerStoreData('cloud',(r) => {
+    console.log('cloud========',r);
     STATE.wallet = [
         { num:r.SC,name:'银两余额' },
         { num:r.KT,name:'我的嗨豆' }

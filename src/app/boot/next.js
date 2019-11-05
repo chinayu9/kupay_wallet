@@ -216,8 +216,10 @@ winit.initNext = function () {
 			 */
 			html.checkWebpFeature(function (r) {
 				flags.webp = flags.webp || r;
+				loadPiSdk();
 				firstStageLoaded();
 			});
+
 		}, function (result) {
 			alert("加载基础模块失败, " + result.error + ":" + result.reason);
 		}, modProcess.handler);
@@ -232,8 +234,7 @@ winit.initNext = function () {
 			"pi/ui/lang.tpl",
 
 			"app/store/memstore.js",
-			"app/view/base/sourceLoaded.js",
-			"app/net/login.js",
+			"app/view/base/sourceLoaded.js",			
 			"app/view/base/",
 			"app/view/play/home/",
 			"app/components1/btn/",
@@ -259,11 +260,10 @@ winit.initNext = function () {
 			var tab = util.loadCssRes(fileMap);
 			tab.timeout = 90000;
 			tab.release();
-			if(!pi_update.inApp){
+			// if(!pi_update.inApp){
 				// vmLoad(util,fm);
-			}
+			// }
 			enterApp();
-			loadPiSdk();
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);
 		}, dirProcess.handler);
@@ -321,33 +321,47 @@ winit.initNext = function () {
 	/**
 	 * pc版加载VM
 	 */
-	function vmLoad(util,fm) {
-		// 开始flag
-		console.log("vm项目开始了。。。。。。。");
-		util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
+	// function vmLoad(util,fm) {
+	// 	// 开始flag
+	// 	console.log("vm项目开始了。。。。。。。");
+	// 	util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
+	// 		pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
 			
-		}, function (r) {
-			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-		}, function(){});
+	// 	}, function (r) {
+	// 		console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+	// 	}, function(){});
 		
-	}
+	// }
 
+	// 加载pisdk初始化及登录
 	var loadPiSdk = function(){
-		util.loadDir(["pi_sdk/"], flags, fm, undefined, function (fileMap) {
-			console.time('pisdk init complete');
+		console.time('pisdk init complete');
+
+		util.loadDir([
+			"pi_sdk/",
+			"app/net/login.js",
+			"chat/client/app/net/login.js",
+			"earn/client/app/net/login.js"
+		], flags, fm, undefined, function (fileMap) {
 
 			pi_sdk.setWebviewManager("pi/browser/webview");
-			pi_sdk.piSdkInit((res)=>{
+			pi_sdk.piSdkInit({
+				appid: '101',            // 应用ID 由好嗨唯一分配
+				webviewName: 'wallet',   // 应用名字 由好嗨唯一分配
+				isHorizontal: false,      // 是否横屏 由游戏决定
+			},(res)=>{
 				console.timeEnd('pisdk init complete');
 				console.log('bind vm result: ', res);
-				//钱包注册
-				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(()=>{
-					//聊天注册
-					pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
-					//聊天注册
-					pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
-				});	
+
+				// //钱包注册
+				// pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(()=>{
+				// 	enterApp();
+
+				// 	//聊天注册
+				// 	pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
+				// 	//聊天注册
+				// 	pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
+				// });	
 			});
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);

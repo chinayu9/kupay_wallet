@@ -68,3 +68,10 @@ export const requestAsyncRpc = (msg: any) => {
 export const goRecharge = () => {
     return vmRpcCall('goRecharge',[]);
 };
+
+/**
+ * 单独启动聊天时，获取webview名字
+ */
+export const getWebviewName = () => {
+    return vmRpcCall('getWebviewName',[]);
+};

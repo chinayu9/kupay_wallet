@@ -1,11 +1,11 @@
-/**
- * 悬浮框
- */
 import { WebViewManager } from '../../../pi/browser/webview';
 import { getRealNode } from '../../../pi/widget/painter';
 import { Widget } from '../../../pi/widget/widget';
 import { getGameItem } from '../../view/play/home/gameConfig';
 
+/**
+ * 悬浮框
+ */
 export class FloatBox extends Widget {
     public ok:() => void;
     public setProps(props:any,oldProps:any) {
@@ -18,7 +18,8 @@ export class FloatBox extends Widget {
     public floatBoxClick() {
         console.log('点击悬浮框');
         const webviewName = this.props.webviewName;
-        WebViewManager.open(webviewName, `${getGameItem(webviewName)}?${Math.random()}`, webviewName,'');
+        const gameItem = getGameItem(webviewName);
+        WebViewManager.open(webviewName, `${gameItem.url}?${Math.random()}`, webviewName,'',gameItem.screenMode);
         this.ok && this.ok();
     }
 
@@ -29,17 +30,17 @@ export class FloatBox extends Widget {
     }
 
     public dragDom(element:any, callback?:Function) {
-        // tslint:disable-next-line:one-variable-per-declaration
-        const parentNodeWidth = element.parentNode.clientWidth,parentNodeHeigth = element.parentNode.clientHeight;
-        // tslint:disable-next-line:one-variable-per-declaration
-        const elementWidth = element.clientWidth,elementHeight = element.clientHeight;
+        const screenWidth = document.documentElement.clientWidth;    // 屏幕宽度
+        const screenHeigth = document.documentElement.clientHeight;  // 屏幕高度
+        const elementWidth = element.clientWidth;
+        const elementHeight = element.clientHeight;
         const params = {
             left: 0,
             top: 0,
             currentX: 0,
             currentY: 0,
-            leftLimit:parentNodeWidth - elementWidth,
-            topLimit:parentNodeHeigth - elementHeight,
+            leftLimit:screenWidth - elementWidth,
+            topLimit:screenHeigth - elementHeight,
             flag: false
         };
         // 获取相关CSS属性

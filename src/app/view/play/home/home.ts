@@ -2,6 +2,8 @@
  * play home 
  */
  // ================================ 导入
+import { chatLogin } from '../../../../chat/client/app/net/login';
+import { earnLogin } from '../../../../earn/client/app/net/login';
 import { WebViewManager } from '../../../../pi/browser/webview';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
@@ -9,6 +11,7 @@ import { getLang } from '../../../../pi/util/lang';
 import { Forelet } from '../../../../pi/widget/forelet';
 import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
+import { walletLogin } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { getStore, register } from '../../../store/memstore';
@@ -35,8 +38,8 @@ const gameList = [
             appid:'102',
             screenMode:'portrait'
         },
-        'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-        // 'http://192.168.31.226/game/app/boot/index.html'
+        // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+        'http://192.168.31.226/game/app/boot/index.html'
     ],
     [
         '一代掌门',
@@ -60,43 +63,7 @@ const gameList = [
  */
 export class PlayHome extends Widget {
     public ok: () => void;
-    public configPromise:Promise<string>;
-    public thirdApiDependPromise:Promise<string>;
-    public thirdApiPromise:Promise<string>;
-    constructor() {
-        super();
-        // setTimeout(() => {
-        //     this.thirdApiPromise = new Promise((resolve) => {
-        //         const path = 'app/api/thirdApi.js.txt';
-        //         loadDir([path,'app/api/JSAPI.js'], undefined, undefined, undefined, fileMap => {
-        //             const arr = new Uint8Array(fileMap[path]);
-        //             const content = new TextDecoder().decode(arr);
-        //             resolve(content);
-        //         }, () => {
-        //             //
-        //         }, () => {
-        //             //
-        //         });
-        //     });
-        // },0);
 
-        // setTimeout(() => {
-        //     this.thirdApiDependPromise = new Promise((resolve) => {
-        //         const path = 'app/api/thirdApiDepend.js.txt';
-        //         loadDir([path,'app/api/thirdBase.js'], undefined, undefined, undefined, fileMap => {
-        //             const arr = new Uint8Array(fileMap[path]);
-        //             const content = new TextDecoder().decode(arr);
-        //             resolve(content);
-        //         }, () => {
-        //             //
-        //         }, () => {
-        //             //
-        //         });
-        //     });
-        // },0);
-       
-    }
-    
     public setProps(props:Json) {
         this.props = {
             ...props,
@@ -121,10 +88,10 @@ export class PlayHome extends Widget {
         this.props.editRecommend = { name:'一起吃鸡',icon:'../../../res/image/game/bullfighting.png',bg:'../../../res/image/game/eatingChicken.png',desc:'2019LPL春季赛常规赛' };
         // 全部游戏
         this.props.allGame = gameList;
-        this.getRecommendations();
-        this.allGame();
-        this.hotGame();
-        this.getRecentGame();
+        // this.getRecommendations();
+        // this.allGame();
+        // this.hotGame();
+        // this.getRecentGame();
     }
 
     /**
@@ -191,10 +158,7 @@ export class PlayHome extends Widget {
             });
         }
     }
-    public attach() {
-        super.attach();
-        this.defaultEnterGame();
-    }
+   
     /**
      * 刷新页面
      */
@@ -252,59 +216,7 @@ export class PlayHome extends Widget {
     public toSearch() {
         popNew('app-view-play-searchGame');
     }
-    // public gameClick1() {
-    //     this.gameClick(0);
-    // }
-    /**
-     * 点击游戏
-     */
-    // public async gameClick(num:number) {
-    //     const isLogin = await getStoreData('flags/isLogin');
-    //     if (!isLogin) {
-    //         popNewMessage('登录中,请稍后再试');
-
-    //         return;
-    //     }
-    //     if (!gameList[num].url) {
-    //         const tips = { zh_Hans:'敬请期待',zh_Hant:'敬請期待',en:'' };
-    //         popNewMessage(tips[getLang()]);
-    //     } else {
-    //         setPopPhoneTips();
-    //         hasEnterGame = true;
-    //         const gameTitle = gameList[num].title.zh_Hans;
-    //         const gameUrl =   gameList[num].url;
-    //         const webviewName = gameList[num].webviewName;
-    //         const screenMode = gameList[num].screenMode;
-    //         WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
-    //         tslint:disable-next-line:max-line-length
-    //         const [addrInfo,baseUrl,inviteCodeInfo] = await Promise.all([callGetCurrentAddrInfo('ETH'),callGetEthApiBaseUrl(),callGetInviteCode()]);
-    //         const inviteCode = `${LuckyMoneyType.Invite}${inviteCodeInfo.cid}`; 
-    //         const pi3Config:any = getPi3Config();
-    //         pi3Config.web3EthDefaultAccount = addrInfo.addr;
-    //         pi3Config.web3ProviderNetWork = baseUrl;
-    //         pi3Config.appid = gameList[num].appid;
-    //         pi3Config.gameName = gameTitle;
-    //         pi3Config.webviewName = webviewName;
-    //         pi3Config.apkDownloadUrl = gameList[num].apkDownloadUrl;
-    //         pi3Config.userInfo = {
-    //             nickName:this.props.userInfo.nickName,
-    //             inviteCode
-    //         };
-
-    //         const pi3ConfigStr = `
-    //             window.pi_config = ${JSON.stringify(pi3Config)};
-    //         `;
-    //         this.configPromise = Promise.resolve(pi3ConfigStr);
-
-    //         const allPromise = Promise.all([this.configPromise,this.thirdApiDependPromise,this.thirdApiPromise]);
-    //         allPromise.then(([configContent,thirdApiDependContent,thirdApiContent]) => {
-    //             setHasEnterGame(true);
-    //             const content =  configContent + thirdApiDependContent + thirdApiContent;
-    //             WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, content);
-    //         });
-    //     }
-    // }
-
+   
     /**
      * 活动点击
      * @param index 序号
@@ -313,36 +225,19 @@ export class PlayHome extends Widget {
         popNew(this.props.activityList[index].url);
     }
 
-    /**
-     * 默认进入游戏
-     */
-    public defaultEnterGame() {
-        return;
-        const firstEnterGame = localStorage.getItem('firstEnterGame');   // 第一次直接进入游戏，以后如果绑定了手机则进入
-        getStore('user/isLogin').then(isLogin => {
-            const phoneNumber = this.props.userInfo.phoneNumber;    
-            console.log(`firstEnterGame = ${firstEnterGame},phoneNumber = ${phoneNumber}`);
-            if (!firstEnterGame || phoneNumber) {
-                if (!isLogin  || !this.props.isActive || hasEnterGame) {
-                    console.log('defaultEnterGame failed');
-        
-                    return;
-                } else {
-                    console.log('defaultEnterGame success');
-                    localStorage.setItem('firstEnterGame','true');
-                    this.gameClick(0);
-                }
-            }
-        });
-    }
-    
     public async goGame(num:number,gameList:any) {
-        const isLogin = await getStoreData('flags/isLogin');
-        if (!isLogin) {
-            popNewMessage('登录中,请稍后再试');
+        const flags = await getStoreData('flags',{});
+        if (!flags.isLogin) {  // 未登录弹出登录页面
+            walletLogin(() => {
+                // 聊天注册
+                chatLogin();
+                // 活动注册
+                earnLogin();
+            });
 
             return;
         }
+        
         if (!gameList[num][3]) {
             const tips = { zh_Hans:'敬请期待',zh_Hant:'敬請期待',en:'' };
             popNewMessage(tips[getLang()]);

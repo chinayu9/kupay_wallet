@@ -732,8 +732,9 @@ const floatButtonInit = () => {
     <span class="pi-dot1"></span>
     <span class="pi-dot2"></span>
     <span class="pi-dot1"></span>
-    <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-float-redSpot"/>
     `;
+    // <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-float-redSpot"/>
+
     $floatButton.addEventListener('click',popNewPanel());
     document.querySelector('body').appendChild($floatButton);
   
@@ -956,7 +957,6 @@ const throttle = (func) => {
  */
 const dragDom = (element, callback?) => {
     let nowLeft = -1;
-    let disX = 0;
     const screenWidth = document.documentElement.clientWidth;    // 屏幕宽度
     const screenHeigth = document.documentElement.clientHeight;  // 屏幕高度
     const elementWidth = element.clientWidth;
@@ -1013,8 +1013,7 @@ const dragDom = (element, callback?) => {
         // tslint:disable-next-line:one-variable-per-declaration
         const nowX = event.changedTouches[0].clientX, nowY = event.changedTouches[0].clientY;
         // tslint:disable-next-line:one-variable-per-declaration
-        disX = nowX - params.currentX;
-        const disY = nowY - params.currentY;
+        const disX = nowX - params.currentX, disY = nowY - params.currentY;
         if (params.flag) {
             nowLeft = parseInt(<any>params.left,10) + disX;
             let nowTop = parseInt(<any>params.top,10) + disY;
@@ -1609,12 +1608,30 @@ const touristLogin = () => {
 
 // qq登录
 const qqLogin = () => {
-    // 敬请期待
+    popNewLoading('登录中');
+    window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'qqLogin', undefined,(error, res) => {
+        closePopBox();
+        if (error) {
+            popNewMessage('登录失败');
+        } else {
+            popNewMessage('登录成功');
+            closeSigninPage();
+        }
+    });
 };
 
 // 微博登录
 const wbLogin = () => {
-    // 敬请期待
+    popNewLoading('登录中');
+    window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'wbLogin', undefined,(error, res) => {
+        closePopBox();
+        if (error) {
+            popNewMessage('登录失败');
+        } else {
+            popNewMessage('登录成功');
+            closeSigninPage();
+        }
+    });
 };
 
 // 注册或登录成功后关掉注册页面

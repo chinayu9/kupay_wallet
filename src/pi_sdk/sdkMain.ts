@@ -1,9 +1,9 @@
-import { confData } from './sdkConf';
-import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
-
 /**
  * pi sdk 入口文件
  */
+// tslint:disable-next-line:max-line-length
+import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
+
 declare var pi_modules;
 
 let webviewManagerPath;   // pi库webview文件路径
@@ -19,7 +19,9 @@ const piStore:any = pi_sdk.store || {       // store
 };   
 
 // tslint:disable-next-line:variable-name
-let piConfig:any = pi_sdk.config || {};  // 配置信息
+const piConfig:any = pi_sdk.config || {};  // 配置信息
+
+const inApp = navigator.userAgent.indexOf('YINENG_ANDROID') >= 0 || navigator.userAgent.indexOf('YINENG_IOS') >= 0;  // 是否app包
 
 /**
  * button id定义
@@ -40,32 +42,18 @@ enum ButtonId {
  * 提供的button
  */
 const showButtons = [{
-    id:ButtonId.INVITEFRIENDS,
-    img:'wx.png',
-    text:'邀请好友',
-    show:false,
+    id:ButtonId.GAMESSERVICE,
+    img:'square.png',
+    text:'广场',
+    show:true,
     clickedClose:true,
     redSpot:false,
     clickCb:() => {
-        console.log('click 邀请好友');
-        pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
-            nickName:'测试',
-            inviteCode:'123456',
-            apkDownloadUrl:'http://xxxxx',
-            webviewName:piConfig.webviewName
-        }, (error, result) => {
-            console.log('inviteFriends call success');
+        console.log('click 广场');
+        pi_RPC_Method(piConfig.jsApi, 'gotoSquare', piConfig.webviewName,  (error, result) => {
+            console.log('gotoSquare call success');
         });
-    }
-},{
-    id:ButtonId.BULLETIN,
-    img:'bulletin.png',
-    text:'公告',
-    show:true,
-    clickedClose:true,
-    redSpot:true,
-    clickCb:() => {
-        openBulletin();
+        miniWebview('');
     }
 },{
     id:ButtonId.GAMESSERVICE,
@@ -73,72 +61,17 @@ const showButtons = [{
     text:'客服',
     show:true,
     clickedClose:true,
-    redSpot:true,
+    redSpot:false,
     clickCb:() => {
         console.log('click 游戏客服');
-        miniWebview('/wallet/chat/client/boot/index.html');
         pi_RPC_Method(piConfig.jsApi, 'gotoGameService', piConfig.webviewName,  (error, result) => {
             console.log('gotoGameService call success');
         });
-    }
-},{
-    id:ButtonId.OFFICIALGROUPCHAT,
-    img:'official_group_chat.png',
-    text:'官方群聊',
-    show:false,
-    clickedClose:true,
-    redSpot:false,
-    clickCb:() => {
-        console.log('click 官方群聊');
         miniWebview('/wallet/chat/client/boot/index.html');
-        pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
-            console.log('gotoOfficialGroupChat call success');
-        });
-    }
-},{
-    id:ButtonId.DIVIDEND,
-    img:'shareMoney.png',
-    text:'分红',
-    show:true,
-    clickedClose:true,
-    redSpot:false,
-    clickCb:() => {
-        console.log('click 官方群聊');
-        miniWebview('/wallet/chat/client/boot/index.html');
-        pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
-            console.log('gotoOfficialGroupChat call success');
-        });
-    }
-},{
-    id:ButtonId.RECHARGE,
-    img:'recharg.png',
-    text:'去充值',
-    show:false,
-    clickedClose:true,
-    redSpot:false,
-    clickCb:() => {
-        console.log('click 去充值');
-        pi_RPC_Method(piConfig.jsApi, 'gotoRecharge', piConfig.webviewName,  (error, result) => {
-            console.log('inviteFriends call success');
-        });
-    }
-},{
-    id:ButtonId.FREESECRET,
-    startImg:'free_secret_close.png',
-    closeImg:'free_secret_start.png',
-    text:'打开免密',
-    startText:'关闭免密',
-    closeText:'打开免密支付',
-    show:false,
-    clickedClose:false,
-    redSpot:false,
-    clickCb:() => {
-        console.log('click 免密支付');
-        setFreeSecrectPay(!piStore.freeSecret);
     }
 },{
     id:ButtonId.MINWINDOW,
-    img:'home.png',
+    img:'mainPage.png',
     text:'主页',
     show:true,
     clickedClose:true,
@@ -149,9 +82,9 @@ const showButtons = [{
     }
 },{
     id:ButtonId.EXITGAME,
-    img:'exit_game.png',
-    text:'退出游戏',
-    show:false,
+    img:'exitApp.png',
+    text:'退出',
+    show:true,
     clickedClose:true,
     redSpot:false,
     clickCb:() => {
@@ -160,7 +93,93 @@ const showButtons = [{
             console.log('closeWebview call success');
         });
     }
-}];
+}
+// ,{
+//     id:ButtonId.BULLETIN,
+//     img:'gameNotice.png',
+//     text:'公告',
+//     show:true,
+//     clickedClose:true,
+//     redSpot:true,
+//     clickCb:() => {
+//         console.log('click 游戏公告');
+//         openBulletin();
+//     }
+// },{
+//     id:ButtonId.DIVIDEND,
+//     img:'shareMoney.png',
+//     text:'分红',
+//     show:true,
+//     clickedClose:true,
+//     redSpot:false,
+//     clickCb:() => {
+//         console.log('click 分红');
+//         miniWebview('/wallet/chat/client/boot/index.html');
+//         pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
+//             console.log('gotoOfficialGroupChat call success');
+//         });
+//     }
+// },{
+//     id:ButtonId.INVITEFRIENDS,
+//     img:'wx.png',
+//     text:'邀请好友',
+//     show:false,
+//     clickedClose:true,
+//     redSpot:false,
+//     clickCb:() => {
+//         console.log('click 邀请好友');
+//         pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
+//             nickName:'测试',
+//             inviteCode:'123456',
+//             apkDownloadUrl:'http://xxxxx',
+//             webviewName:piConfig.webviewName
+//         }, (error, result) => {
+//             console.log('inviteFriends call success');
+//         });
+//     }
+// },{
+//     id:ButtonId.RECHARGE,
+//     img:'recharg.png',
+//     text:'去充值',
+//     show:false,
+//     clickedClose:true,
+//     redSpot:false,
+//     clickCb:() => {
+//         console.log('click 去充值');
+//         pi_RPC_Method(piConfig.jsApi, 'gotoRecharge', piConfig.webviewName,  (error, result) => {
+//             console.log('inviteFriends call success');
+//         });
+//     }
+// },{
+//     id:ButtonId.FREESECRET,
+//     startImg:'free_secret_close.png',
+//     closeImg:'free_secret_start.png',
+//     text:'打开免密',
+//     startText:'关闭免密',
+//     closeText:'打开免密支付',
+//     show:false,
+//     clickedClose:false,
+//     redSpot:false,
+//     clickCb:() => {
+//         console.log('click 免密支付');
+//         setFreeSecrectPay(!piStore.freeSecret);
+//     }
+// },{
+//     id:ButtonId.OFFICIALGROUPCHAT,
+//     img:'official_group_chat.png',
+//     text:'官方群聊',
+//     show:false,
+//     clickedClose:true,
+//     redSpot:false,
+//     clickCb:() => {
+//         console.log('click 官方群聊');
+//         miniWebview('/wallet/chat/client/boot/index.html');
+//         pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
+//             console.log('gotoOfficialGroupChat call success');
+//         });
+//     }
+// }
+];
 
 // 最小化webview
 const miniWebview = (webUrl:string) => {
@@ -172,15 +191,8 @@ const miniWebview = (webUrl:string) => {
  * @param timeMS: 超时时间
  * @param autoInfo：JSON对象
  * @param callback(err, initData) 接口回调
- * @description autoInfo 结构
- *                  {
- *                      "webViewName" = "testWebView"
- *                  }
- * @description initData 结构
- *                  {
- *                      "code" = 0
- *                      "autoToken" = "HA1284HWADry98"
- *                  }
+ * @description autoInfo 结构{"webViewName" = "testWebView"}
+ * @description initData 结构{"code" = 0,"autoToken" = "HA1284HWADry98"}
  */
 const piService = {
     hasCallBind: false,
@@ -290,15 +302,23 @@ const setWebviewManager = (path:string) => {
 /**
  * 初始化
  */
-const piSdkInit = (cb:any, isPC?:boolean) => {
+const piSdkInit = (param:{webviewName:string;appid:string;isHorizontal:boolean;buttonMod:number}, cb:any, isPC?:boolean) => {
+    if (!isPC) {
+        piService.bind(6 * 1000, { webviewName: param.webviewName, appid: param.appid }, cb);
+    }
+    
+    piConfig.webviewName = param.webviewName;
+    piConfig.appid = param.appid;
+    piConfig.isHorizontal = param.isHorizontal;
+    piConfig.buttonMod = param.buttonMod || 1; // 默认使用三个点的样式
+    window.pi_sdk.config = piConfig;
+    
     createThirdBaseStyle();
     createThirdApiStyleTag();
-    if (!isPC) {
-        piService.bind(10000, { webviewName: piConfig.webviewName, appid:piConfig.appid }, cb);
-    }
-    buttonModInit()();
+    // buttonModInit()();
     // getFreeSecret();
 };
+
 // 按钮模式
 enum ButtonMods { 
     SPOTBUTTON = 1,   // 三个点 可拖动
@@ -309,17 +329,15 @@ enum ButtonMods {
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
 piConfig.jsApi = 'app/remote/JSAPI';
-piConfig.imgUrlPre = 'http://192.168.33.13/wallet/app/res/image/third/';
+piConfig.imgUrlPre = 'http://192.168.31.226/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
-piConfig = {
-    ...confData,
-    ...piConfig
-};
 
-pi_sdk.setWebviewManager = setWebviewManager;
-pi_sdk.piSdkInit = piSdkInit;
-pi_sdk.config = piConfig;
-pi_sdk.store = piStore;
-pi_sdk.piService = piService;
-
-window.pi_sdk = pi_sdk; 
+if (inApp) {
+    pi_sdk.setWebviewManager = setWebviewManager;
+    pi_sdk.piSdkInit = piSdkInit;
+    pi_sdk.config = piConfig;
+    pi_sdk.store = piStore;
+    pi_sdk.piService = piService;
+    
+    window.pi_sdk = pi_sdk; 
+}

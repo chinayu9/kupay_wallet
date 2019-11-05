@@ -5,9 +5,7 @@
 
 import { getStore as chatGetStore } from '../../../chat/client/app/data/store';
 import { chatManualReconnect } from '../../../chat/client/app/net/init';
-import { chatLogin } from '../../../chat/client/app/net/login';
 import { earnManualReconnect } from '../../../earn/client/app/net/init';
-import { earnLogin } from '../../../earn/client/app/net/login';
 import { getStore as earnGetStore } from '../../../earn/client/app/store/memstore';
 import { addActivityBackPressed } from '../../../pi/browser/app_comon_event';
 import { ExitApp } from '../../../pi/browser/exitApp';
@@ -30,19 +28,9 @@ export const run = (cb): void =>  {
         deadline:30 * 1000,
         ip:sourceIp
     });
-    // 活动登录
-    earnLogin();
-    // 聊天登录
-    chatLogin();
-
-    // 数据检查  
-    checkUpdate();  
     getScreenModify();
-    // const id = getStore('user/info/openid');
     popNew('app-view-base-app');
-    // if (!id) {
-    //     popNew('app-view-base-entrance');
-    // } 
+    
     // 锁屏页面;
     // popNewPage();
     if (cb) cb();
@@ -79,9 +67,7 @@ export const run = (cb): void =>  {
 //         });
 //     });
 // };
-const checkUpdate = () => {
-  // todo 
-};
+
 let lastVisibilityState;
 /**
  * 注册app event
@@ -94,14 +80,14 @@ const addAppEvent = () => {
         if (curVisibilityState !== lastVisibilityState) {
             lastVisibilityState = curVisibilityState;
             if (curVisibilityState === 'visible') {  
-                ifNeedUnlockScreen().then(loccked => {
-                    if (loccked && !getHasEnterGame()) {
-                        popNew('app-components1-lockScreenPage-lockScreenPage', {
-                            openApp: true
-                        });
-                    }
-                    setHasEnterGame(false);
-                });
+                // ifNeedUnlockScreen().then(loccked => {
+                //     if (loccked && !getHasEnterGame()) {
+                //         popNew('app-components1-lockScreenPage-lockScreenPage', {
+                //             openApp: true
+                //         });
+                //     }
+                //     setHasEnterGame(false);
+                // });
     
                 setTimeout(() => {
                     // TODO 钱包登录
