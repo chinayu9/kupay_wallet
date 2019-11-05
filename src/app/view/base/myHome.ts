@@ -10,7 +10,7 @@ import { getModulConfig } from '../../public/config';
 import { register, setStore } from '../../store/memstore';
 import { getUserInfo, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
-import { loadAboutAppSource, loadAccountSource, loadDividendSource, loadHaihaiSource, loadMallSource, loadMedalSource, loadMiningSource, loadOpenBoxSource, loadPersonalInfoSource, loadRedEnvelopeSource, loadShareSource, loadTurntableSource } from './sourceLoaded';
+import { loadAboutAppSource, loadAccountSource, loadDividendSource, loadHaihaiSource, loadMallSource, loadMedalSource, loadMiningSource, loadOpenBoxSource, loadRedEnvelopeSource, loadShareSource, loadTurntableSource } from './sourceLoaded';
 
 export const forelet = new Forelet();
 // tslint:disable-next-line:no-reserved-keywords

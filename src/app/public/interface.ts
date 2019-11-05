@@ -34,7 +34,7 @@ export enum TaskSid {
  * 全局store数据
  */
 export interface Store {
-    user: User;          // 账号
+    // user: User;          // 账号
     activity: Activity;  // 活动：红包，挖矿，分成，理财
 
     setting: Setting;     // 设置
@@ -88,15 +88,12 @@ export enum TxType {
  */
 export interface User {
 
-    id: string;            // 该账号的id,实际上是第一个以太坊地址
-
     offline: boolean;       // 连接状态
     isLogin: boolean;      // 钱包登录状态
     allIsLogin:boolean;     // 所有服务登录状态  (钱包  活动  聊天)
 
     token: string;         // 自动登录token
     conUid: string;        // 服务器连接uid
-
 
 }
 

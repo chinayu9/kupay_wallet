@@ -356,11 +356,11 @@ winit.initNext = function () {
 				// //钱包注册
 				// pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(()=>{
 				// 	enterApp();
-
-				// 	//聊天注册
-				// 	pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
-				// 	//聊天注册
-				// 	pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
+				
+					//聊天注册
+					pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
+					//聊天注册
+					pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
 				// });	
 			});
 		}, function (r) {

@@ -1,3 +1,5 @@
+import { chatLogin } from '../../chat/client/app/net/login';
+import { earnLogin } from '../../earn/client/app/net/login';
 import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { setStore } from '../store/memstore';
@@ -26,38 +28,16 @@ export const requestAsync = (msg: any):Promise<any> => {
 };
 
 // 钱包登录
-export const walletLogin = (cb?:Function) => {
+export const walletLogin = () => {
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
-        cb && cb();
+        chatLogin();
+        earnLogin();
         
         if (err === 0) { // 网络未连接
             console.log('网络未连接');
         } else {
             console.log('钱包注册成功',result);
-            const user = await getStoreData('user');
-
-            setStore('user/isLogin',true);
-            setStore('user/id',user.conUid);
         }
     });
-};
-
-// 用户登出回调
-const logoutCallbackList:Function[] = [];
-
-/**
- * 登出钱包
- */
-export const logoutWallet = (success:Function) => {
-    logoutCallbackList.push(success);
-};
-
-/**
- * 钱包登出成功
- */
-export const logoutWalletSuccess =  () => {
-    for (const logout of logoutCallbackList) {
-        logout();
-    }
 };

@@ -1,11 +1,10 @@
 
-import { chatLogin } from '../../../chat/client/app/net/login';
-import { earnLogin } from '../../../earn/client/app/net/login';
 import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { clearUser } from '../../api/walletApi';
+import { walletLogin } from '../../net/login';
 import { uploadFile } from '../../net/pull';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { register } from '../../store/memstore';
@@ -228,31 +227,36 @@ export class AccountHome extends Widget {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
-                // 添加一张背景图
-                const loginBg:any = document.createElement('div');
-                loginBg.className = 'haohaiLoginDiv';
-                document.querySelector('[w-tag="pi-ui-root"]').appendChild(loginBg);
+                // // 添加一张背景图
+                // const loginBg:any = document.createElement('div');
+                // loginBg.className = 'haohaiLoginDiv';
+                // document.querySelector('[w-tag="pi-ui-root"]').appendChild(loginBg);
 
                 // 清除账号数据
                 clearUser().then(() => {
                     // 初始化数据
                     logoutAccount();
-                    // 监听重新登录
-                    registerStoreData('flags/isLogin',(r:boolean) => {
-                        console.log('切换账号————————————————————————————————————');
-                        const loginBg = document.querySelector('.haohaiLoginDiv');
-                        // 活动登录
-                        earnLogin();
-                        // 聊天登录
-                        chatLogin();
-                        if (r && loginBg) {
-                            document.querySelector('[w-tag="pi-ui-root"]').removeChild(loginBg);
-                        }
-                    });
+                    walletLogin();
+                    // // 监听重新登录
+                    // registerStoreData('flags/isLogin',(r:boolean) => {
+                    //     console.log('切换账号————————————————————————————————————');
+                    //     const loginBg = document.querySelector('.haohaiLoginDiv');
+                    //     // 活动登录
+                    //     earnLogin();
+                    //     // 聊天登录
+                    //     chatLogin();
+                    //     if (r && loginBg) {
+                    //         document.querySelector('[w-tag="pi-ui-root"]').removeChild(loginBg);
+                    //     }
+                    // });
+                }).catch(err => {
+                    // TODO
                 });
                 
             });
             loading.callback(loading.widget);
+        }).catch(err => {
+            // TODO
         });
         
     }

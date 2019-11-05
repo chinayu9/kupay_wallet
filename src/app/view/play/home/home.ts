@@ -2,8 +2,6 @@
  * play home 
  */
  // ================================ 导入
-import { chatLogin } from '../../../../chat/client/app/net/login';
-import { earnLogin } from '../../../../earn/client/app/net/login';
 import { WebViewManager } from '../../../../pi/browser/webview';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
@@ -14,7 +12,6 @@ import { getStoreData } from '../../../api/walletApi';
 import { walletLogin } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
-import { getStore, register } from '../../../store/memstore';
 import { popNewMessage } from '../../../utils/pureUtils';
 import { activityList } from './gameConfig';
 
@@ -228,12 +225,7 @@ export class PlayHome extends Widget {
     public async goGame(num:number,gameList:any) {
         const flags = await getStoreData('flags',{});
         if (!flags.isLogin) {  // 未登录弹出登录页面
-            walletLogin(() => {
-                // 聊天注册
-                chatLogin();
-                // 活动注册
-                earnLogin();
-            });
+            walletLogin();
 
             return;
         }
@@ -242,7 +234,6 @@ export class PlayHome extends Widget {
             const tips = { zh_Hans:'敬请期待',zh_Hant:'敬請期待',en:'' };
             popNewMessage(tips[getLang()]);
         } else {
-            hasEnterGame = true;
             const gameTitle = gameList[num][0];
             const gameUrl =   gameList[num][3];
             const webviewName = gameList[num][2].webviewName;
@@ -277,12 +268,4 @@ export class PlayHome extends Widget {
     }
 
 }
-let hasEnterGame = false;
 // ========================================
-
-register('user/isLogin', (isLogin:boolean) => {
-    setTimeout(() => {
-        const w:any = forelet.getWidget(WIDGET_NAME);
-        w && w.defaultEnterGame();   
-    },400);
-});

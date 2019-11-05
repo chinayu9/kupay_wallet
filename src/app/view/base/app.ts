@@ -3,8 +3,6 @@
  */
 // ================================ 导入
 import { register as ChatRegister } from '../../../chat/client/app/data/store';
-import { chatLogin } from '../../../chat/client/app/net/login';
-import { earnLogin } from '../../../earn/client/app/net/login';
 import { register as earnRegister } from '../../../earn/client/app/store/memstore';
 import { popNew } from '../../../pi/ui/root';
 import { setLang } from '../../../pi/util/lang';
@@ -94,12 +92,7 @@ export class App extends Widget {
     public async tabBarChangeListener(event: any, index: number) {
         const flags = await getStoreData('flags',{});
         if (!flags.isLogin) {  // 未登录弹出登录页面
-            walletLogin(() => {
-                // 聊天注册
-                chatLogin();
-                // 活动注册
-                earnLogin();
-            });
+            walletLogin();
 
             return;
         }

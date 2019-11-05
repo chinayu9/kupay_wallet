@@ -73,13 +73,6 @@ export const doScanQrCode = (ok?,cancel?) => {
 };
 
 /**
- * 打开新网页
- */
-export const openNewActivity = (url:string,title:string= '') => {
-    WebViewManager.open(title, `${url}?${Math.random()}`, title, '');
-};
-
-/**
  * 截屏
  */
 export const makeScreenShot = (okCB?,errCB?) => {

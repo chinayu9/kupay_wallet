@@ -584,7 +584,7 @@ export const throttle = (func) => {
 
 // 检查手机弹框提示
 export const checkPopPhoneTips = () => {
-    return Promise.all([getStore('user/info/phoneNumber'),getStore('user/id')]).then(([phoneNumber,uid]) => {
+    return Promise.all([getStoreData('user/info/phoneNumber'),getStoreData('user/conUid')]).then(([phoneNumber,uid]) => {
         if (phoneNumber) {
             delPopPhoneTips();
             

@@ -6,6 +6,7 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
+import { getStoreData } from '../../api/walletApi';
 import { getInviteCode, getOneUserInfo, queryDetailLog } from '../../net/pull';
 import { sharePerUrl, uploadFileUrlPrefix } from '../../public/config';
 import { LuckyMoneyType } from '../../public/interface';
@@ -62,7 +63,7 @@ export class RedEnvDetail extends Widget {
     }
 
     public async initData() {
-        const uid = await getStore('user/conUid');
+        const uid = await getStoreData('user/conUid');
         const value = await queryDetailLog(uid,this.props.rid);
         if (value) {
             this.props.redBagList = value[0];        

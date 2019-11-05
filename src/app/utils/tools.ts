@@ -1,11 +1,8 @@
 import { popNew } from '../../pi/ui/root';
 import { getLang } from '../../pi/util/lang';
-import { cryptoRandomInt } from '../../pi/util/math';
 import { Callback } from '../../pi/util/util';
 import { resize } from '../../pi/widget/resize/resize';
 import { getStoreData, setStoreData } from '../api/walletApi';
-import { logoutWalletSuccess } from '../net/login';
-import { getAccountDetail } from '../net/pull';
 // tslint:disable-next-line:max-line-length
 import { Config, defalutShowCurrencys, ERC20Tokens, MainChainCoin, notSwtichShowCurrencys, preShowCurrencys, resendInterval, uploadFileUrlPrefix } from '../public/config';
 import { CurrencyRecord, MinerFeeLevel, TxHistory, TxStatus, TxType, Wallet } from '../public/interface';
@@ -592,16 +589,15 @@ export const changeWalletSex = (walletSex:number) => {
  * 注销账户并删除数据
  */
 export const logoutAccount = async (del:boolean = false,noLogin:boolean = false) => {
-    setStore('user/token','');
-    const user = {
-        id: '',                      // 该账号的id
-        isLogin: false,              // 登录状态
-        offline:false,                // 在线状态
-        allIsLogin:false,            // 所有服务登录状态  (钱包  活动  聊天)
-        token: '',                   // 自动登录token
-        conRandom: '',               // 连接随机数
-        conUid: ''                 // 服务器连接uid
-    };
+    // const user = {
+    //     id: '',                      // 该账号的id
+    //     isLogin: false,              // 登录状态
+    //     offline:false,                // 在线状态
+    //     allIsLogin:false,            // 所有服务登录状态  (钱包  活动  聊天)
+    //     token: '',                   // 自动登录token
+    //     conRandom: '',               // 连接随机数
+    //     conUid: ''                 // 服务器连接uid
+    // };
     const activity = {
         luckyMoney: {
             sends: null,          // 发送红包记录
@@ -625,7 +621,7 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
             purchaseHistories: null
         }
     };
-    setStore('user',user);
+    // setStore('user',user);
     setStore('activity',activity);
     setStore('flags/saveAccount', false);  
     // setBottomLayerReloginMsg('','','');
@@ -651,4 +647,23 @@ export const getUserAvatar = (avatar:string) => {
     }
 
     return avatar;
+};
+
+// 用户登出回调
+const logoutCallbackList:Function[] = [];
+
+/**
+ * 登出钱包
+ */
+export const logoutWallet = (success:Function) => {
+    logoutCallbackList.push(success);
+};
+
+/**
+ * 钱包登出成功
+ */
+export const logoutWalletSuccess =  () => {
+    for (const logout of logoutCallbackList) {
+        logout();
+    }
 };

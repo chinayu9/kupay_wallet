@@ -7,7 +7,7 @@ import { earnManualReconnect } from '../../../earn/client/app/net/init';
 import { getStore as earnGetStore, register as earnRegister } from '../../../earn/client/app/store/memstore';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
-import { getStore, register } from '../../store/memstore';
+import { registerStoreData } from '../../postMessage/listenerStore';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
 declare var module: any;
@@ -23,7 +23,7 @@ export class OfflineTip extends Widget {
     public create() {
         super.create();
          // 钱包login
-        register('user/isLogin', (isLogin:boolean) => {
+        registerStoreData('flags/isLogin', (isLogin:boolean) => {
             this.updateDate(OfflienType.WALLET,isLogin);
         });
 
@@ -37,10 +37,6 @@ export class OfflineTip extends Widget {
             this.updateDate(OfflienType.CHAT,isLogin);
         });
 
-        if (!this.state) {
-            forelet.paint(getStore('user/id'));
-        }
-        
     }
     public setProps(props:any,oldProps:any) {
         this.props = {
@@ -60,7 +56,6 @@ export class OfflineTip extends Widget {
         if (offlienType === OfflienType.WALLET) {  // 钱包重连
 
         } else if (offlienType === OfflienType.CHAT) {  // 聊天重连
-            const create = getStore('user/isLogin');
                
             if (!chatGetStore('isLogin')) {
                 chatManualReconnect();
