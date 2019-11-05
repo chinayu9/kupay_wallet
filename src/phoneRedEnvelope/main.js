@@ -263,7 +263,7 @@ function downloadClick() {
     if(isWX || isIosQQ || isAndroidQQ){
         document.getElementsByClassName('tipsPage')[0].setAttribute('style','display:block;');
     }else{
-        location.href = "https://app.herominer.net/wallet/appversion/xzxd_1.0.6.apk";
+        location.href = "https://app.herominer.net/ydzm.apk";
     }
 }
 /**
