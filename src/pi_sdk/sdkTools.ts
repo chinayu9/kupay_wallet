@@ -146,8 +146,6 @@ export const createThirdBaseStyle = () => {
     }
     .pi-float-redSpot{
         position: absolute;
-        top:0;
-        left:0;
         width:8px;
         height:8px;
     }
@@ -732,7 +730,7 @@ const floatButtonInit = () => {
     <span class="pi-dot1"></span>
     <span class="pi-dot2"></span>
     <span class="pi-dot1"></span>
-    <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-float-redSpot"/>
+    <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" style="top:0;left:0;" class="pi-float-redSpot"/>
     `;
     $floatButton.addEventListener('click',popNewPanel());
     document.querySelector('body').appendChild($floatButton);
@@ -994,9 +992,26 @@ const dragDom = (element, callback?) => {
     element.ontouchend = () => {
         console.log('onmouseup');
         if (nowLeft !== -1) {
-            nowLeft = nowLeft < screenWidth / 2 ? -elementWidth / 3 :params.leftLimit + (elementWidth / 3);
+            const floatRed = document.querySelector('.pi-float-redSpot');
+            if (nowLeft < screenWidth / 2) {
+                // 左侧
+                nowLeft = -elementWidth / 3;
+                // 小红点存在则在右侧显示
+                if (floatRed) {
+                    const floatWidth = document.querySelector('.pi-float-button').clientWidth;
+                    floatRed.style.left = `${floatWidth - floatRed.clientWidth}px`;
+                }
+            } else {
+                // 右侧
+                nowLeft = params.leftLimit + (elementWidth / 3);
+                // 小红点存在则在左侧显示
+                if (floatRed) {
+                    floatRed.style.left = '0px';
+                }
+            }
             element.style.left =  `${nowLeft}px`;
             nowLeft = -1;
+            
         }
         params.flag = false;    
         if (getCss(element, 'left') !== 'auto') {
