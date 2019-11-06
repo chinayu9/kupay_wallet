@@ -8,8 +8,7 @@ import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
 import { Forelet } from '../../../../pi/widget/forelet';
 import { Widget } from '../../../../pi/widget/widget';
-import { getStoreData } from '../../../api/walletApi';
-import { walletLogin } from '../../../net/login';
+import { checkLogin } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { popNewMessage } from '../../../utils/pureUtils';
@@ -223,9 +222,8 @@ export class PlayHome extends Widget {
     }
 
     public async goGame(num:number,gameList:any) {
-        const flags = await getStoreData('flags',{});
-        if (!flags.isLogin) {  // 未登录弹出登录页面
-            walletLogin();
+        const flags = await checkLogin();
+        if (!flags) {
 
             return;
         }

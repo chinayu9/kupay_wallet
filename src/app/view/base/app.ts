@@ -8,8 +8,7 @@ import { popNew } from '../../../pi/ui/root';
 import { setLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
-import { getStoreData } from '../../api/walletApi';
-import { walletLogin } from '../../net/login';
+import { checkLogin } from '../../net/login';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
 import { getStore, register } from '../../store/memstore';
@@ -90,9 +89,8 @@ export class App extends Widget {
     }
 
     public async tabBarChangeListener(event: any, index: number) {
-        const flags = await getStoreData('flags',{});
-        if (!flags.isLogin) {  // 未登录弹出登录页面
-            walletLogin();
+        const flags = await checkLogin();
+        if (!flags) {
 
             return;
         }
@@ -168,7 +166,12 @@ export class App extends Widget {
     /**
      * 个人主页
      */
-    public myHome() {
+    public async myHome() {
+        const flags = await checkLogin();
+        if (!flags) {
+
+            return;
+        }
         this.props.isActive = 'APP_WALLET';
         this.paint();
     }

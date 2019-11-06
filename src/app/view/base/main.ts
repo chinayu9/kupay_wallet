@@ -16,7 +16,7 @@ import { sourceIp } from '../../public/config';
 import { getScreenModify } from '../../utils/native';
 
 // ============================== 导出
-export const run = (cb): void =>  {
+export const run = (cb?): void =>  {
     const root = document.querySelector('[w-tag="pi-ui-root"]');
     if (root) {
         document.body.removeChild(root);

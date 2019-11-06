@@ -267,7 +267,7 @@ const initSettings = () => {
  * 注册文件数据库监听
  */
 const registerFileStore = () => {
-    registerAccountChange(); // 监听账户变化
+    // registerAccountChange(); // 监听账户变化
     registerThirdChange(); // 监听3方数据变化
     registerSettingChange(); // 监听setting数据变化
 };

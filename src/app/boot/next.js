@@ -352,16 +352,12 @@ winit.initNext = function () {
 			},(res)=>{
 				console.timeEnd('pisdk init complete');
 				console.log('bind vm result: ', res);
-
-				// //钱包注册
-				// pi_modules.commonjs.exports.relativeGet("app/net/login").exports.walletLogin(()=>{
-				// 	enterApp();
+				// 检查当前是否已经有账号
+				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.checkAccount(()=>{
+					var index = pi_modules.commonjs.exports.relativeGet("app/view/base/main").exports;
+					index.run();
+				});	
 				
-					//聊天注册
-					pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.chatLogin();	
-					//聊天注册
-					pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.earnLogin();	
-				// });	
 			});
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);

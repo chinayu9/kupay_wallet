@@ -28,16 +28,42 @@ export const requestAsync = (msg: any):Promise<any> => {
 };
 
 // 钱包登录
-export const walletLogin = () => {
+export const walletLogin = (cb?:Function) => {
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
         chatLogin();
         earnLogin();
-        
+        cb && cb();
+
         if (err === 0) { // 网络未连接
             console.log('网络未连接');
         } else {
             console.log('钱包注册成功',result);
         }
     });
+};
+
+/**
+ * 判断VM中是否已经有账号
+ * 有账号则执行授权，无账号则等到触发事件时执行
+ */
+export const checkAccount = async (cb:Function) => {
+    const conUid = await getStoreData('user/conUid','');
+    if (conUid) {  // 已有账号执行授权
+        walletLogin(cb);
+    }
+};
+
+/**
+ * 判断是否已经登录成功
+ */
+export const checkLogin = async () => {
+    const flags = await getStoreData('flags',{});
+    if (!flags.isLogin) {  // 未登录执行登录授权
+        walletLogin();
+
+        return false;
+    }
+    
+    return true;
 };
