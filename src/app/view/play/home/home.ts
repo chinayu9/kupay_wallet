@@ -34,8 +34,8 @@ const gameList = [
             appid:'102',
             screenMode:'portrait'
         },
-        // 'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-        'http://192.168.31.226/game/app/boot/index.html'
+        'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
+        // 'http://192.168.31.226/game/app/boot/index.html'
     ],
     [
         '一代掌门',
