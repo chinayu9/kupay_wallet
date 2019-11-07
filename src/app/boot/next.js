@@ -234,7 +234,6 @@ winit.initNext = function () {
 			"pi/ui/lang.tpl",
 
 			"app/store/memstore.js",
-			"app/view/base/sourceLoaded.js",			
 			"app/view/base/",
 			"app/view/play/home/",
 			"app/components1/btn/",
@@ -352,11 +351,12 @@ winit.initNext = function () {
 			},(res)=>{
 				console.timeEnd('pisdk init complete');
 				console.log('bind vm result: ', res);
-				// 检查当前是否已经有账号
-				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.checkAccount(()=>{
-					var index = pi_modules.commonjs.exports.relativeGet("app/view/base/main").exports;
-					index.run();
-				});	
+				// 钱包授权
+				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.checkAccount();
+				// 聊天授权
+				pi_modules.commonjs.exports.relativeGet("chat/client/app/net/login").exports.checkAccount();
+				// 活动授权
+				pi_modules.commonjs.exports.relativeGet("earn/client/app/net/login").exports.checkAccount();
 				
 			});
 		}, function (r) {

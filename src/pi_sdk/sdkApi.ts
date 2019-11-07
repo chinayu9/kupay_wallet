@@ -5,23 +5,30 @@ import { closePopBox, createModalBox, createSignInPage, createSignInStyle, popIn
 
 const inApp = navigator.userAgent.indexOf('YINENG_ANDROID') >= 0 || navigator.userAgent.indexOf('YINENG_IOS') >= 0;  // 是否app包
 
-let authorizeParams;  // 授权参数
-let authorizeCallBack;   // 授权回调
+const authorizeParams = [];  // 授权参数
+const authorizeCallBack = [];   // 授权回调
 
 // 执行授权监听回调
 export const runAuthorizeListener = () => {
     console.log(`runAuthorizeListener authorizeParams ${authorizeParams}`);
-    if (authorizeCallBack && authorizeParams) {
-        window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'authorize', authorizeParams,  (error, result) => {
-            console.log('authorize call success', error, JSON.stringify(result));
-            if (error === -1) {   // 没有账号
-                openSignInPage();
-            } else {
-                authorizeCallBack && authorizeCallBack(error, result);
-            } 
-        });
+    if (authorizeCallBack.length && authorizeParams.length) {
         
-    }
+        for (let i = 0;i < authorizeParams.length;i++) {
+            window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'authorize', authorizeParams[i],  (error, result) => {
+                console.log('authorize call success', error, JSON.stringify(result));
+                if (error === -1) {   // 弹出注册页面
+                    openSignInPage();
+                } else if (error === -2) {
+                    alert('授权失败了,TODO:再次申请授权');
+                } else if (error === -3) {
+                    alert('正在登录中，无法授权，成功之后会自动授权');
+                } else {
+                    authorizeCallBack[i] && authorizeCallBack[i](error, result);
+                } 
+            });
+        }
+        
+    } 
 };
 
 // 执行被踢下线方法
@@ -49,9 +56,12 @@ export const closeWalletWebview = () => {
 
 // 授权 获取openID
 const authorize = (params, callBack) => {
-    authorizeParams = params;
-    authorizeCallBack = callBack;
+    if(JSON.stringify(authorizeParams).indexOf(JSON.stringify(params)) === -1){
+        authorizeParams.push(params);
+        authorizeCallBack.push(callBack);
+    }
     runAuthorizeListener();
+
 };
 
 // 第三方支付

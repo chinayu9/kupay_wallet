@@ -1,8 +1,8 @@
-import { chatLogin } from '../../chat/client/app/net/login';
-import { earnLogin } from '../../earn/client/app/net/login';
 import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
-import { setStore } from '../store/memstore';
+import { setStore,getStore } from '../store/memstore';
+import { chatLogin } from '../../chat/client/app/net/login';
+import { earnLogin } from '../../earn/client/app/net/login';
 
 /**
  * 登录
@@ -31,8 +31,7 @@ export const requestAsync = (msg: any):Promise<any> => {
 export const walletLogin = (cb?:Function) => {
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
-        chatLogin();
-        earnLogin();
+        setStore('flags/authorized',true);
         cb && cb();
 
         if (err === 0) { // 网络未连接
@@ -47,7 +46,7 @@ export const walletLogin = (cb?:Function) => {
  * 判断VM中是否已经有账号
  * 有账号则执行授权，无账号则等到触发事件时执行
  */
-export const checkAccount = async (cb:Function) => {
+export const checkAccount = async (cb:Function) => {    
     const conUid = await getStoreData('user/conUid','');
     if (conUid) {  // 已有账号执行授权
         walletLogin(cb);
@@ -55,12 +54,14 @@ export const checkAccount = async (cb:Function) => {
 };
 
 /**
- * 判断是否已经登录成功
+ * 判断是否已经授权成功
  */
-export const checkLogin = async () => {
-    const flags = await getStoreData('flags',{});
-    if (!flags.isLogin) {  // 未登录执行登录授权
+export const checkAuthorize = () => {
+    const flags = getStore('flags',{});
+    if (!flags.authorized) {  // 未授权则执行授权
         walletLogin();
+        chatLogin();
+        earnLogin();
 
         return false;
     }

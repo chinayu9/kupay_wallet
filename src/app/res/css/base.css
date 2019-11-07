@@ -324,7 +324,7 @@ div{
     opacity: 0;
     animation: rippleVary 0.3s forwards;
 }
-.haohaiLoginDiv{
+/* .haohaiLoginDiv{
     position: absolute;
     top: 0;
     left: 0;
@@ -335,4 +335,4 @@ div{
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
+} */

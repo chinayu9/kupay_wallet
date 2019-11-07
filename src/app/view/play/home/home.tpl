@@ -1,5 +1,5 @@
 <div class="new-page" w-class="newpage" ev-next-click="toSearch">
-    <div w-class="topBack">
+    <div w-class="topBack" ev-myHome="myHome">
         <app-components1-topBar-topBar1>{avatar:{{it.userInfo.avatar}},title:"游戏" }</app-components1-topBar-topBar1>
     </div>
     <app-publicComponents-offlineTip-offlineTip>{ offlienType:{{it.offlienType}} }</app-publicComponents-offlineTip-offlineTip>

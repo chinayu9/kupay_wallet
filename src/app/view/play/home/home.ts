@@ -8,7 +8,7 @@ import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
 import { Forelet } from '../../../../pi/widget/forelet';
 import { Widget } from '../../../../pi/widget/widget';
-import { checkLogin } from '../../../net/login';
+import { checkAuthorize } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { popNewMessage } from '../../../utils/pureUtils';
@@ -222,8 +222,7 @@ export class PlayHome extends Widget {
     }
 
     public async goGame(num:number,gameList:any) {
-        const flags = await checkLogin();
-        if (!flags) {
+        if (!checkAuthorize()) {
 
             return;
         }

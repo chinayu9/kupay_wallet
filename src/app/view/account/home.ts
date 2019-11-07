@@ -4,14 +4,14 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { clearUser } from '../../api/walletApi';
-import { walletLogin } from '../../net/login';
 import { uploadFile } from '../../net/pull';
 import { registerStoreData } from '../../postMessage/listenerStore';
-import { register } from '../../store/memstore';
+import { register, setStore } from '../../store/memstore';
 import { piRequire } from '../../utils/commonjsTools';
 import { getUserInfo, popNewMessage, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
 import { changeWalletName, changeWalletNote, changeWalletSex, getUserAvatar, imgResize, logoutAccount, walletNameAvailable } from '../../utils/tools';
+import { gotoPlay } from '../base/app';
 import { loadSettingSource } from '../base/sourceLoaded';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords 
@@ -227,28 +227,15 @@ export class AccountHome extends Widget {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
             popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
-                // // 添加一张背景图
-                // const loginBg:any = document.createElement('div');
-                // loginBg.className = 'haohaiLoginDiv';
-                // document.querySelector('[w-tag="pi-ui-root"]').appendChild(loginBg);
-
+                
                 // 清除账号数据
                 clearUser().then(() => {
                     // 初始化数据
                     logoutAccount();
-                    walletLogin();
-                    // // 监听重新登录
-                    // registerStoreData('flags/isLogin',(r:boolean) => {
-                    //     console.log('切换账号————————————————————————————————————');
-                    //     const loginBg = document.querySelector('.haohaiLoginDiv');
-                    //     // 活动登录
-                    //     earnLogin();
-                    //     // 聊天登录
-                    //     chatLogin();
-                    //     if (r && loginBg) {
-                    //         document.querySelector('[w-tag="pi-ui-root"]').removeChild(loginBg);
-                    //     }
-                    // });
+                    gotoPlay();
+                    setStore('flags/authorized',false);
+                    this.backPrePage();
+                    
                 }).catch(err => {
                     // TODO
                 });

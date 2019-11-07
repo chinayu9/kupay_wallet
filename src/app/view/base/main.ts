@@ -19,7 +19,7 @@ import { getScreenModify } from '../../utils/native';
 export const run = (cb?): void =>  {
     const root = document.querySelector('[w-tag="pi-ui-root"]');
     if (root) {
-        document.body.removeChild(root);
+        return;
     }
     addWidget(document.body, 'pi-ui-root');
     initReport({
