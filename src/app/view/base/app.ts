@@ -89,7 +89,6 @@ export class App extends Widget {
     }
 
     public async tabBarChangeListener(event: any, index: number) {
-        debugger
         if (!checkAuthorize()) {
 
             return;
