@@ -1634,7 +1634,6 @@ const thirdLoginNotice = (error) => {
 
 // qq登录
 const qqLogin = () => {
-    popNewMessage('登录失败');
     popNewLoading('登录中');
     window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'qqLogin', undefined,(error, res) => {
         thirdLoginNotice(error);
