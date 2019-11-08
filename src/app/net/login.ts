@@ -3,6 +3,7 @@ import { earnLogin } from '../../earn/client/app/net/login';
 import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { getStore,setStore } from '../store/memstore';
+import { popNewMessage } from '../utils/pureUtils';
 
 /**
  * 登录
@@ -31,13 +32,13 @@ export const requestAsync = (msg: any):Promise<any> => {
 export const walletLogin = (cb?:Function) => {
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
-        setStore('flags/authorized',true);
         cb && cb();
 
-        if (err === 0) { // 网络未连接
-            console.log('网络未连接');
-        } else {
+        if (!err) {
+            setStore('flags/authorized',true);
             console.log('钱包注册成功',result);
+        } else {
+            setStore('flags/authorized',false);
         }
     });
 };
@@ -47,7 +48,7 @@ export const walletLogin = (cb?:Function) => {
  * 有账号则执行授权，无账号则等到触发事件时执行
  */
 export const checkAccount = async (cb:Function) => {    
-    const conUid = await getStoreData('user/conUid','');
+    const conUid = await getStoreData('user/token','');
     if (conUid) {  // 已有账号执行授权
         walletLogin(cb);
     }

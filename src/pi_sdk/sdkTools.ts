@@ -16,9 +16,9 @@ export const createThirdBaseStyle = () => {
       text-align: center;
       padding: 9px 12.5px;
       transform: translateX(-50%);
-      transition: opacity .3s, transform .4s;
-      opacity: 0;
+      opacity: 1;
       z-index:99999;
+      transition: opacity .3s, transform .4s;
     }
     .message-fade-enter {
       opacity: 1;
@@ -244,16 +244,16 @@ export const closePopBox = () => {
  */
 export const popNewMessage = (msg) => {
     const $message = document.createElement('div');
-    $message.setAttribute('class','pi-message');
+    $message.setAttribute('class','pi-message message-fade-enter');
     $message.textContent = msg;
 
     const $body = document.querySelector('body');
     $body.appendChild($message);
     setTimeout(() => {
-        $message.setAttribute('class','pi-message message-fade-enter');
+        $message.setAttribute('class','pi-message');
     },17);
     setTimeout(() => {
-        $message.setAttribute('class','pi-message');
+        $message.setAttribute('class','pi-message message-fade-enter');
         setTimeout(() => {
             $body.removeChild($message);
         },300);
@@ -930,7 +930,7 @@ const browserAdaptive =  () => {
     const rootY = (clientHeight - rootHeight) / 2;
 
     // tslint:disable-next-line:max-line-length
-    return `z-index:99999;user-select:none;position: fixed;overflow: hidden;left:${rootX}px;top: ${rootY}px;width:${rootWidth}px;height:${rootHeight}px;-webkit-transform:scale(${scaleW},${scaleH});-moz-transform:scale(${scaleW},${scaleH});-ms-transform:scale(${scaleW},${scaleH});transform:scale(${scaleW},${scaleH});`;
+    return `z-index:9999;user-select:none;position: fixed;overflow: hidden;left:${rootX}px;top: ${rootY}px;width:${rootWidth}px;height:${rootHeight}px;-webkit-transform:scale(${scaleW},${scaleH});-moz-transform:scale(${scaleW},${scaleH});-ms-transform:scale(${scaleW},${scaleH});transform:scale(${scaleW},${scaleH});`;
     
 };
 
@@ -1200,7 +1200,7 @@ export const createSignInPage = () => {
     elem.classList.add('signIn_page');
     const title = `
     <div class="title">
-        <img src="${window.pi_sdk.config.imgUrlPre}/signIn_user.png" style="width: 50px;height:50px;margin-right:5px;"/>
+        <img src="${window.pi_sdk.config.imgUrlPre}/left_arrow_white.png" style="width: 50px;height:50px;margin-right:5px;" id="closeSignIn" />
         <span>登录好嗨</span>
     </div>`;
     const content = `
@@ -1504,6 +1504,7 @@ export const createSignInPage = () => {
     document.querySelector('#touristLogin').addEventListener('click',touristLogin);
     document.querySelector('#userProtocol').addEventListener('click',userProtocol);
     document.querySelector('#backLogin').addEventListener('click',backPrePage);
+    document.querySelector('#closeSignIn').addEventListener('click',closeSignIn);
 };
 
 // 手机号输入
@@ -1579,25 +1580,18 @@ const phoneLogin = () => {
         pwd:code
     }, (error, res) => {
         closePopBox();
-        if (error) {
-            popNewMessage('登录失败');
-        } else {
-            popNewMessage('登录成功');
-            closeSigninPage();
-        }
-    });
-};
+        console.log('phoneLogin',JSON.stringify(error));
 
-// 微信登录
-const wxLogin = () => {
-    popNewLoading('登录中');
-    window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'wechatLogin', undefined,(error, res) => {
-        closePopBox();
-        if (error) {
-            popNewMessage('登录失败');
-        } else {
+        if (!error) {
             popNewMessage('登录成功');
             closeSigninPage();
+
+        } else if (error === -301) {
+            popNewMessage('验证码错误');
+            
+        } else if (error === -300) {
+            popNewMessage('验证码超时');
+
         }
     });
 };
@@ -1621,17 +1615,37 @@ const touristLogin = () => {
     });
 };
 
+// 第三方登录失败提示
+const thirdLoginNotice = (error) => {
+    console.log('thirdLoginNotice=========',error);
+    closePopBox();
+    if (!error) {
+        popNewMessage('登录成功');
+        closeSigninPage();
+
+    } else if (error === -2) {
+        popNewMessage('取消登录');
+    } else if (error === -7) {  // 只有微信有这个返回值
+        popNewMessage('未安装微信');
+    } else {
+        popNewMessage('登录失败');
+    }
+};
+
 // qq登录
 const qqLogin = () => {
+    popNewMessage('登录失败');
     popNewLoading('登录中');
     window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'qqLogin', undefined,(error, res) => {
-        closePopBox();
-        if (error) {
-            popNewMessage('登录失败');
-        } else {
-            popNewMessage('登录成功');
-            closeSigninPage();
-        }
+        thirdLoginNotice(error);
+    });
+};
+
+// 微信登录
+const wxLogin = () => {
+    popNewLoading('登录中');
+    window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'wechatLogin', undefined,(error, res) => {
+        thirdLoginNotice(error);
     });
 };
 
@@ -1639,14 +1653,12 @@ const qqLogin = () => {
 const wbLogin = () => {
     popNewLoading('登录中');
     window.pi_sdk.pi_RPC_Method(window.pi_sdk.config.jsApi, 'wbLogin', undefined,(error, res) => {
-        closePopBox();
-        if (error) {
-            popNewMessage('登录失败');
-        } else {
-            popNewMessage('登录成功');
-            closeSigninPage();
-        }
+        thirdLoginNotice(error);
     });
+};
+
+const closeSignIn = () => {
+    closeSigninPage();
 };
 
 // 注册或登录成功后关掉注册页面
