@@ -8,13 +8,7 @@ import { getGameItem } from '../../view/play/home/gameConfig';
  */
 export class FloatBox extends Widget {
     public ok:() => void;
-    public setProps(props:any,oldProps:any) {
-        this.props = {
-            ...props,
-            imgUrl:getGameItem(props.webviewName).img[1]
-        };
-        super.setProps(this.props,oldProps);
-    }
+    
     public floatBoxClick() {
         console.log('点击悬浮框');
         const webviewName = this.props.webviewName;
@@ -30,17 +24,18 @@ export class FloatBox extends Widget {
     }
 
     public dragDom(element:any, callback?:Function) {
-        const screenWidth = document.documentElement.clientWidth;    // 屏幕宽度
-        const screenHeigth = document.documentElement.clientHeight;  // 屏幕高度
+        let nowLeft = -1;
+        const screenWidth = document.querySelector('[w-tag="pi-ui-root"]').clientWidth;    // 屏幕宽度
+        const screenHeigth = document.querySelector('[w-tag="pi-ui-root"]').clientHeight;  // 屏幕高度
         const elementWidth = element.clientWidth;
-        const elementHeight = element.clientHeight;
+        const elementHeight = element.clientHeight;    
         const params = {
             left: 0,
             top: 0,
             currentX: 0,
             currentY: 0,
-            leftLimit:screenWidth - elementWidth,
-            topLimit:screenHeigth - elementHeight,
+            leftLimit: screenWidth - elementWidth,  // 不超出右边界
+            topLimit: screenHeigth - elementHeight, // 不超出下边界
             flag: false
         };
         // 获取相关CSS属性
@@ -60,11 +55,16 @@ export class FloatBox extends Widget {
             console.log('onmousedown');
             params.flag = true;
             event = event || window.event;
-            params.currentX = event.changedTouches[0].clientX;
-            params.currentY = event.changedTouches[0].clientY;
+            params.currentX = event.changedTouches[0].clientX * 2; // 自适应，根dom被缩放，简单处理乘以两倍
+            params.currentY = event.changedTouches[0].clientY * 2;
         };
         element.ontouchend = () => {
             console.log('onmouseup');
+            if (nowLeft !== -1) {
+                nowLeft = nowLeft < (screenWidth / 2) ? -(elementWidth / 3) :params.leftLimit + (elementWidth / 3);
+                element.style.left =  `${nowLeft}px`;
+                nowLeft = -1;
+            }
             params.flag = false;    
             if (getCss(element, 'left') !== 'auto') {
                 params.left = getCss(element, 'left');
@@ -72,24 +72,23 @@ export class FloatBox extends Widget {
             if (getCss(element, 'top') !== 'auto') {
                 params.top = getCss(element, 'top');
             }
-            console.log(params);
             callback && callback();
         };
         document.ontouchmove = (event:any) => {
             console.log('onmousemove');
             event = event || window.event;
+            // tslint:disable-next-line:one-variable-per-declaration
+            const nowX = event.changedTouches[0].clientX * 2, nowY = event.changedTouches[0].clientY * 2;
+            // tslint:disable-next-line:one-variable-per-declaration
+            const disX = nowX - params.currentX, disY = nowY - params.currentY;
             if (params.flag) {
-                // tslint:disable-next-line:one-variable-per-declaration
-                const nowX = event.changedTouches[0].clientX, nowY = event.changedTouches[0].clientY;
-                // tslint:disable-next-line:one-variable-per-declaration
-                const disX = nowX - params.currentX, disY = nowY - params.currentY;
-                // tslint:disable-next-line:one-variable-per-declaration
-                let nowLeft = parseInt(<any>params.left,10) + disX,nowTop = parseInt(<any>params.top,10) + disY;
+                nowLeft = parseInt(<any>params.left,10) + disX;
+                let nowTop = parseInt(<any>params.top,10) + disY;
                 nowLeft = nowLeft < 0 ? 0 : (nowLeft > params.leftLimit ? params.leftLimit : nowLeft);
                 nowTop = nowTop < 0 ? 0 : (nowTop > params.topLimit ? params.topLimit : nowTop);
-                element.style.left = `${nowLeft}px`;
-                element.style.top =  `${nowTop}px`;
+                element.style.left =  `${nowLeft}px`;
+                element.style.top =   `${nowTop}px`;
             }
-        };    
+        };  
     }
 }

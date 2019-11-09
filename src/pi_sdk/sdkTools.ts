@@ -1485,7 +1485,7 @@ export const createSignInPage = () => {
             <div style="height: 128px;"></div>
         </div>   
     </div>`;
-    
+
     // tslint:disable-next-line:no-inner-html
     elem.innerHTML = window.pi_sdk.config.isHorizontal ? content :(title + content + userDiv);
     const piRoot = document.createElement('div');
@@ -1592,6 +1592,8 @@ const phoneLogin = () => {
         } else if (error === -300) {
             popNewMessage('验证码超时');
 
+        } else {
+            popNewMessage('网络错误');
         }
     });
 };
@@ -1607,7 +1609,7 @@ const touristLogin = () => {
         closePopBox();
         
         if (error) {
-            popNewMessage('登录失败');
+            popNewMessage('网络错误');
         } else {
             popNewMessage('登录成功');
             closeSigninPage();
@@ -1628,7 +1630,7 @@ const thirdLoginNotice = (error) => {
     } else if (error === -7) {  // 只有微信有这个返回值
         popNewMessage('未安装微信');
     } else {
-        popNewMessage('登录失败');
+        popNewMessage('网络错误');
     }
 };
 
