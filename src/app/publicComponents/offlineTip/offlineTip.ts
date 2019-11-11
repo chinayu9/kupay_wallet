@@ -24,16 +24,19 @@ export class OfflineTip extends Widget {
         super.create();
          // 钱包login
         registerStoreData('flags/isLogin', (isLogin:boolean) => {
+            console.log('wallet isLogin--------',isLogin);
             this.updateDate(OfflienType.WALLET,isLogin);
         });
 
         // 赚钱login
         earnRegister('userInfo/isLogin', (isLogin:boolean) => {
+            console.log('chat isLogin--------',isLogin);
             this.updateDate(OfflienType.EARN,isLogin);
         });
 
         // 聊天login
         chatRegister('isLogin', (isLogin:boolean) => {
+            console.log('earn isLogin--------',isLogin);
             this.updateDate(OfflienType.CHAT,isLogin);
         });
 

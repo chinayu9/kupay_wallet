@@ -29,19 +29,21 @@ export const gameList = [
         accId:'737441',
         groupId:10001,
         appid:'102',
+        htmlUrl:'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html',
         screenMode:screenMode.portrait // 竖屏
     },{
         usePi:true,
         title:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
         desc:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
         img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmen.png'],
-        url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
+        url:'/dst/client/boot/haohai.html',
         apkDownloadUrl:shareDownload,
         webviewName:'chairMan',
         buttonMod:ButtonMods.WXBUTTON,   // 当前按钮模式
         accId:'737441',
         groupId:10001,
         appid:'103',
+        htmlUrl:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
         screenMode:screenMode.landscape// 横屏
 
     }

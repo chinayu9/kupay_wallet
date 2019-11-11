@@ -3,6 +3,7 @@
  */
  // ================================ 导入
 import { WebViewManager } from '../../../../pi/browser/webview';
+import { ajax } from '../../../../pi/lang/mod';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
@@ -13,7 +14,6 @@ import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRec
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { popNewMessage } from '../../../utils/pureUtils';
 import { activityList } from './gameConfig';
-import { ajax } from '../../../../pi/lang/mod';
 
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
@@ -238,7 +238,7 @@ export class PlayHome extends Widget {
                 const gameTitle = gameList[num][0];
                 const webviewName = gameList[num][2].webviewName;
                 const screenMode = gameList[num][2].screenMode;
-                WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
+                WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '', screenMode);
             },(err:any) => {
                 console.log('下载游戏首页错误',err);
                 popNewMessage('网络错误，无法进入游戏，请稍后再试');
