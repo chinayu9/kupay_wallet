@@ -4,6 +4,7 @@ import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { getStore,setStore } from '../store/memstore';
 import { popNewMessage } from '../utils/pureUtils';
+import { getAllGame, getGameInfo, getHotGame, getRecommendationsList } from './pull';
 
 /**
  * 登录
@@ -37,6 +38,8 @@ export const walletLogin = (cb?:Function) => {
         if (!err) {
             setStore('flags/authorized',true);
             console.log('钱包注册成功',result);
+            // 获取全部游戏
+            getAllGames();
         } else {
             setStore('flags/authorized',false);
         }
@@ -68,4 +71,50 @@ export const checkAuthorize = () => {
     }
     
     return true;
+};
+
+// 获取全部游戏
+export const getAllGames = () => {
+    getAllGame().then(r => {
+        if (r) {
+            const appId = JSON.stringify(r);
+            getGameInfo(appId).then(r => {
+                const game = getStore('game');
+                game.allGame = r;
+                setStore('game',game);
+                console.log('全部游戏',r);
+            });
+        }
+    }).catch(() => {
+        popNewMessage('获取全部游戏失败');
+    });
+
+    // 获取热门游戏
+    getHotGame().then(r1 => {
+        if (r1) {
+            getGameInfo(r1).then(res => {
+                const game = getStore('game');
+                game.hotGame = res;
+                setStore('game',game);
+                console.log('获取热门游戏',res);
+            });
+           
+        }
+    }).catch(() => {
+        popNewMessage('获取热门游戏失败');
+    });
+
+    // 获取推荐游戏
+    getRecommendationsList().then(r2 => {
+        if (r2) {
+            getGameInfo(r2).then(res => {
+                const game = getStore('game');
+                game.recommendGame = res;
+                setStore('game',game);
+                console.log('获取推荐游戏',res);
+            });
+        }
+    }).catch(() => {
+        popNewMessage('获取推荐游戏失败');
+    });
 };

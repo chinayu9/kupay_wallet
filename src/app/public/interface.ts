@@ -41,6 +41,7 @@ export interface Store {
 
     flags: object;       // 全局的标识
     inviteUsers:object;  // 邀请好友
+    game:any;// 游戏
 }
 
 /**

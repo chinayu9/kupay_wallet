@@ -43,7 +43,6 @@ export const gameList = [
         groupId:10001,
         appid:'103',
         screenMode:screenMode.landscape// 横屏
-
     }
 ];
 

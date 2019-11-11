@@ -1,8 +1,9 @@
 /**
  * 主动向后端通讯
  */
+import { unicode2Str } from '../../chat/management/utils/logic';
 import { getStoreData, requestAsyncRpc, setStoreData } from '../api/walletApi';
-import { getModulConfig, PAGELIMIT, uploadFileUrl } from '../public/config';
+import { getModulConfig, PAGELIMIT, shareDownload, uploadFileUrl } from '../public/config';
 import { CloudCurrencyType } from '../public/interface';
 import { getStore, setStore } from '../store/memstore';
 // tslint:disable-next-line:max-line-length
@@ -610,44 +611,28 @@ export const getGameInfo = (appId:any) => {
             app_ids:appId
         }
     };
-
+    
     return requestAsyncRpc(msg).then(data => {
-        // debugger;
-        // tslint:disable-next-line:no-unnecessary-local-variable
-        const gameList = [
-            [
-                '仙之侠道',
-                { icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
-                {
-                    usePi:false,
-                    desc:'2019最热唯美奇幻手游',
-                    webviewName:'fairyChivalry',
-                    buttonMod:3,
-                    accId:'268828',
-                    groupId:10001,
-                    appid:'102',
-                    screenMode:'portrait'
-                },
-                'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-                // 'http://192.168.31.226/game/app/boot/index.html'
-            ],
-            [
-                '一代掌门',
-                { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/yidaizhangmen.png' },
-                {
-                    usePi:true,
-                    desc:'2019最热唯美奇幻手游',
-                    webviewName:'chairMan',
-                    buttonMod:2,
-                    accId:'268828',
-                    groupId:10001,
-                    appid:'103',
-                    screenMode:'landscape'
-                },
-                'http://gcydzm.17youx.cn:8777/client/boot/haohai.html'
-            ]
-        ];
-
+        const app_details = data.app_details;
+        const gameList = [];
+        if (!app_details) {
+            return gameList;
+        }
+        app_details.forEach(v => {
+            const name = unicode2Str(v[0]);
+            const img = JSON.parse(v[1]);
+            const desc = JSON.parse(unicode2Str(v[2]));
+            const url = v[3];
+            gameList.push({
+                ...desc,
+                title:name,
+                desc:desc.desc,
+                img:[img.icon,img.bg],
+                url,
+                apkDownloadUrl:shareDownload
+            });
+        });
+        
         return gameList;
     });
 };
