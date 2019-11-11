@@ -89,7 +89,6 @@ export class App extends Widget {
     }
 
     public async tabBarChangeListener(event: any, index: number) {
-        debugger
         if (!checkAuthorize()) {
 
             return;
@@ -142,8 +141,9 @@ export class App extends Widget {
         this.paint();
     }
 
-    public switchToChat() {
+    public switchToChat(gameName) {  
         this.props.isActive = 'APP_CHAT';
+        this.props.gameName = gameName;  // 从游戏跳到广场对应标签
         this.paint();
     }
 
@@ -217,9 +217,9 @@ ChatRegister('flags/unReadFg',(fg) => {
     w && w.changeChatIcon(fg);
 });
 
-export const gotoChat = () => {
+export const gotoChat = (gameName?:string) => {
     const w: any = forelet.getWidget(WIDGET_NAME);
-    w && w.switchToChat();
+    w && w.switchToChat(gameName);
 };
 
 export const gotoEarn = () => {

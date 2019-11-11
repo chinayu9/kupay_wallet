@@ -13,6 +13,7 @@ import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRec
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { popNewMessage } from '../../../utils/pureUtils';
 import { activityList } from './gameConfig';
+import { ajax } from '../../../../pi/lang/mod';
 
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
@@ -226,16 +227,23 @@ export class PlayHome extends Widget {
 
             return;
         }
-        
-        if (!gameList[num][3]) {
+
+        const gameUrl = gameList[num][3];
+        if (!gameUrl) {
             const tips = { zh_Hans:'敬请期待',zh_Hant:'敬請期待',en:'' };
             popNewMessage(tips[getLang()]);
         } else {
-            const gameTitle = gameList[num][0];
-            const gameUrl =   gameList[num][3];
-            const webviewName = gameList[num][2].webviewName;
-            const screenMode = gameList[num][2].screenMode;
-            WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
+            // TODO URL是http的才可以先用ajax请求，游戏本地包需额外处理
+            ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
+                const gameTitle = gameList[num][0];
+                const webviewName = gameList[num][2].webviewName;
+                const screenMode = gameList[num][2].screenMode;
+                WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
+            },(err:any) => {
+                console.log('下载游戏首页错误',err);
+                popNewMessage('网络错误，无法进入游戏，请稍后再试');
+            });
+           
         }
     }
 

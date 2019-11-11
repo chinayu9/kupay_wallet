@@ -167,7 +167,7 @@ winit.initNext = function () {
 				console.log("update progress: ", e);
 				pi_update.updateProgress(e);
 			}, function () {
-				setTimeout(()=>{
+				setTimeout(function(){
 					pi_update.closePop();
 					console.log(`更新重启location.pathname is ${location.pathname}`);
 					// 重启
@@ -282,6 +282,7 @@ winit.initNext = function () {
 			}
 			loadFirstPageLeftSource();
 			loadLeftChatSource();
+			loadLeftWalletSource();
 		});
 	}
 
@@ -316,6 +317,18 @@ winit.initNext = function () {
 		}, function(){});
 	}
 
+	// 加载剩余所有资源
+	var loadLeftWalletSource = function(){
+		util.loadDir([ 
+			"app/components/",
+			"app/view/"
+		], flags, fm, undefined, function (fileMap) {
+			// TODO
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
+	}
+
 	
 	/**
 	 * pc版加载VM
@@ -331,6 +344,7 @@ winit.initNext = function () {
 	// 	}, function(){});
 		
 	// }
+	
 
 	// 加载pisdk初始化及登录
 	var loadPiSdk = function(){
@@ -348,9 +362,9 @@ winit.initNext = function () {
 				appid: '101',            // 应用ID 由好嗨唯一分配
 				webviewName: 'wallet',   // 应用名字 由好嗨唯一分配
 				isHorizontal: false,      // 是否横屏 由游戏决定
-			},(res)=>{
+			},function(res) {
 				console.timeEnd('pisdk init complete');
-				console.log('bind vm result: ', res);
+				console.log('bind vm result: ', JSON.stringify(res));
 				// 钱包授权
 				pi_modules.commonjs.exports.relativeGet("app/net/login").exports.checkAccount();
 				// 聊天授权
@@ -513,7 +527,7 @@ function updateUiInit(){
 		if(option.updateError){
 			var container = document.querySelector(".pi-update-progress-container");
 			var dots = ["."];
-			setInterval(()=>{
+			setInterval(function(){
 				if(dots.length >= 3) dots = [];
 				dots.push(".");
 				container.innerHTML = errorTips + dots.join("");
