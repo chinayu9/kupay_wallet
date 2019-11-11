@@ -235,10 +235,15 @@ export class PlayHome extends Widget {
         } else {
             // TODO URL是http的才可以先用ajax请求，游戏本地包需额外处理
             ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
+                if (document.querySelector('#gameFloatBox')) {  // 删掉游戏的悬浮窗
+                    document.querySelector('#gameFloatBox').remove();
+                }
+
                 const gameTitle = gameList[num][0];
                 const webviewName = gameList[num][2].webviewName;
                 const screenMode = gameList[num][2].screenMode;
                 WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '', screenMode);
+
             },(err:any) => {
                 console.log('下载游戏首页错误',err);
                 popNewMessage('网络错误，无法进入游戏，请稍后再试');
