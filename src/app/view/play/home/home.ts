@@ -12,6 +12,7 @@ import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
 import { checkAuthorize } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
+import { registerStoreData } from '../../../postMessage/listenerStore';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { deepCopy, getStore, setStore } from '../../../store/memstore';
 import { popNewMessage } from '../../../utils/pureUtils';
@@ -269,11 +270,11 @@ export class PlayHome extends Widget {
                 const webviewName = gameList[num].webviewName;
                 const screenMode = gameList[num].screenMode;
                 WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
+                this.getRecentGame();
             },(err:any) => {
                 console.log('下载游戏首页错误',err);
                 popNewMessage('网络错误，无法进入游戏，请稍后再试');
             });
-            this.getRecentGame();
         }
     }
 
@@ -302,5 +303,13 @@ export class PlayHome extends Widget {
         this.goGame(index,this.props.popular);
     }
 
+    // 进入剩余的热门游戏
+    public popularOverGame(index:number) {
+        debugger;
+        this.goGame(index,this.props.popularOver);
+
+    }
+
 }
+
 // ========================================

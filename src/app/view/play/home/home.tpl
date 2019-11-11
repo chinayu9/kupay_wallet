@@ -20,9 +20,9 @@
 
 
                 {{if it.oftenList.length < 4 }}
-                    {{if it.popular.length}}
+                    {{if it.popularOver.length}}
                         {{for i,v of it.popularOver}}
-                            <div w-class="listItem" on-tap="popularGame({{i}})">
+                            <div w-class="listItem" on-tap="popularOverGame({{i}})">
                                 <div w-class="recommend">
                                     <img src="{{v.img[0]}}" alt="" w-class="recommendImg"/>
                                     <img src="../../../res/image/hot.png" alt="" w-class="markImg"/>
