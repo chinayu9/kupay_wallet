@@ -3,7 +3,7 @@
  */
 import { unicode2Str } from '../../chat/management/utils/logic';
 import { getStoreData, requestAsyncRpc, setStoreData } from '../api/walletApi';
-import { getModulConfig, PAGELIMIT, shareDownload, uploadFileUrl } from '../public/config';
+import { getGameImgUrl, getModulConfig, PAGELIMIT, shareDownload, uploadFileUrl } from '../public/config';
 import { CloudCurrencyType } from '../public/interface';
 import { getStore, setStore } from '../store/memstore';
 // tslint:disable-next-line:max-line-length
@@ -627,7 +627,7 @@ export const getGameInfo = (appId:any) => {
                 ...desc,
                 title:name,
                 desc:desc.desc,
-                img:[img.icon,img.bg],
+                img:[`${getGameImgUrl}${img.icon}`,`${getGameImgUrl}${img.bg}`],
                 url,
                 apkDownloadUrl:shareDownload
             });

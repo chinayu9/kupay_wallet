@@ -26,7 +26,7 @@ const gameList = [
         usePi:true,
         title:'一代掌门',
         desc:'一代掌门',
-        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmen.png'],
+        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmenBg.png'],
         url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
         apkDownloadUrl:1,
         webviewName:'chairMan',

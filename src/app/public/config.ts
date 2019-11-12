@@ -98,6 +98,9 @@ export const getModulConfig = (modulName: string) => {
     }
 };
 
+// 游戏界面获取图片
+export const getGameImgUrl = `http://${sourceIp}/`;
+
 // 上传的文件url前缀
 export const uploadFileUrlPrefix = `http://${sourceIp}/service/get_file?sid=`;
 
