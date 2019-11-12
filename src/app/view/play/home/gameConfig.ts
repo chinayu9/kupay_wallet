@@ -1,85 +1,13 @@
-import { screenMode } from '../../../../pi/browser/webview';
-import { shareDownload } from '../../../public/config';
-
- // 按钮模式
-export enum ButtonMods { 
-    FLOATBUTTON = 1,  // 悬浮框样式1  三个点 可拖动
-    WXBUTTON = 2,      // 微信小程序样式
-    FLOATBUTTON2 = 3   // 悬浮框样式2  图标 可拖动
-}
-/**
- * 第三方游戏相关配置
- */
-
- /**
-  * 游戏列表
-  * http://xzxd.cocolandgame.com/dst/boot/yineng/yineng.html
-  * http://192.168.35.202/dst/boot/yineng/yineng.html?debug
-  */
-export const gameList = [
-    {
-        usePi:false,
-        title:{ zh_Hans:'仙之侠道',zh_Hant:'仙之侠道',en:'' },
-        desc:{ zh_Hans:'仙之侠道',zh_Hant:'仙之侠道',en:'' },
-        img:['app/res/image1/fairyChivalry.png','app/res/image1/fairyChivalry.jpg'],
-        url:'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html',
-        apkDownloadUrl:shareDownload,
-        webviewName:'fairyChivalry',
-        buttonMod:ButtonMods.FLOATBUTTON2,   // 当前按钮模式
-        accId:'737441',
-        groupId:10001,
-        appid:'102',
-        htmlUrl:'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html',
-        screenMode:screenMode.portrait // 竖屏
-    },{
-        usePi:true,
-        title:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
-        desc:{ zh_Hans:'一代掌门',zh_Hant:'一代掌门',en:'' },
-        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmen.png'],
-        url:'/dst/client/boot/haohai.html',
-        apkDownloadUrl:shareDownload,
-        webviewName:'chairMan',
-        buttonMod:ButtonMods.WXBUTTON,   // 当前按钮模式
-        accId:'737441',
-        groupId:10001,
-        appid:'103',
-        htmlUrl:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
-        screenMode:screenMode.landscape// 横屏
-
-    }
-];
-
-export const activityList = [
-    // {
-    //     title:{ zh_Hans:'LOL赛事竞猜',zh_Hant:'LOL賽事競猜',en:'' },
-    //     desc:{ zh_Hans:'2019LPL春季赛常规赛',zh_Hant:'2019LPL春季賽常規賽',en:'' },
-    //     img:['app/res/image1/guess.png','app/res/image1/guess1.png'],
-    //     url:'earn-client-app-view-guess-home'
-    // },
-    {
-        title:{ zh_Hans:'大转盘',zh_Hant:'大轉盤',en:'' },
-        desc:{ zh_Hans:'看看今天的运气怎么样',zh_Hant:'看看今天的運氣怎麼樣',en:'' },
-        img:['app/res/image1/turntable.png','app/res/image1/turntable1.png'],
-        url:'earn-client-app-view-turntable-turntable'
-    },
-    {
-        title:{ zh_Hans:'宝箱贩卖机',zh_Hant:'寶箱販賣機',en:'' },
-        desc:{ zh_Hans:'是哪一个幸运的宝箱被选中呢？',zh_Hant:'是哪一個幸運的寶箱被選中呢？',en:'' },
-        img:['app/res/image1/chest.png','app/res/image1/chest1.png'],
-        url:'earn-client-app-view-openBox-openBox'
-    },
-    {
-        title:{ zh_Hans:'兑换商城',zh_Hant:'兌換商城',en:'' },
-        desc:{ zh_Hans:'不定期上新物品',zh_Hant:'不定期上新物品',en:'' },
-        img:['app/res/image1/exchangeMall.png','app/res/image1/exchangeMall1.png'],
-        url:'earn-client-app-view-exchange-exchange'
-    }
-];
+import { screenMode, WebViewManager } from '../../../../pi/browser/webview';
+import { ajax } from '../../../../pi/lang/mod';
+import { getStore } from '../../../store/memstore';
+import { popNewMessage } from '../../../utils/pureUtils';
 
 /**
  * 获取指定webviewName的所有值
  */
 export const getGameItem = (webviewName:string) => {
+    const gameList = getStore('game').allGame;
     const index = gameList.findIndex((item) => {
         return item.webviewName === webviewName;
     });
@@ -91,4 +19,22 @@ export const getGameItem = (webviewName:string) => {
         ...gameList[index],
         ...gameItem
     };
+};
+
+/**
+ * 
+ * @param gameUrl 游戏路径
+ * @param title 游戏名
+ * @param webviewName webviewName
+ * @param screenMode 横竖屏幕
+ * @param cb 回调函数
+ */
+export const openGame = (gameUrl:string,title:string,webviewName:string,screenMode:screenMode,cb?:Function) => {
+    ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
+        WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, title, '',screenMode);
+        cb && cb();
+    },(err:any) => {
+        console.log('下载游戏首页错误',err);
+        popNewMessage('网络错误，无法进入游戏，请稍后再试');
+    });
 };
