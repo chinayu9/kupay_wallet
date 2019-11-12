@@ -11,16 +11,16 @@ export const inJSVM = navigator.userAgent.indexOf('JSVM') > 0 ? true : false;
 // tar zxvf xxx.tar.gz
 // 资源服务器ip
 // export const sourceIp = 'app.herominer.net' || '127.0.0.1';
-export const sourceIp = location.host || '39.98.200.23';  // 测试服
-// export const sourceIp =  '192.168.33.13';   // 本地服务器
+// export const sourceIp = location.host || '39.98.200.23';  // 测试服
+export const sourceIp =  '192.168.33.13';   // 本地服务器
 
 // 资源服务器port 有些手机浏览器显示端口号无法识别  全部使用默认端口
 // export const sourcePort = pi_update.severPort || '80';
 
 // erlang逻辑服务器ip
 // app.herominer.net
-export const erlangLogicIp = '39.98.200.23'; 
-// export const erlangLogicIp = sourceIp; 
+// export const erlangLogicIp = '39.98.200.23'; 
+export const erlangLogicIp = sourceIp; 
 
 // erlang逻辑服务器port
 export const erlangLogicPort = '2081';
@@ -29,16 +29,16 @@ export const erlangLogicPort = '2081';
 export const erlangLogicPayPort = 8099;
 
 // 活动逻辑服务器ip
-export const activeLogicIp = '39.98.71.177';
-// export const activeLogicIp = sourceIp;
+// export const activeLogicIp = '39.98.71.177';
+export const activeLogicIp = sourceIp;
 
 // 活动逻辑服务器port
 export const activeLogicPort = 2234;
 
 // 聊天逻辑服务器ip 
 // 外网正式 39.104.203.151
-export const chatLogicIp = '39.98.71.177';
-// export const chatLogicIp = sourceIp;
+// export const chatLogicIp = '39.98.71.177';
+export const chatLogicIp = sourceIp;
 // export const chatLogicIp = '192.168.31.50';
 
 // 聊天逻辑服务器port
@@ -97,6 +97,9 @@ export const getModulConfig = (modulName: string) => {
         return false;
     }
 };
+
+// 游戏界面获取图片
+export const getGameImgUrl = `http://${sourceIp}/`;
 
 // 上传的文件url前缀
 export const uploadFileUrlPrefix = `http://${sourceIp}/service/get_file?sid=`;
