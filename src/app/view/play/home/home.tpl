@@ -20,15 +20,15 @@
 
 
                 {{if it.oftenList.length < 4 }}
-                    {{if it.popularOver.length}}
-                        {{for i,v of it.popularOver}}
-                            <div w-class="listItem" on-tap="popularOverGame({{i}})">
-                                <div w-class="recommend">
-                                    <img src="{{v.img[0]}}" alt="" w-class="recommendImg"/>
-                                    <img src="../../../res/image/hot.png" alt="" w-class="markImg"/>
-                                </div>
-                                <div w-class="gameName">{{v.title}}</div>
+                    {{for i,v of it.popular}}
+                        {{if it.oftenList.findIndex(item=>item.appid===v.appid) ==-1 }}
+                        <div w-class="listItem" on-tap="popularOverGame({{i}})">
+                            <div w-class="recommend">
+                                <img src="{{v.img[0]}}" alt="" w-class="recommendImg"/>
+                                <img src="../../../res/image/hot.png" alt="" w-class="markImg"/>
                             </div>
+                            <div w-class="gameName">{{v.title}}</div>
+                        </div>
                         {{end}}
                     {{end}}
                 {{end}}

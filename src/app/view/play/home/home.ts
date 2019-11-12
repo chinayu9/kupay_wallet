@@ -2,8 +2,6 @@
  * play home 
  */
  // ================================ 导入
-import { WebViewManager } from '../../../../pi/browser/webview';
-import { ajax } from '../../../../pi/lang/mod';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
@@ -12,11 +10,10 @@ import { Widget } from '../../../../pi/widget/widget';
 import { getStoreData } from '../../../api/walletApi';
 import { checkAuthorize } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
-import { registerStoreData } from '../../../postMessage/listenerStore';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
 import { deepCopy, getStore, setStore } from '../../../store/memstore';
 import { popNewMessage } from '../../../utils/pureUtils';
-import { activityList } from './gameConfig';
+import { openGame } from './gameConfig';
 
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
@@ -55,14 +52,12 @@ export class PlayHome extends Widget {
         super.setProps(this.props);
         console.log(props);
         this.props.refresh = false;
-        this.props.activityList = activityList;
         this.props.loaded = false;
         const list = getStore('game');
         this.props.allGame = [];
         this.props.popular = [];
         this.props.recommend = [];
         this.props.oftenList = [];
-        this.props.popularOver = [];// 去除了正在玩的推荐列表
          // 全部游戏
         if (list.allGame.length) {
             this.props.allGame = list.allGame;
@@ -89,24 +84,12 @@ export class PlayHome extends Widget {
         // 最近在玩
         if (list.oftenGame.length) {
             this.props.oftenList = list.oftenGame;
-            this.props.oftenList.forEach(v => {
-                this.deelPopularOver(v.appid);
-            });
         } else {
             this.getRecentGame();
         }
 
         // 今日推荐
         this.props.recommendedToday = gameList;
-    }
-
-    public deelPopularOver(appid:string) {
-        this.props.popular.forEach((v,i) => {
-            if (v.appid === appid) {
-                this.props.popularOver.splice(i,1);
-            }
-        });
-
     }
 
     /**
@@ -176,10 +159,6 @@ export class PlayHome extends Widget {
                         const game = getStore('game');
                         game.oftenGame = r;
                         setStore('game',game);
-
-                        r.forEach(v => {
-                            this.deelPopularOver(v.appid);
-                        });
                         this.paint();
                     });
                 }
@@ -265,15 +244,14 @@ export class PlayHome extends Widget {
             popNewMessage(tips[getLang()]);
         } else {
             // TODO URL是http的才可以先用ajax请求，游戏本地包需额外处理
-            ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
-                const gameTitle = gameList[num].title;
-                const webviewName = gameList[num].webviewName;
-                const screenMode = gameList[num].screenMode;
-                WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '',screenMode);
-                this.getRecentGame();
-            },(err:any) => {
-                console.log('下载游戏首页错误',err);
-                popNewMessage('网络错误，无法进入游戏，请稍后再试');
+            openGame(gameUrl,gameList[num].title,gameList[num].webviewName,gameList[num].screenMode,() => {
+                const game = getStore('game');
+                if (game.oftenGame.findIndex(item => item.appid === gameList[num].appid) === -1) {
+                    game.oftenGame.push(gameList[num]);
+                    this.props.oftenList.push(gameList[num]);
+                }
+                setStore('game',game);
+                this.paint();
             });
         }
     }
@@ -305,9 +283,7 @@ export class PlayHome extends Widget {
 
     // 进入剩余的热门游戏
     public popularOverGame(index:number) {
-        debugger;
-        this.goGame(index,this.props.popularOver);
-
+        this.goGame(index,this.props.popular);
     }
 
 }

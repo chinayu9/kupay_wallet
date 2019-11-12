@@ -4,7 +4,7 @@ import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { getStore,setStore } from '../store/memstore';
 import { popNewMessage } from '../utils/pureUtils';
-import { getAllGame, getGameInfo, getHotGame, getRecommendationsList } from './pull';
+import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from './pull';
 
 /**
  * 登录
@@ -74,7 +74,8 @@ export const checkAuthorize = () => {
 };
 
 // 获取全部游戏
-export const getAllGames = () => {
+export const getAllGames = async () => {
+    const accId = await getStoreData('user');
     getAllGame().then(r => {
         if (r) {
             const appId = JSON.stringify(r);
@@ -117,4 +118,18 @@ export const getAllGames = () => {
     }).catch(() => {
         popNewMessage('获取推荐游戏失败');
     });
+
+    // 获取最近在玩
+    if (accId.acc_id) {
+        getUserRecentGame(accId.acc_id,10).then(r => {
+            if (r.length) {
+                const appId = JSON.stringify(r);
+                getGameInfo(appId).then(r => {
+                    const game = getStore('game');
+                    game.oftenGame = r;
+                    setStore('game',game);
+                });
+            }
+        });
+    }
 };
