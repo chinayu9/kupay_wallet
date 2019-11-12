@@ -31,7 +31,10 @@ export const getGameItem = (webviewName:string) => {
  */
 export const openGame = (gameUrl:string,title:string,webviewName:string,screenMode:screenMode,cb?:Function) => {
     ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
-        WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, title, '',screenMode);
+        if (document.querySelector('#gameFloatBox')) {  // 删掉游戏的悬浮窗
+            document.querySelector('#gameFloatBox').remove();
+        }
+        WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, title, '', screenMode);
         cb && cb();
     },(err:any) => {
         console.log('下载游戏首页错误',err);
