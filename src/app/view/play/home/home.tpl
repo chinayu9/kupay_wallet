@@ -60,9 +60,7 @@
                 <div w-class="showGame" style="height:430px;">
                         {{for i,v of it.popular.slice(0,2)}}
                         <div w-class="item1" on-tap="popularGame({{i}})">
-                            <div w-class="gameImg">
-                                <img src="{{v.img[1]}}" w-class="userHead" />
-                            </div>
+                            <div w-class="gameImg" style="background:url({{v.img[1]}})no-repeat;background-size: cover;background-repeat: no-repeat;background-position: center center;border-radius: 12px;"></div>
                             <div w-class="gameInfo">
                                 <div w-class="gameInfoName" style="height:100%;margin: 0 20px;width: 100%;">
                                     <div w-class="gameInfosName">{{v.title}}</div>
@@ -80,7 +78,7 @@
             <div w-class="recommendedTodayTitle">编辑推荐</div>
             {{for i,v of it.recommend}}
             <div w-class="showGame" style="position: relative;height:400px;"  on-tap="recommendGame({{i}})">
-                <div w-class="gameImg" style="background:url({{v.img[1]}})no-repeat;background-size: cover;background-repeat: no-repeat;background-position: center;border-radius: 12px;"></div>
+                <div w-class="gameImg" style="background:url({{v.img[1]}})no-repeat;background-size: cover;background-repeat: no-repeat;background-position: center 28%;border-radius: 12px;"></div>
             </div>
             <div w-class="editList">
                 <img src="{{v.img[0]}}" alt="" w-class="gameInfoImg"/>
