@@ -2,18 +2,18 @@
  * play home 
  */
  // ================================ 导入
-import { WebViewManager } from '../../../../pi/browser/webview';
-import { ajax } from '../../../../pi/lang/mod';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
 import { Forelet } from '../../../../pi/widget/forelet';
 import { Widget } from '../../../../pi/widget/widget';
+import { getStoreData } from '../../../api/walletApi';
 import { checkAuthorize } from '../../../net/login';
 import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from '../../../net/pull';
 import { OfflienType } from '../../../publicComponents/offlineTip/offlineTip';
+import { deepCopy, getStore, setStore } from '../../../store/memstore';
 import { popNewMessage } from '../../../utils/pureUtils';
-import { activityList } from './gameConfig';
+import { openGame } from './gameConfig';
 
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
@@ -22,37 +22,20 @@ export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
 
 const gameList = [
-    [
-        '仙之侠道',
-        { icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png' },
-        {
-            usePi:false,
-            desc:'2019最热唯美奇幻手游',
-            webviewName:'fairyChivalry',
-            buttonMod:3,
-            accId:'268828',
-            groupId:10001,
-            appid:'102',
-            screenMode:'portrait'
-        },
-        'http://ysxzxd.17youx.cn/dst/boot/yineng/yineng.html'
-        // 'http://192.168.31.226/game/app/boot/index.html'
-    ],
-    [
-        '一代掌门',
-        { icon:'../../../res/image/game/yidaizhangmen.png',bg:'../../../res/image/game/yidaizhangmen.png' },
-        {
-            usePi:true,
-            desc:'2019最热唯美奇幻手游',
-            webviewName:'chairMan',
-            buttonMod:2,
-            accId:'268828',
-            groupId:10001,
-            appid:'103',
-            screenMode:'landscape'
-        },
-        'http://gcydzm.17youx.cn:8777/client/boot/haohai.html'
-    ]
+    {
+        usePi:true,
+        title:'一代掌门',
+        desc:'一代掌门',
+        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmen.png'],
+        url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
+        apkDownloadUrl:1,
+        webviewName:'chairMan',
+        buttonMod:1,   // 当前按钮模式
+        accId:'737441',
+        groupId:10001,
+        appid:'103',
+        screenMode:'landscape'// 横屏
+    }
 ];
 
 /**
@@ -69,26 +52,44 @@ export class PlayHome extends Widget {
         super.setProps(this.props);
         console.log(props);
         this.props.refresh = false;
-        this.props.activityList = activityList;
         this.props.loaded = false;
-        // 最近在玩
-        this.props.oftenList = gameList;
-        // 推荐
-        this.props.recommend = gameList;
-        // 今日推荐
-        // tslint:disable-next-line:max-line-length
-        this.props.recommendedToday =  { name:'仙之侠道',icon:'../../../res/image/game/xianzhixiadao.png',bg:'../../../res/image/game/xianzhixiadaoBg.png',desc:'2019最热唯美奇幻手游' };
+        const list = getStore('game');
+        this.props.allGame = [];
+        this.props.popular = [];
+        this.props.recommend = [];
+        this.props.oftenList = [];
+         // 全部游戏
+        if (list.allGame.length) {
+            this.props.allGame = list.allGame;
+        } else {
+            this.allGame();
+        }
+
         // 热门
-        this.props.popular = gameList;
-        // 编辑推荐
-        // tslint:disable-next-line:max-line-length
-        this.props.editRecommend = { name:'一起吃鸡',icon:'../../../res/image/game/bullfighting.png',bg:'../../../res/image/game/eatingChicken.png',desc:'2019LPL春季赛常规赛' };
-        // 全部游戏
-        this.props.allGame = gameList;
-        // this.getRecommendations();
-        // this.allGame();
-        // this.hotGame();
-        // this.getRecentGame();
+        if (list.hotGame.length) {
+            this.props.popular = list.hotGame;
+            this.props.popularOver = deepCopy(list.hotGame);
+
+        } else {
+            this.hotGame();
+        }
+
+        // 推荐
+        if (list.recommendGame.length) {
+            this.props.recommend = list.recommendGame;
+        } else {
+            this.getRecommendations();
+        }
+
+        // 最近在玩
+        if (list.oftenGame.length) {
+            this.props.oftenList = list.oftenGame;
+        } else {
+            this.getRecentGame();
+        }
+
+        // 今日推荐
+        this.props.recommendedToday = gameList;
     }
 
     /**
@@ -96,11 +97,10 @@ export class PlayHome extends Widget {
      */
     public getRecommendations() {
         getRecommendationsList().then(r => {
-            r = ['102'];
-            if (r.length) {
-                const appId = r;
-                getGameInfo(appId).then(r => {
+            if (JSON.parse(r).length) {
+                getGameInfo(r).then(r => {
                     this.props.recommend = r;
+                    setStore('game/recommendGame',r);
                     this.paint();
                 });
             }
@@ -113,8 +113,9 @@ export class PlayHome extends Widget {
     public allGame() {
         getAllGame().then(r => {
             if (r.length) {
-                const appId = r;
+                const appId = JSON.stringify(r);
                 getGameInfo(appId).then(r => {
+                    setStore('game/allGame',r);
                     this.props.allGame = r;
                     this.paint();
                 });
@@ -127,10 +128,10 @@ export class PlayHome extends Widget {
      */
     public hotGame() {
         getHotGame().then(r => {
-            if (r.length) {
-                const appId = r;
-                getGameInfo(appId).then(r => {
+            if (r) {
+                getGameInfo(r).then(r => {
                     this.props.popular = r;
+                    setStore('game/hotGame',r);
                     this.paint();
                 });
             }
@@ -140,15 +141,15 @@ export class PlayHome extends Widget {
     /**
      * 获取最近在玩
      */
-    public getRecentGame() {
-        const acc_id = this.props.userInfo.acc_id;
-        if (acc_id) {
-            getUserRecentGame(acc_id,10).then(r => {
-                r = ['101'];
+    public async getRecentGame() {
+        const accId = await getStoreData('user');
+        if (accId.acc_id) {
+            getUserRecentGame(accId.acc_id,10).then(r => {
                 if (r.length) {
-                    const appId = r;
+                    const appId = JSON.stringify(r);
                     getGameInfo(appId).then(r => {
                         this.props.oftenList = r;
+                        setStore('game/oftenGame',r);
                         this.paint();
                     });
                 }
@@ -228,27 +229,21 @@ export class PlayHome extends Widget {
             return;
         }
 
-        const gameUrl = gameList[num][3];
+        const gameUrl = gameList[num].url;
         if (!gameUrl) {
             const tips = { zh_Hans:'敬请期待',zh_Hant:'敬請期待',en:'' };
             popNewMessage(tips[getLang()]);
         } else {
             // TODO URL是http的才可以先用ajax请求，游戏本地包需额外处理
-            ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
-                if (document.querySelector('#gameFloatBox')) {  // 删掉游戏的悬浮窗
-                    document.querySelector('#gameFloatBox').remove();
+            openGame(gameUrl,gameList[num].title,gameList[num].webviewName,gameList[num].screenMode,() => {
+                const game = getStore('game');
+                if (game.oftenGame.findIndex(item => item.appid === gameList[num].appid) === -1) {
+                    game.oftenGame.push(gameList[num]);
+                    this.props.oftenList.push(gameList[num]);
                 }
-
-                const gameTitle = gameList[num][0];
-                const webviewName = gameList[num][2].webviewName;
-                const screenMode = gameList[num][2].screenMode;
-                WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, gameTitle, '', screenMode);
-
-            },(err:any) => {
-                console.log('下载游戏首页错误',err);
-                popNewMessage('网络错误，无法进入游戏，请稍后再试');
+                setStore('game',game);
+                this.paint();
             });
-           
         }
     }
 
@@ -277,5 +272,11 @@ export class PlayHome extends Widget {
         this.goGame(index,this.props.popular);
     }
 
+    // 进入剩余的热门游戏
+    public popularOverGame(index:number) {
+        this.goGame(index,this.props.popular);
+    }
+
 }
+
 // ========================================
