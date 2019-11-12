@@ -731,7 +731,7 @@ const floatButtonInit = () => {
     <span class="pi-dot2"></span>
     <span class="pi-dot1"></span>
     `;
-    // <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" style="top:0;left:0;" class="pi-float-redSpot"/>
+    // <img src="${window.pi_sdk.config.imgUrlPre}redSpot.png" style="top:0;left:0;" class="pi-float-redSpot"/>
 
     $floatButton.addEventListener('click',popNewPanel());
     document.querySelector('body').appendChild($floatButton);
@@ -829,7 +829,7 @@ const popNewPanel = () => {
                 // tslint:disable-next-line:no-inner-html
                 $bottomItem.innerHTML = `<div class="pi-img-box">
                 <img src="${window.pi_sdk.config.imgUrlPre}${imgUrl}" class="pi-item-img"/>
-                <img src="${window.pi_sdk.config.imgUrlPre}/redSpot.png" class="pi-item-redSpot"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}redSpot.png" class="pi-item-redSpot"/>
                 </div>
                   <div class="pi-text">${text}</div>`;
             } else {
@@ -1200,18 +1200,18 @@ export const createSignInPage = () => {
     elem.classList.add('signIn_page');
     const title = `
     <div class="title">
-        <img src="${window.pi_sdk.config.imgUrlPre}/left_arrow_white.png" style="width: 50px;height:50px;margin-right:5px;" id="closeSignIn" />
+        <img src="${window.pi_sdk.config.imgUrlPre}left_arrow_white.png" style="width: 50px;height:50px;margin-right:5px;" id="closeSignIn" />
         <span>登录好嗨</span>
     </div>`;
     const content = `
     <div style="display:flex;align-items:center;flex-direction: column;margin-top:80px;">
         <div class="phoneInput">
-            <img src="${window.pi_sdk.config.imgUrlPre}/signIn_tel.png" class="inputIcon"/>
+            <img src="${window.pi_sdk.config.imgUrlPre}signIn_tel.png" class="inputIcon"/>
             <input type="number" class="pi_input_inner" id="phoneInput" autofocus="autofocus"/>
         </div>
         <div class="codeBox">
             <div class="codeInput">
-                <img src="${window.pi_sdk.config.imgUrlPre}/signIn_pwd.png" class="inputIcon"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}signIn_pwd.png" class="inputIcon"/>
                 <input type="number" class="pi_input_inner" id="codeInput"/>
             </div>
             <div class="codeBtn" id="countdown">获取验证码</div>
@@ -1230,19 +1230,19 @@ export const createSignInPage = () => {
 
         <div class="row" style="justify-content: space-around;width: 610px;">
             <div class="column" id="qqLogin">
-                <img src="${window.pi_sdk.config.imgUrlPre}/signIn_qq.png" class="signInImg"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}signIn_qq.png" class="signInImg"/>
                 <span>QQ登录</span>
             </div>
             <div class="column" id="wxLogin">
-                <img src="${window.pi_sdk.config.imgUrlPre}/signIn_wx.png" class="signInImg"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}signIn_wx.png" class="signInImg"/>
                 <span>微信登录</span>
             </div>
             <div class="column" id="wbLogin">
-                <img src="${window.pi_sdk.config.imgUrlPre}/signIn_wb.png" class="signInImg"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}signIn_wb.png" class="signInImg"/>
                 <span>微博登录</span>
             </div>
             <div class="column" id="touristLogin">
-                <img src="${window.pi_sdk.config.imgUrlPre}/signIn_tourist.png" class="signInImg"/>
+                <img src="${window.pi_sdk.config.imgUrlPre}signIn_tourist.png" class="signInImg"/>
                 <span>游客登录</span>
             </div>
         </div>
@@ -1715,7 +1715,7 @@ export const openBulletin = () => {
     const html = `
         <div class="bulletin">
             <div class="bulletinTitle">仙之侠道全平台公测正</div>
-            <img src="${window.pi_sdk.config.imgUrlPre}/close.png" class="closeButton"/>
+            <img src="${window.pi_sdk.config.imgUrlPre}close.png" class="closeButton"/>
             <div class="bulletinContentBox">
                 <div class="bulletinContent">感谢您对仙之侠道的关注与支持，仙之侠道与10月1日上午10:00正式开启全平台公测。感谢您对仙之侠道的关注与支持，仙之侠道与10月1日上午10:00正式开启全平台公测。</div>
                 <div class="publisher">仙之侠道 运营组</div>
