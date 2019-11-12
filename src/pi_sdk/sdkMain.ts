@@ -329,7 +329,7 @@ enum ButtonMods {
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
 piConfig.jsApi = 'app/remote/JSAPI';
-piConfig.imgUrlPre = 'http://192.168.31.226/wallet/app/res/image/third/';
+piConfig.imgUrlPre = 'http://39.98.200.23/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 
 if (inApp) {
