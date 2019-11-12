@@ -224,6 +224,8 @@ winit.initNext = function () {
 			alert("加载基础模块失败, " + result.error + ":" + result.reason);
 		}, modProcess.handler);
 	}
+
+	// 钱包首页资源加载
 	var firstStageLoaded = function(){
 		var sourceList = [
 			"pi/ui/root.js",
@@ -251,6 +253,7 @@ winit.initNext = function () {
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
+			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
 			pi_modules.commonjs.exports.relativeGet("app/view/base/sourceLoaded").exports.init(flags,fm,suffixCfg);
 			// 聊天登录
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/init").exports.registerRpcStruct(fm);
@@ -281,12 +284,11 @@ winit.initNext = function () {
 				document.body.removeChild(document.getElementById('rcmj_loading_log'));
 			}
 			loadFirstPageLeftSource();
-			loadLeftChatSource();
 			loadLeftWalletSource();
 		});
 	}
 
-	// 加载钱包首页剩余资源
+	// 加载钱包首页所需的剩余资源
 	var loadFirstPageLeftSource = function(){
 		util.loadDir([ 
 			"earn/xlsx/item.c.js",
@@ -296,7 +298,7 @@ winit.initNext = function () {
 			"earn/client/app/components/noviceTaskAward/",
 			"earn/client/app/res/css/",
 			"earn/client/app/view/home/",
-			"chat/client/app/res/css/",
+			
 			"chat/client/app/view/home/",
 			"chat/client/app/widget1/imgShow/"
 		], flags, fm, undefined, function (fileMap) {
@@ -307,23 +309,19 @@ winit.initNext = function () {
 		}, function(){});
 	}
 
-	// 加载剩余的聊天资源
-	var loadLeftChatSource = function(){
-		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/","chat/client/app/widget1/"], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
-			
-		}, function (r) {
-			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-		}, function(){});
-	}
 
 	// 加载剩余所有资源
 	var loadLeftWalletSource = function(){
 		util.loadDir([ 
 			"app/components/",
-			"app/view/"
+			"app/view/",
+
+			"chat/client/app/view/",
+			"chat/client/app/widget/",
+			"chat/client/app/widget1/"
 		], flags, fm, undefined, function (fileMap) {
-			// TODO
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
+			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});

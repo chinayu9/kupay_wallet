@@ -11,7 +11,7 @@ import { Widget } from '../../../pi/widget/widget';
 import { checkAuthorize } from '../../net/login';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
-import { getStore, register } from '../../store/memstore';
+import { getStore, register, setStore } from '../../store/memstore';
 import { piLoadDir } from '../../utils/commonjsTools';
 import { getUserInfo, rippleShow } from '../../utils/pureUtils';
 
@@ -109,6 +109,7 @@ export class App extends Widget {
             ];
             await piLoadDir(firstPage);
             loading.callback(loading.widget);
+            setStore('flags/firstPageLoaded',true);
         }
         rippleShow(event);
         const identfy = this.props.tabBarList[index].modulName;
@@ -144,7 +145,7 @@ export class App extends Widget {
     public switchToChat(gameName) {  
         this.props.isActive = 'APP_CHAT';
         this.props.gameName = gameName;  // 从游戏跳到广场对应标签
-        this.paint();
+        this.paint();        
     }
 
     public switchToPlay() {
