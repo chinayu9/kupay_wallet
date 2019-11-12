@@ -26,7 +26,7 @@ const gameList = [
         usePi:true,
         title:'一代掌门',
         desc:'一代掌门',
-        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmen.png'],
+        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmenBg.png'],
         url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
         apkDownloadUrl:1,
         webviewName:'chairMan',
@@ -58,7 +58,7 @@ export class PlayHome extends Widget {
         this.props.popular = [];
         this.props.recommend = [];
         this.props.oftenList = [];
-         // 全部游戏
+        // 全部游戏
         if (list.allGame.length) {
             this.props.allGame = list.allGame;
         } else {
@@ -259,7 +259,7 @@ export class PlayHome extends Widget {
 
     // 进入今日推荐游戏
     public todayGame() {
-        this.goGame(0,this.props.recommend);
+        this.goGame(0,this.props.recommendedToday);
     }
 
     // 进入全部游戏

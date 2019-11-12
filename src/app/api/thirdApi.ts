@@ -22,7 +22,7 @@ addThirdPushListener(ThirdCmd.SQUARE,(webviewName:string) => { gotoSquare(webvie
 const gotoGameService = (webviewName: string) => {
     console.log('wallet gotoGameService called');
     const item:any = getGameItem(webviewName);
-    popNew('chat-client-app-view-chat-chat',{ accId:item.accId,chatType: GENERATOR_TYPE.USER,name:`${item.title.zh_Hans}官方客服`,okCB:() => {
+    popNew('chat-client-app-view-chat-chat',{ accId:item.accId,chatType: GENERATOR_TYPE.USER,name:`${item.title}官方客服`,okCB:() => {
         WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', item.screenMode);
     } });
 };
@@ -33,7 +33,7 @@ const gotoGameService = (webviewName: string) => {
 const gotoOfficialGroupChat = (webviewName: string) => {
     console.log('wallet gotoOfficialGroupChat called');
     const item:any = getGameItem(webviewName);
-    popNew('chat-client-app-view-chat-chat',{ gid:item.groupId, chatType: GENERATOR_TYPE.GROUP,name:`${item.title.zh_Hans}官方群`,okCB:() => {
+    popNew('chat-client-app-view-chat-chat',{ gid:item.groupId, chatType: GENERATOR_TYPE.GROUP,name:`${item.title}官方群`,okCB:() => {
         WebViewManager.open(webviewName, `${item.url}?${Math.random()}`, webviewName,'', item.screenMode);
     } }); 
 };
@@ -45,5 +45,5 @@ const gotoSquare = (webviewName: string) => {
     console.log('wallet gotoSquare called');
     const item:any = getGameItem(webviewName);
     popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[1] });
-    gotoChat(item.title.zh_Hans);
+    gotoChat(item.title);
 };
