@@ -80,9 +80,7 @@ export const getAllGames = async () => {
         if (r) {
             const appId = JSON.stringify(r);
             getGameInfo(appId).then(r => {
-                const game = getStore('game');
-                game.allGame = r;
-                setStore('game',game);
+                setStore('game/allGame',r);
                 console.log('全部游戏',r);
             });
         }
@@ -94,9 +92,7 @@ export const getAllGames = async () => {
     getHotGame().then(r1 => {
         if (r1) {
             getGameInfo(r1).then(res => {
-                const game = getStore('game');
-                game.hotGame = res;
-                setStore('game',game);
+                setStore('game/hotGame',res);
                 console.log('获取热门游戏',res);
             });
            
@@ -109,9 +105,7 @@ export const getAllGames = async () => {
     getRecommendationsList().then(r2 => {
         if (r2) {
             getGameInfo(r2).then(res => {
-                const game = getStore('game');
-                game.recommendGame = res;
-                setStore('game',game);
+                setStore('game/recommendGame',res);
                 console.log('获取推荐游戏',res);
             });
         }
@@ -125,9 +119,7 @@ export const getAllGames = async () => {
             if (r.length) {
                 const appId = JSON.stringify(r);
                 getGameInfo(appId).then(r => {
-                    const game = getStore('game');
-                    game.oftenGame = r;
-                    setStore('game',game);
+                    setStore('game/oftenGame',r);
                 });
             }
         });

@@ -418,14 +418,8 @@ const settingChange = () => {
  * 游戏数据变化
  */
 const registerGameChange = () => {
-    register('game', () => {
-        const game = {
-            allGame:getStore('game/allGame'),
-            hotGame:getStore('game/hotGame'),
-            oftenGame:getStore('game/oftenGame'),
-            recommendGame:getStore('game/recommendGame')
-        };
-        setLocalStorage('game',game);
+    register('game', (r:any) => {
+        setLocalStorage('game',r);
     });
 };
 
@@ -436,10 +430,7 @@ const gameListInit = () => {
     getLocalStorage('game').then(data => {
         if (!data) return;
         console.log('===========================游戏列表初始化', data);
-        setStore('game/allGame', data.allGame);
-        setStore('game/hotGame', data.hotGame);
-        setStore('game/oftenGame', data.oftenGame);
-        setStore('game/recommendGame', data.recommendGame);
+        setStore('game', data);
     });
 };
 // ======================================================== 本地

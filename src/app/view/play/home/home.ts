@@ -100,9 +100,7 @@ export class PlayHome extends Widget {
             if (JSON.parse(r).length) {
                 getGameInfo(r).then(r => {
                     this.props.recommend = r;
-                    const game = getStore('game');
-                    game.recommendGame = r;
-                    setStore('game',game);
+                    setStore('game/recommendGame',r);
                     this.paint();
                 });
             }
@@ -117,9 +115,7 @@ export class PlayHome extends Widget {
             if (r.length) {
                 const appId = JSON.stringify(r);
                 getGameInfo(appId).then(r => {
-                    const game = getStore('game');
-                    game.allGame = r;
-                    setStore('game',game);
+                    setStore('game/allGame',r);
                     this.props.allGame = r;
                     this.paint();
                 });
@@ -135,10 +131,7 @@ export class PlayHome extends Widget {
             if (r) {
                 getGameInfo(r).then(r => {
                     this.props.popular = r;
-                    this.props.popularOver = deepCopy(r);
-                    const game = getStore('game');
-                    game.hotGame = r;
-                    setStore('game',game);
+                    setStore('game/hotGame',r);
                     this.paint();
                 });
             }
@@ -156,9 +149,7 @@ export class PlayHome extends Widget {
                     const appId = JSON.stringify(r);
                     getGameInfo(appId).then(r => {
                         this.props.oftenList = r;
-                        const game = getStore('game');
-                        game.oftenGame = r;
-                        setStore('game',game);
+                        setStore('game/oftenGame',r);
                         this.paint();
                     });
                 }
