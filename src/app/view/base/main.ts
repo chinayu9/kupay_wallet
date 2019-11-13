@@ -38,6 +38,7 @@ export const run = async (cb?): Promise<void> =>  {
     if (webviewName) {
         console.log('webviewName ',webviewName);
         item = getGameItem(webviewName);
+        popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] });
     }
     popNew('app-view-base-app',{ gameName: item.title });
     

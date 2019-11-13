@@ -241,6 +241,7 @@ winit.initNext = function () {
 			"app/components1/btn/",
 			"app/components1/img/",
 			"app/components1/topBar/",
+			"app/components/floatBox/",
 			"app/publicComponents/",
 			"app/postMessage/",
 			"app/api/thirdApi.js",
