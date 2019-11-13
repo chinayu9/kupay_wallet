@@ -26,9 +26,9 @@ export const runAuthorizeFunc = (params, callBack) => {
         if (error === -1) {   // 弹出注册页面
             openSignInPage();
         } else if (error === -2) {
-            alert('授权失败了,TODO:再次申请授权');
+            console.log('授权失败了,TODO:再次申请授权');
         } else if (error === -3) {
-            alert('正在登录中，无法授权，成功之后会自动授权');
+            console.log('正在登录中，无法授权，成功之后会自动授权');
         } else {
             callBack && callBack(error, result);
         } 
