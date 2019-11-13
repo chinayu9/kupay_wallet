@@ -44,6 +44,6 @@ const gotoOfficialGroupChat = (webviewName: string) => {
 const gotoSquare = (webviewName: string) => {
     console.log('wallet gotoSquare called');
     const item:any = getGameItem(webviewName);
-    popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[1] });
+    popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] });
     gotoChat(item.title);
 };

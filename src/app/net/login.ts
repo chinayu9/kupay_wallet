@@ -116,12 +116,15 @@ export const getAllGames = async () => {
     // 获取最近在玩
     if (accId.acc_id) {
         getUserRecentGame(accId.acc_id,10).then(r => {
-            if (r.length) {
+            if (r) {
                 const appId = JSON.stringify(r);
-                getGameInfo(appId).then(r => {
-                    setStore('game/oftenGame',r);
+                getGameInfo(appId).then(res => {
+                    setStore('game/oftenGame',res);
+                    console.log('获取最近在玩',res);
                 });
             }
+        }).catch(() => {
+            popNewMessage('获取最近在玩游戏失败');
         });
     }
 };
