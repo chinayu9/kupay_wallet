@@ -249,7 +249,9 @@ winit.initNext = function () {
 			"earn/client/app/net/init.js",
 			
 			"chat/client/app/net/init.js",
-			"chat/client/app/res/css/"
+			"chat/client/app/res/css/",
+			"chat/client/app/view/home/",
+			"chat/client/app/widget1/imgShow/"
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
@@ -297,10 +299,7 @@ winit.initNext = function () {
 			"earn/xlsx/awardCfg.s.js",
 			"earn/client/app/components/noviceTaskAward/",
 			"earn/client/app/res/css/",
-			"earn/client/app/view/home/",
-			
-			"chat/client/app/view/home/",
-			"chat/client/app/widget1/imgShow/"
+			"earn/client/app/view/home/"			
 		], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/firstPageLoaded',true);
 			

@@ -82,6 +82,18 @@ export class App extends Widget {
         });
         
     }
+
+    public setProps(props:any) {
+        this.props = {
+            ...this.props,
+            ...props
+        };
+        if (props.gameName) {
+            this.props.isActive = 'APP_CHAT';
+        }
+        super.setProps(this.props);
+    }
+
     public findPage(isActive:string) {
         return this.props.tabBarList.filter(item => {
             return item.modulName === isActive;
@@ -102,10 +114,7 @@ export class App extends Widget {
                 'earn/xlsx/awardCfg.s.js',
                 'earn/client/app/components/noviceTaskAward/',
                 'earn/client/app/res/css/',
-                'earn/client/app/view/home/',
-                'chat/client/app/res/css/',
-                'chat/client/app/view/home/',
-                'chat/client/app/widget1/imgShow/'
+                'earn/client/app/view/home/'
             ];
             await piLoadDir(firstPage);
             loading.callback(loading.widget);
@@ -142,7 +151,7 @@ export class App extends Widget {
         this.paint();
     }
 
-    public switchToChat(gameName) {  
+    public switchToSquare(gameName) {  
         this.props.isActive = 'APP_CHAT';
         this.props.gameName = gameName;  // 从游戏跳到广场对应标签
         this.paint();        
@@ -218,9 +227,9 @@ ChatRegister('flags/unReadFg',(fg) => {
     w && w.changeChatIcon(fg);
 });
 
-export const gotoChat = (gameName?:string) => {
+export const gotoSquare = (gameName?:string) => {
     const w: any = forelet.getWidget(WIDGET_NAME);
-    w && w.switchToChat(gameName);
+    w && w.switchToSquare(gameName);
 };
 
 export const gotoEarn = () => {

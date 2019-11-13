@@ -6,7 +6,7 @@ import { WebViewManager } from '../../pi/browser/webview';
 import { popNew } from '../../pi/ui/root';
 import { addThirdPushListener } from '../postMessage/thirdPush';
 import { ThirdCmd } from '../public/constant';
-import { gotoChat } from '../view/base/app';
+import { gotoSquare } from '../view/base/app';
 import { getGameItem } from '../view/play/home/gameConfig';
 
 /**
@@ -14,7 +14,7 @@ import { getGameItem } from '../view/play/home/gameConfig';
  */
 addThirdPushListener(ThirdCmd.GAMESERVICE,(webviewName:string) => { gotoGameService(webviewName); });                       // 注册游戏客服事件
 addThirdPushListener(ThirdCmd.OFFICIALGROUPCHAT,(webviewName:string) => { gotoOfficialGroupChat(webviewName); });           // 注册官方群聊事件
-addThirdPushListener(ThirdCmd.SQUARE,(webviewName:string) => { gotoSquare(webviewName); });           // 注册广场事件
+addThirdPushListener(ThirdCmd.SQUARE,(webviewName:string) => { gotoSquarePage(webviewName); });           // 注册广场事件
 
 /**
  * 游戏客服
@@ -41,9 +41,9 @@ const gotoOfficialGroupChat = (webviewName: string) => {
 /**
  *  广场
  */
-const gotoSquare = (webviewName: string) => {
-    console.log('wallet gotoSquare called');
+const gotoSquarePage = (webviewName: string) => {
+    console.log('wallet gotoSquarePage called');
     const item:any = getGameItem(webviewName);
     popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] });
-    gotoChat(item.title);
+    gotoSquare(item.title);
 };
