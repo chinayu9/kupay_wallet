@@ -153,8 +153,13 @@ export class App extends Widget {
 
     public switchToSquare(gameName) {  
         this.props.isActive = 'APP_CHAT';
-        this.props.gameName = gameName;  // 从游戏跳到广场对应标签
-        this.paint();        
+        this.props.gameName = '';  // 从游戏内跳到广场页
+        this.paint(); 
+        // 确保一定会执行setprops，不会停留在消息页
+        if (gameName) {
+            this.props.gameName = gameName; // 定位到对应标签
+            this.paint();     
+        }
     }
 
     public switchToPlay() {
