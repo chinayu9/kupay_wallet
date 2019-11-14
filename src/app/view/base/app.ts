@@ -1,6 +1,3 @@
-/**
- * 首页
- */
 // ================================ 导入
 import { register as ChatRegister } from '../../../chat/client/app/data/store';
 import { register as earnRegister } from '../../../earn/client/app/store/memstore';
@@ -11,6 +8,7 @@ import { Widget } from '../../../pi/widget/widget';
 import { checkAuthorize } from '../../net/login';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
+import { UserInfo } from '../../public/interface';
 import { getStore, register, setStore } from '../../store/memstore';
 import { piLoadDir } from '../../utils/commonjsTools';
 import { getUserInfo, rippleShow } from '../../utils/pureUtils';
@@ -21,54 +19,75 @@ declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
 
+interface Old {
+    isActive:string;
+}
+interface TaBar {
+    modulName:string;
+    text:object;
+    icon:string;
+    iconActive:string;
+    components:string;
+}
+interface Props {
+    types:number; // 页面切换的模式 支持3种模式，惰性加载0-隐藏显示切换，切换采用加载1-销毁模式，一次性加载2-隐藏显示切换
+    isActive:string; // 当前活跃的页面
+    old:Old;
+    tabBarList:TaBar[];
+    tabBarAnimateClasss:string;
+    userInfo:UserInfo;
+    gameName:string;
+    activeTab:string;
+}
+const TabBarList = [
+    {
+        modulName: 'APP_PLAY',
+        text: { zh_Hans:'游戏',zh_Hant:'游戏',en:'' },
+        icon: 'play.png',
+        iconActive: 'play_active.png',
+        components: 'app-view-play-home-home'
+    },{
+        modulName: 'APP_CHAT',
+        text: { zh_Hans:'广场',zh_Hant:'广场',en:'' },
+        icon: 'chat.png',
+        iconActive: 'chat_active.png',
+        components: 'chat-client-app-view-home-contact'
+    },{
+        modulName: 'APP_EARN',
+        text: { zh_Hans:'任务',zh_Hant:'任务',en:'' },
+        icon: 'earn.png',
+        iconActive: 'earn_active.png',
+        components: 'earn-client-app-view-home-home'
+    },{
+        modulName: 'APP_WALLET',
+        text: { zh_Hans:'我的',zh_Hant:'我的',en:'' },
+        icon: 'wallet.png',
+        iconActive: 'wallet_active.png',
+        components: 'app-view-base-myHome'
+    }
+];
+
+/**
+ * 首页
+ */
 export class App extends Widget {
-    public props:any;
-    public old: any = {};
+    public props:Props;
+    public old: Old = { isActive:'APP_WALLET' };
     public create() {
         super.create();
         this.init();
     }
 
     public init(): void {
-        const isActive = 'APP_WALLET';
-        this.old[isActive] = true;
         this.props = {
-            inTime:Date.now(),
-            type: 1, // 用户可以单击选项，来切换卡片。支持3种模式，惰性加载0-隐藏显示切换，切换采用加载1-销毁模式，一次性加载2-隐藏显示切换。
+            types: 1, // 用户可以单击选项，来切换卡片。支持3种模式，惰性加载0-隐藏显示切换，切换采用加载1-销毁模式，一次性加载2-隐藏显示切换。
             isActive:'APP_PLAY',
             old: this.old,
-            tabBarList: [
-                {
-                    modulName: 'APP_PLAY',
-                    text: { zh_Hans:'游戏',zh_Hant:'游戏',en:'' },
-                    icon: 'play.png',
-                    iconActive: 'play_active.png',
-                    components: 'app-view-play-home-home'
-                },{
-                    modulName: 'APP_CHAT',
-                    text: { zh_Hans:'广场',zh_Hant:'广场',en:'' },
-                    icon: 'chat.png',
-                    iconActive: 'chat_active.png',
-                    components: 'chat-client-app-view-home-contact'
-                },{
-                    modulName: 'APP_EARN',
-                    text: { zh_Hans:'任务',zh_Hant:'任务',en:'' },
-                    icon: 'earn.png',
-                    iconActive: 'earn_active.png',
-                    components: 'earn-client-app-view-home-home'
-                },{
-                    modulName: 'APP_WALLET',
-                    text: { zh_Hans:'我的',zh_Hant:'我的',en:'' },
-                    icon: 'wallet.png',
-                    iconActive: 'wallet_active.png',
-                    components: 'app-view-base-myHome'
-                }
-            ],
+            tabBarList: TabBarList,
             tabBarAnimateClasss:'',
-            userInfo:{
-                avatar:'',
-                nickName:''
-            }
+            userInfo: null,
+            gameName:'',
+            activeTab:''
         };
         
         this.props.tabBarList = this.props.tabBarList.filter(item => {
@@ -123,26 +142,17 @@ export class App extends Widget {
         rippleShow(event);
         const identfy = this.props.tabBarList[index].modulName;
         if (this.props.isActive === identfy) return;
-        // const fromPage = this.findPage(this.props.isActive);
-        // const toPage = this.findPage(identfy);
-        // if (collect) {
-        //     const now = Date.now();
-        //     pageRoutersCollection({ page:fromPage,to:toPage,stay_time:now - this.props.inTime });
-        //     this.props.inTime = now;
-        // }
+        this.old.isActive = this.props.isActive;
         this.props.isActive = identfy;
-        this.old[identfy] = true;
         this.paint();
-        // console.log(JSON.parse(localStorage.getItem('timeArr')));
-        // callRpcTimeingTest();
-        // openNewWebview({ webviewName:'fairyChivalry',url:'http://192.168.31.10:3003/index.html' });
+        
     }
 
     /**
      * 首页资源加载完成后更新切换卡片模式
      */
     public initTabBarStyle() {
-        this.props.type = 2;   // 全部加载
+        this.props.types = 2;   // 全部加载
         this.paint();
     }
     
@@ -153,13 +163,13 @@ export class App extends Widget {
 
     public switchToSquare(gameName) {  
         this.props.isActive = 'APP_CHAT';
-        this.props.gameName = '';  // 从游戏内跳到广场页
-        this.paint(); 
-        // 确保一定会执行setprops，不会停留在消息页
-        if (gameName) {
-            this.props.gameName = gameName; // 定位到对应标签
-            this.paint();     
-        }
+        this.props.gameName = gameName;  // 从游戏内跳到广场页
+        this.props.activeTab = 'square';
+        this.paint();
+    }
+    public setActiveTab(e) {
+        this.props.activeTab = e.activeTab;
+        this.paint();
     }
 
     public switchToPlay() {

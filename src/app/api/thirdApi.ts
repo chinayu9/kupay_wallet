@@ -44,6 +44,9 @@ const gotoOfficialGroupChat = (webviewName: string) => {
 const gotoSquarePage = (webviewName: string) => {
     console.log('wallet gotoSquarePage called');
     const item:any = getGameItem(webviewName);
+    if (document.querySelector('#gameFloatBox')) {  // 删掉游戏的悬浮窗
+        document.querySelector('#gameFloatBox').remove();
+    }
     popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] },null,null,null,'force');
     gotoSquare(item.title);
 };
