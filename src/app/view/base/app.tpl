@@ -11,9 +11,9 @@
 {{elseif it.types === 1}}
     {{let index = it.tabBarList.findIndex(function(v){return v.modulName == it.isActive})}}
     {{if it.activeTab}}
-    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:true,userInfo:{{it.userInfo}},gameName:{{it.gameName}}, activeTab:{{it.activeTab}} }</widget>
+    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}},gameName:{{it.gameName}}, activeTab:{{it.activeTab}} }</widget>
     {{else}}
-    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:true,userInfo:{{it.userInfo}},gameName:{{it.gameName}}}</widget>
+    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}},gameName:{{it.gameName}}}</widget>
     {{end}}
 {{else}}
     {{for i, v of it.tabBarList}}

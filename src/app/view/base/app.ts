@@ -8,7 +8,6 @@ import { Widget } from '../../../pi/widget/widget';
 import { checkAuthorize } from '../../net/login';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
-import { UserInfo } from '../../public/interface';
 import { getStore, register, setStore } from '../../store/memstore';
 import { piLoadDir } from '../../utils/commonjsTools';
 import { getUserInfo, rippleShow } from '../../utils/pureUtils';
@@ -35,7 +34,10 @@ interface Props {
     old:Old;
     tabBarList:TaBar[];
     tabBarAnimateClasss:string;
-    userInfo:UserInfo;
+    userInfo:{
+        nickName:string;
+        avatar:string;
+    };
     gameName:string;
     activeTab:string;
 }
@@ -85,7 +87,10 @@ export class App extends Widget {
             old: this.old,
             tabBarList: TabBarList,
             tabBarAnimateClasss:'',
-            userInfo: null,
+            userInfo: {
+                nickName:'',
+                avatar:''
+            },
             gameName:'',
             activeTab:''
         };

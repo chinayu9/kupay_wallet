@@ -277,6 +277,7 @@ winit.initNext = function () {
 	
 	// 全部所需资源下载完成,进入app,显示界面
 	var enterApp = function(){
+		debugger
 		// 加载根组件
 		if(!window.isvmWalletBindSuccess || !window.isWalletLoadReady){
 			return;
@@ -484,22 +485,24 @@ function updateUiInit(){
 				'<div class="pi-update-box animated bounceInUp">'+
 					'<img src="../res/image/rocket.png" class="pi-update-rocket" />'+
 					'<div class="pi-update-content">'+
-					'<div class="pi-update-title">发现新版本<span id="pi-version">${newVersion}</span></div>'+
+					'<div class="pi-update-title">发现新版本<span id="pi-version">'+
+						newVersion+
+					'</span></div>'+
 					'<div class="pi-update-items">'+
-						$updateItemInnerHtml
+						$updateItemInnerHtml+
 					'</div>'+
 					'</div>'+
 					'<div class="pi-update-bottom">'+
 						'<div class="pi-update-btns">'+
 							'<div class="pi-update-cancel-btn">'+
-								option.confirmCancel
+								option.confirmCancel+
 							'</div>'+
 							'<div class="pi-update-ok-btn">'+
-								option.confirmOk
+								option.confirmOk+
 							'</div>'+
 						'</div>'+
 						'<div class="pi-update-progress-container">'+
-							errorTips
+							errorTips+
 						'</div>'+
 						'<div class="pi-update-complete-btn"></div>'+
 					'</div>'+
@@ -511,19 +514,19 @@ function updateUiInit(){
 					'<img src="../res/image/rocket.png" class="pi-update-rocket" />'+
 					'<div class="pi-update-content">'+
 					'<div class="pi-update-title">发现新版本<span id="pi-version">'+
-						newVersion
+						newVersion+
 					'</span></div>'+
 					'<div class="pi-update-items">'+
-						$updateItemInnerHtml
+						$updateItemInnerHtml+
 					'</div>'+
 					'</div>'+
 					'<div class="pi-update-bottom">'+
 						'<div class="pi-update-btns">'+
 							'<div class="pi-update-cancel-btn">'+
-								option.confirmCancel
+								option.confirmCancel+
 							'</div>'+
 							'<div class="pi-update-ok-btn">'+
-								option.confirmOk
+								option.confirmOk+
 							'</div>'+
 						'</div>'+
 						'<div class="pi-update-progress-container">'+

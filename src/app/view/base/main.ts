@@ -29,11 +29,11 @@ export const run = async (cb?): Promise<void> =>  {
     getScreenModify();    
     // 有webview表示跳到广场页面
     const webviewName = await getWebviewName();  
-    let item:any = {};
+    let item = { title: '',img:[] };
     if (webviewName) {
         console.log('webviewName ',webviewName);
         item = getGameItem(webviewName);
-        if (item && item.img.length > 0) {
+        if (item.img.length > 0) {
             popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl: item.img[0] });
         } else {
             console.log('获取游戏详情失败了');
