@@ -521,11 +521,8 @@ export const walletNameAvailable = (walletName) => {
  * 修改钱包名称
  * @param walletName wallet name
  */
-export const changeWalletName = (walletName:string) => {
-    getStoreData('user/info').then((r:any) => {
-        r.nickName = walletName;
-        setStoreData('user/info',r);
-    });
+export const changeWalletName = async (walletName:string) => {
+    return setStoreData('user/info/nickName',walletName);
 };
 
 /**
@@ -567,37 +564,22 @@ export const nickNameInterception = (name: string): string => {
  * 修改钱包个性签名
  * @param walletNote wallet note
  */
-export const changeWalletNote = (walletNote:string) => {
-    getStoreData('user/info').then((r:any) => {
-        r.note = walletNote;
-        setStoreData('user/info',r);
-    });
+export const changeWalletNote = async (walletNote:string) => {
+    return setStoreData('user/info/note',walletNote);
 };
 
 /**
  * 修改钱包性别
  * @param walletSex wallet sex
  */
-export const changeWalletSex = (walletSex:number) => {
-    getStoreData('user/info').then((r:any) => {
-        r.sex = walletSex;
-        setStoreData('user/info',r);
-    });
+export const changeWalletSex = async (walletSex:number) => {
+    return setStoreData('user/info/sex',walletSex);
 };
 
 /**
  * 注销账户并删除数据
  */
 export const logoutAccount = async (del:boolean = false,noLogin:boolean = false) => {
-    // const user = {
-    //     id: '',                      // 该账号的id
-    //     isLogin: false,              // 登录状态
-    //     offline:false,                // 在线状态
-    //     allIsLogin:false,            // 所有服务登录状态  (钱包  活动  聊天)
-    //     token: '',                   // 自动登录token
-    //     conRandom: '',               // 连接随机数
-    //     conUid: ''                 // 服务器连接uid
-    // };
     const activity = {
         luckyMoney: {
             sends: null,          // 发送红包记录
@@ -630,11 +612,7 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
     setStore('game',game);
     setStore('activity',activity);
     setStore('flags/saveAccount', false);  
-    // setBottomLayerReloginMsg('','','');
     logoutWalletSuccess();
-    // setTimeout(() => {
-    //     openConnect();
-    // },100);
 };
 
 /**
@@ -668,7 +646,7 @@ export const logoutWallet = (success:Function) => {
 /**
  * 钱包登出成功
  */
-export const logoutWalletSuccess =  () => {
+export const logoutWalletSuccess = () => {
     for (const logout of logoutCallbackList) {
         logout();
     }

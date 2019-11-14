@@ -146,7 +146,7 @@ const piService = {
                     window.JSBridge.webViewBindService(JSON.stringify(autoInfo));
                     setTimeout(handler, step);
                 } else {
-                    piService.onBindService(null,autoInfo);
+                    window.pi_sdk.piService.onBindService(null,autoInfo);
                 }
             }
         };

@@ -19,10 +19,6 @@ import { getGameItem } from '../play/home/gameConfig';
 
 // ============================== 导出
 export const run = async (cb?): Promise<void> =>  {
-    const root = document.querySelector('[w-tag="pi-ui-root"]');
-    if (root) {
-        return;
-    }
     addWidget(document.body, 'pi-ui-root');
     initReport({
         reported:true,
@@ -30,15 +26,18 @@ export const run = async (cb?): Promise<void> =>  {
         deadline:30 * 1000,
         ip:sourceIp
     });
-    getScreenModify();
-
+    getScreenModify();    
     // 有webview表示跳到广场页面
     const webviewName = await getWebviewName();  
     let item:any = {};
     if (webviewName) {
         console.log('webviewName ',webviewName);
         item = getGameItem(webviewName);
-        popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] });
+        if (item && item.img.length > 0) {
+            popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl: item.img[0] });
+        } else {
+            console.log('获取游戏详情失败了');
+        }
     }
     popNew('app-view-base-app',{ gameName: item.title });
     
