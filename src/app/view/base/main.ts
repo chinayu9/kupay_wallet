@@ -31,7 +31,6 @@ export const run = async (cb?): Promise<void> =>  {
         ip:sourceIp
     });
     getScreenModify();
-
     // 有webview表示跳到广场页面
     const webviewName = await getWebviewName();  
     let item:any = {};
