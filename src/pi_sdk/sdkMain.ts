@@ -295,15 +295,15 @@ const setWebviewManager = (path:string) => {
             methodName,  // 方法名
             params:[param,callback]        // 参数组成的数组，参数可以有回调函数
         };
-        exs.WebViewManager.rpc('JSVM',rpcData);
+        exs.WebViewManager.rpc('JSVM',rpcData);        
     };
 };
 
 /**
  * 初始化
  */
-const piSdkInit = (param:{webviewName:string;appid:string;isHorizontal:boolean;buttonMod:number}, cb:any, isPC?:boolean) => {
-    if (!isPC) {
+const piSdkInit = (param:{webviewName:string;appid:string;isHorizontal:boolean;buttonMod:number}, cb:any) => {
+    if (inApp) {
         piService.bind(6 * 1000, { webviewName: param.webviewName, appid: param.appid }, cb);
     }
     
@@ -328,16 +328,14 @@ enum ButtonMods {
 
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
-piConfig.jsApi = 'app/remote/JSAPI';
+piConfig.jsApi = 'vm/app/remote/JSAPI';
 piConfig.imgUrlPre = 'http://192.168.31.226/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 
-if (inApp) {
-    pi_sdk.setWebviewManager = setWebviewManager;
-    pi_sdk.piSdkInit = piSdkInit;
-    pi_sdk.config = piConfig;
-    pi_sdk.store = piStore;
-    pi_sdk.piService = piService;
-    
-    window.pi_sdk = pi_sdk; 
-}
+pi_sdk.setWebviewManager = setWebviewManager;
+pi_sdk.piSdkInit = piSdkInit;
+pi_sdk.config = piConfig;
+pi_sdk.store = piStore;
+pi_sdk.piService = piService;
+
+window.pi_sdk = pi_sdk; 

@@ -6,6 +6,7 @@ import { addStoreLoadedListener } from '../postMessage/vmPush';
 
 let count = 0;
 const obj = {};
+const isPC = navigator.userAgent.indexOf('YINENG') > 0 ? false : true;
 /**
  * vm rpc 调用
  * rpc调用有两种模式 callback放在rpc函数调用最后面实现对同步函数的rpc调用  放置rpcData 下params参数最后面实现对异步函数的rpc调用
@@ -17,6 +18,7 @@ export const vmRpcCall = (methodName:string,params: any[]):Promise<any> => {
     
     return new Promise((resolve,reject) => {
         addStoreLoadedListener(() => {
+            console.log('addStoreLoadedListener');
             let count = obj[methodName] || 0;
             obj[methodName] = ++count;
             // 在params后面加入callback函数  实现对异步函数的rpc调用
@@ -25,7 +27,7 @@ export const vmRpcCall = (methodName:string,params: any[]):Promise<any> => {
                 resolve(res);
             });
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'app/remote/vmApi', 
+                moduleName:'vm/app/remote/vmApi', 
                 methodName, 
                 params
             });
@@ -38,6 +40,8 @@ export const vmRpcCall = (methodName:string,params: any[]):Promise<any> => {
  * 获取store数据
  */
 export const getStoreData = (path: string,defaultValue?:any) => {
+    console.log('after getStoreData');
+    
     return vmRpcCall('getStoreData',[path, defaultValue]);
 };
 

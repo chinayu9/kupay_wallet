@@ -259,9 +259,9 @@ winit.initNext = function () {
 			var tab = util.loadCssRes(fileMap);
 			tab.timeout = 90000;
 			tab.release();
-			// if(!pi_update.inApp){
-				// vmLoad(util,fm);
-			// }
+			if(!pi_update.inApp){
+				vmLoad(util,fm);
+			}
 			enterApp();
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);
@@ -333,17 +333,18 @@ winit.initNext = function () {
 	/**
 	 * pc版加载VM
 	 */
-	// function vmLoad(util,fm) {
-	// 	// 开始flag
-	// 	console.log("vm项目开始了。。。。。。。");
-	// 	util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
-	// 		pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
+	function vmLoad(util,fm) {
+		// 开始flag
+		console.log("vm项目开始了。。。。。。。");
+		util.loadDir([ "vm/app/remote/","vm/app/store"], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("vm/app/remote/login").exports.openConnect();
+			console.log('加载成功')
 			
-	// 	}, function (r) {
-	// 		console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-	// 	}, function(){});
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
 		
-	// }
+	}
 	
 
 	// 加载pisdk初始化及登录

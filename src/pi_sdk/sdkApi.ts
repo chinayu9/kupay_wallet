@@ -162,8 +162,11 @@ const piApi = {
     inviteUser
 }; 
 
-if (inApp) {
-    piSdk.api = piApi;
+// if (inApp) {
+//     piSdk.api = piApi;
 
-    window.pi_sdk = piSdk;
-}
+//     window.pi_sdk = piSdk;
+// }
+piSdk.api = piApi;
+
+window.pi_sdk = piSdk;

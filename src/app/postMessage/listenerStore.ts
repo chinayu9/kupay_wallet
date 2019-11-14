@@ -8,9 +8,12 @@ import { addStoreLoadedListener } from './vmPush';
  * 注册store监听 VM准备好后执行
  */
 export const registerStoreData = (keyName: string, cb: Function) => {
+    console.log('registerStoreData!!!');
     addStoreLoadedListener(() => {
+        console.log('addStoreLoadedListener');
         addStoreListener(keyName,cb);
     });
+    console.log('after registerStoreData');
 };
 
 const handlerMap = new Map();
@@ -31,7 +34,7 @@ export const addStoreListener = (key:string,cb:Function) => {
         frameId = requestAnimationFrame(() => {   // 在下一帧之前一次性注册所有key
             const keysStr = registerKeys.join(',');
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'app/remote/vmApi', 
+                moduleName:'vm/app/remote/vmApi', 
                 methodName:'vmRegisterStore', 
                 params:[keysStr] 
             });

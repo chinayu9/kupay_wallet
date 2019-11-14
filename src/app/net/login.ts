@@ -30,6 +30,7 @@ export const requestAsync = (msg: any):Promise<any> => {
 
 // 钱包登录
 export const walletLogin = (cb?:Function) => {
+    console.log('walletLoginIng');
     (<any>window).pi_sdk.api.authorize({ appId:'101' },async (err, result) => {
         console.log('authorize',err,JSON.stringify(result));
         cb && cb();

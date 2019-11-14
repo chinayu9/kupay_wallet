@@ -111,6 +111,7 @@ export class MyHome extends Widget {
      * 更新数据
      */
     public initData() {
+        console.log('initData');
         Promise.all([getUserInfo()]).then(async ([userInfo]) => {
             this.props.user.nickName = userInfo.nickName ? userInfo.nickName :'昵称未设置';
             this.props.user.avatar = userInfo.avatar;
@@ -118,14 +119,16 @@ export class MyHome extends Widget {
             this.props.user.acc_id = userInfo.acc_id ? userInfo.acc_id :'000000';
             this.props.user.sex = userInfo.sex;
             this.props.uid = await getStoreData('user').uid;
-            this.paint();
+            
             this.medalest();
             this.updateLocalWalletAssetList();
             this.setRedFlags();
+            this.paint();
         });
     }
     // 获取最高勋章
     public medalest() {
+
         const medalList = getMedalList(CoinType.KT, 'coinType');
         // this.props.mineMedal = computeRankMedal();
         const ktNum = earnGetStore('balance/KT'); 
@@ -169,10 +172,13 @@ export class MyHome extends Widget {
     }
     // 更新本地资产
     public async updateLocalWalletAssetList() {
+        console.log('before updateLocalWalletAssetList');
         const assetList = await getStoreData('cloud');
+        console.log(assetList);
         this.state.wallet = [
             { num:assetList.SC,name:`${getModulConfig('SC_SHOW')}余额` },
             { num:assetList.KT,name:`我的${getModulConfig('KT_SHOW')}` }];
+        console.log('after updateLocalWalletAssetList');
         this.paint();
     }
 
@@ -197,6 +203,7 @@ export class MyHome extends Widget {
             second: '2-digit',
             hour12: false
         });
+        console.log('funClick');
         const day = date.format(new Date()).split(' ')[0];
         const msg = JSON.parse(localStorage.getItem(`redFlags_${this.props.user.acc_id}`));
         switch (i) {
@@ -327,7 +334,6 @@ export class MyHome extends Widget {
     public test() {
         console.log('用户信息==============================',this.props);
     }
-
 }
 const STATE = {
     wallet:[
