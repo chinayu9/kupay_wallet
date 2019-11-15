@@ -232,10 +232,12 @@ export class AccountHome extends Widget {
                 clearUser().then(() => {
                     // 初始化数据
                     logoutAccount();
-                    gotoPlay();
                     setStore('flags/authorized',false);
-                    this.backPrePage();
-                    
+                    setTimeout(() => {
+                        this.backPrePage();
+                        gotoPlay();
+                    }, 300);
+
                 }).catch(err => {
                     // TODO
                 });
