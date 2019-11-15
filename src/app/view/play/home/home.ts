@@ -2,6 +2,7 @@
  * play home 
  */
  // ================================ 导入
+import { WebViewProvider } from '../../../../pi/browser/webViewProvider';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
@@ -20,23 +21,6 @@ import { openGame } from './gameConfig';
 declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
-
-const gameList = [
-    {
-        usePi:true,
-        title:'一代掌门',
-        desc:'一代掌门',
-        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmenBg.png'],
-        url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
-        apkDownloadUrl:1,
-        webviewName:'chairMan',
-        buttonMod:1,   // 当前按钮模式
-        accId:'737441',
-        groupId:10001,
-        appid:'103',
-        screenMode:'landscape'// 横屏
-    }
-];
 
 /**
  * 玩游戏
@@ -61,6 +45,7 @@ export class PlayHome extends Widget {
         // 全部游戏
         if (list.allGame.length) {
             this.props.allGame = list.allGame;
+            this.props.recommendedToday =  list.recommendedToday;
         } else {
             this.allGame();
         }
@@ -87,9 +72,6 @@ export class PlayHome extends Widget {
         } else {
             this.getRecentGame();
         }
-
-        // 今日推荐
-        this.props.recommendedToday = gameList;
     }
 
     /**
@@ -117,6 +99,13 @@ export class PlayHome extends Widget {
                 getGameInfo(appId).then(r => {
                     setStore('game/allGame',r);
                     this.props.allGame = r;
+                    // 获取今日推荐游戏
+                    WebViewProvider.getWebViewName((name:string) => {
+                        console.log(`获取包名 = ${name}`);
+                        const recommendedToday = [r.find(item => item.webviewName === name)];
+                        this.props.recommendedToday = recommendedToday;
+                        setStore('game/recommendedToday',recommendedToday);
+                    });
                     this.paint();
                 });
             }
@@ -156,7 +145,14 @@ export class PlayHome extends Widget {
             });
         }
     }
-   
+
+    public getRecommendedToday() {
+        WebViewProvider.getWebViewName((name:string) => {
+            console.log(`获取包名 = ${name}`);
+
+        });
+    }
+  
     /**
      * 刷新页面
      */

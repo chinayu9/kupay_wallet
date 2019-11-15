@@ -5,10 +5,10 @@ import { unicode2Str } from '../../chat/management/utils/logic';
 import { getStoreData, requestAsyncRpc, setStoreData } from '../api/walletApi';
 import { getModulConfig, PAGELIMIT, shareDownload, uploadFileUrl } from '../public/config';
 import { CloudCurrencyType } from '../public/interface';
-import { getStore, setStore } from '../store/memstore';
+import { setStore } from '../store/memstore';
 // tslint:disable-next-line:max-line-length
-import { parseCloudAccountDetail, parseCloudBalance, parseConvertLog, parseDividHistory, parseExchangeDetail, parseMiningRank, parseMyInviteRedEnv, parseSendRedEnvLog, splitCloudCurrencyDetail } from '../utils/parse';
-import { base64ToFile, getUserInfo, piFetch, popNewMessage, unicodeArray2Str } from '../utils/pureUtils';
+import { parseConvertLog, parseDividHistory, parseExchangeDetail, parseMiningRank, parseMyInviteRedEnv, parseSendRedEnvLog, splitCloudCurrencyDetail } from '../utils/parse';
+import { base64ToFile, piFetch, popNewMessage, unicodeArray2Str } from '../utils/pureUtils';
 import { showError } from '../utils/toolMessages';
 import { kpt2kt, largeUnit2SmallUnit } from '../utils/unitTools';
 
@@ -63,6 +63,7 @@ export const  sendRedEnvlope = async (rtype: string, ctype: number, totalAmount:
     };
     try {
         const res = await requestAsyncRpc(msg);
+        
         return res.value;
     } catch (err) {
         showError(err && (err.result || err.type));

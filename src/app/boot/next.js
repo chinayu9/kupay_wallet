@@ -277,7 +277,6 @@ winit.initNext = function () {
 	
 	// 全部所需资源下载完成,进入app,显示界面
 	var enterApp = function(){
-		debugger
 		// 加载根组件
 		if(!window.isvmWalletBindSuccess || !window.isWalletLoadReady){
 			return;

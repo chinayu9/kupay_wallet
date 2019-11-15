@@ -29,6 +29,21 @@ export enum TaskSid {
     Consume = 360,               // 消费
     Receipt = 361               // 收款
 }
+interface GameItem {
+    usePi:boolean;
+    title:string;// 游戏名
+    desc:string;// 游戏描述
+    img:string[];// 游戏图片
+    url:string;// 游戏路径
+    apkDownloadUrl:string;
+    webviewName:string;
+    buttonMod:number;   // 当前按钮模式
+    accId:string;
+    groupId:number;
+    appid:string;
+    screenMode:string;// 横屏
+    htmlUrl:string;
+}
 
 /**
  * 全局store数据
@@ -41,7 +56,13 @@ export interface Store {
 
     flags: object;       // 全局的标识
     inviteUsers:object;  // 邀请好友
-    game:any;// 游戏
+    game:{
+        allGame:GameItem[];
+        hotGame:GameItem[];// 热门游戏
+        oftenGame:GameItem[];// 最近在玩的游戏
+        recommendGame:GameItem[];// 推荐游戏
+        recommendedToday:GameItem[];
+    };// 游戏
 }
 
 /**
