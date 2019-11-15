@@ -88,8 +88,8 @@ export const getAllGames = async () => {
                 WebViewProvider.getWebViewName((name:string) => {
                     console.log(`获取包名 = ${name}`);
                     name =  'chairMan';
-                    const recommendedToday = [r.find(item => item.webviewName === name)];
-                    setStore('game/recommendedToday',recommendedToday);
+                    const recommendedToday = r.find(item => item.webviewName === name);
+                    setStore('game/recommendedToday',recommendedToday ? [recommendedToday] :[]);
                 });
             });
         }
