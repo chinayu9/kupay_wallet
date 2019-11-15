@@ -47,7 +47,11 @@
     font-family:STHeitiSC;
     font-weight:500;
 }
-.active{
+.activeBoy{
+    background:#76D8F7;
+    color:rgba(255,255,255,1);
+}
+.activeGirl{
     background:rgba(255,162,162,1);
     color:rgba(255,255,255,1);
 }
