@@ -1,5 +1,6 @@
 import { chatLogin } from '../../chat/client/app/net/login';
 import { earnLogin } from '../../earn/client/app/net/login';
+import { WebViewProvider } from '../../pi/browser/webViewProvider';
 import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { getStore,setStore } from '../store/memstore';
@@ -82,6 +83,14 @@ export const getAllGames = async () => {
             getGameInfo(appId).then(r => {
                 setStore('game/allGame',r);
                 console.log('全部游戏',r);
+
+                // 获取今日推荐游戏
+                WebViewProvider.getWebViewName((name:string) => {
+                    console.log(`获取包名 = ${name}`);
+                    name =  'chairMan';
+                    const recommendedToday = [r.find(item => item.webviewName === name)];
+                    setStore('game/recommendedToday',recommendedToday);
+                });
             });
         }
     }).catch(() => {
@@ -127,4 +136,5 @@ export const getAllGames = async () => {
             popNewMessage('获取最近在玩游戏失败');
         });
     }
+
 };
