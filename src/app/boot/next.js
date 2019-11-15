@@ -307,6 +307,10 @@ winit.initNext = function () {
 			"earn/client/app/res/css/",
 			"earn/client/app/view/home/"			
 		], flags, fm, undefined, function (fileMap) {
+			if(pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.getStore('flags/firstPageLoaded',false)){
+
+				return;
+			}
 			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/firstPageLoaded',true);
 			
 		}, function (r) {
