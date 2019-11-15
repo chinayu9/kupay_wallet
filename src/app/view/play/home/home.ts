@@ -22,22 +22,23 @@ declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
 
-const gameList = [
-    {
-        usePi:true,
-        title:'一代掌门',
-        desc:'一代掌门',
-        img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmenBg.png'],
-        url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
-        apkDownloadUrl:1,
-        webviewName:'chairMan',
-        buttonMod:1,   // 当前按钮模式
-        accId:'737441',
-        groupId:10001,
-        appid:'103',
-        screenMode:'landscape'// 横屏
-    }
-];
+// const gameList = [
+//     {
+//         usePi:true,
+//         title:'一代掌门',
+//         desc:'一代掌门',
+//         img:['app/res/image/game/yidaizhangmen.png','app/res/image/game/yidaizhangmenBg.png'],
+//         url:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
+//         htmlUrl:'http://gcydzm.17youx.cn:8777/client/boot/haohai.html',
+//         apkDownloadUrl:1,
+//         webviewName:'chairMan',
+//         buttonMod:1,   // 当前按钮模式
+//         accId:'737441',
+//         groupId:10001,
+//         appid:'103',
+//         screenMode:'landscape'// 横屏
+//     }
+// ];
 
 /**
  * 玩游戏

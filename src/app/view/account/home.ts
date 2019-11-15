@@ -272,8 +272,8 @@ registerStoreData('user', (r) => {
     const w: any = forelet.getWidget(WIDGET_NAME);
     let phone = '';
     if (r.info.phoneNumber) {
-        const str = String(r.info.phoneNumber).substr(3, 6);
-        phone = r.info.phoneNumber.replace(str, '******');
+        /^\d{3}\*{6}\d{2}$/;
+        phone = r.info.phoneNumber.replace(/(\d{3})\d{6}(\d{2})/,'$1****$2');
     }
     STATE = {
         nickName: r.info.nickName,

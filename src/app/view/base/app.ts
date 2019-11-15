@@ -1,5 +1,6 @@
 // ================================ 导入
 import { register as ChatRegister } from '../../../chat/client/app/data/store';
+import { TAB } from '../../../chat/client/app/view/home/contact';
 import { register as earnRegister } from '../../../earn/client/app/store/memstore';
 import { popNew } from '../../../pi/ui/root';
 import { setLang } from '../../../pi/util/lang';
@@ -92,7 +93,7 @@ export class App extends Widget {
                 avatar:''
             },
             gameName:'',
-            activeTab:''
+            activeTab:TAB.square
         };
         
         this.props.tabBarList = this.props.tabBarList.filter(item => {
@@ -166,7 +167,7 @@ export class App extends Widget {
         this.paint();
     }
 
-    public switchToSquare(gameName) {  
+    public switchToSquare(gameName:string) {  
         this.props.isActive = 'APP_CHAT';
         this.props.gameName = gameName;  // 从游戏内跳到广场页
         this.props.activeTab = 'square';
