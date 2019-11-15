@@ -34,7 +34,7 @@
                 {{end}}
             </div>
         </div>
-        {{if it.recommendedToday.length && it.recommendedToday[0].img}}
+        {{if it.recommendedToday.length && it.recommendedToday[0]}}
             <div w-class="recommendedToday">
                 <div w-class="recommendedTodayTitle">今日推荐</div>
                 <div w-class="showGame" style="position: relative">
