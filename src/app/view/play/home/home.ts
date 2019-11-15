@@ -2,6 +2,7 @@
  * play home 
  */
  // ================================ 导入
+import { WebViewProvider } from '../../../../pi/browser/webViewProvider';
 import { Json } from '../../../../pi/lang/type';
 import { popNew } from '../../../../pi/ui/root';
 import { getLang } from '../../../../pi/util/lang';
@@ -58,9 +59,11 @@ export class PlayHome extends Widget {
         this.props.popular = [];
         this.props.recommend = [];
         this.props.oftenList = [];
+        this.props.recommendedToday = [];
         // 全部游戏
         if (list.allGame.length) {
             this.props.allGame = list.allGame;
+            this.props.recommendedToday =  list.recommendedToday;
         } else {
             this.allGame();
         }
@@ -87,9 +90,6 @@ export class PlayHome extends Widget {
         } else {
             this.getRecentGame();
         }
-
-        // 今日推荐
-        this.props.recommendedToday = gameList;
     }
 
     /**
@@ -117,6 +117,13 @@ export class PlayHome extends Widget {
                 getGameInfo(appId).then(r => {
                     setStore('game/allGame',r);
                     this.props.allGame = r;
+                    // 获取今日推荐游戏
+                    WebViewProvider.getWebViewName((name:string) => {
+                        console.log(`获取包名 = ${name}`);
+                        const recommendedToday = [r.find(item => item.webviewName === name)];
+                        this.props.recommendedToday = recommendedToday;
+                        setStore('game/recommendedToday',recommendedToday);
+                    });
                     this.paint();
                 });
             }
@@ -156,7 +163,14 @@ export class PlayHome extends Widget {
             });
         }
     }
-   
+
+    public getRecommendedToday() {
+        WebViewProvider.getWebViewName((name:string) => {
+            console.log(`获取包名 = ${name}`);
+
+        });
+    }
+  
     /**
      * 刷新页面
      */

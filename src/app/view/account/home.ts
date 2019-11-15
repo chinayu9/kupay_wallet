@@ -209,7 +209,7 @@ export class AccountHome extends Widget {
     public changeSignature() {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
-            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:100 },(res:any) => {
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:140 },(res:any) => {
                 changeWalletNote(res.content);
                 this.state.note = res.content;
                 popNewMessage('修改个性签名成功');
