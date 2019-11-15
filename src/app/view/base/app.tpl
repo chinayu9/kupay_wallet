@@ -10,19 +10,11 @@
     {{end}}
 {{elseif it.types === 1}}
     {{let index = it.tabBarList.findIndex(function(v){return v.modulName == it.isActive})}}
-    {{if it.activeTab}}
     <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}},gameName:{{it.gameName}}, activeTab:{{it.activeTab}} }</widget>
-    {{else}}
-    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}},gameName:{{it.gameName}}}</widget>
-    {{end}}
 {{else}}
     {{for i, v of it.tabBarList}}
         <div ev-myHome="myHome" style="visibility: {{v.modulName == it.isActive ? 'visible' : 'hidden'}}; z-index:{{v.modulName == it.isActive ? 0 :-1}}; position:absolute; width:100%;height:100%;">
-            {{if it.activeTab}}
             <widget w-tag={{v.components}} >{isActive:{{v.modulName == it.isActive}},userInfo:{{it.userInfo}},gameName:{{it.gameName}}, activeTab:{{it.activeTab}} }</widget>
-            {{else}}
-            <widget w-tag={{v.components}} >{isActive:{{v.modulName == it.isActive}},userInfo:{{it.userInfo}},gameName:{{it.gameName}} }</widget>
-            {{end}}
         </div>
     {{end}}
 {{end}}
