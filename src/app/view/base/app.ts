@@ -159,10 +159,6 @@ export class App extends Widget {
      */
     public initTabBarStyle() {
         this.props.types = 2;   // 全部加载
-        // setTimeout(()=>{
-        //     alert(123)
-        //     this.paint();
-        // },5000)        
         this.paint();
     }
     
@@ -201,7 +197,7 @@ export class App extends Widget {
     /**
      * 个人主页
      */
-    public async myHome() {
+    public myHome() {
         if (!checkAuthorize()) {
 
             return;
@@ -209,6 +205,7 @@ export class App extends Widget {
         this.props.isActive = 'APP_WALLET';
         this.paint();
     }
+
 }
 
 // ===================================================== 本地

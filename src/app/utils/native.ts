@@ -40,11 +40,6 @@ export const selectImage = (ok?,cancel?) => {
         single: 1,
         max: 1
     });
-    imagePicker.close({
-        success:(res) => {
-            console.log('imagePicker close ',res);
-        }
-    });
     let close;
     setTimeout(() => {
         close = popNewLoading({ zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' });
@@ -145,10 +140,11 @@ export const getSystemLanguage = (okCB?,errCB?) => {
 /**
  * 预先下载广告
  */
+const adMgr = ADUnion.getInstance();
 export const preLoadAd = (adType?: AdPlatform,cb?:(str1:string,str2:string) => void) => {
     // adType = adType ? adType : Math.random() > 0.5 ? AdPlatform.GDT : AdPlatform.CSJ;
     adType = AdPlatform.CSJ;  // ios目前只接入了csj
-    ADUnion.loadRewardVideoAD(adType,(str1,str2) => {
+    adMgr.loadRewardVideoAD(adType,(str1,str2) => {
         cb && cb(str1,str2);
     });
 };
@@ -159,7 +155,7 @@ export const preLoadAd = (adType?: AdPlatform,cb?:(str1:string,str2:string) => v
 // tslint:disable-next-line:no-reserved-keywords
 export const watchAd = (adType: AdPlatform,cb?:(isSuccess: number, event: PlayEvent, info: string) => void) => {
     // tslint:disable-next-line:no-reserved-keywords
-    ADUnion.showRewardVideoAD(adType,(isSuccess,event,info) => {
+    adMgr.showRewardVideoAD(adType,(isSuccess,event,info) => {
         cb && cb(isSuccess,event,info);
         preLoadAd();
     });
@@ -170,7 +166,7 @@ export const watchAd = (adType: AdPlatform,cb?:(isSuccess: number, event: PlayEv
  */
 export const chooseAdType = (cb:Function) => {
     const ads = [];
-    ADUnion.getADNumber((gdtAdNumber,csjAdNumber) => {
+    adMgr.getADNumber((gdtAdNumber,csjAdNumber) => {
         for (let i = 0;i < gdtAdNumber;i ++) {
             ads.push(AdPlatform.GDT);
         }
