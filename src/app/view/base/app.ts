@@ -197,7 +197,7 @@ export class App extends Widget {
     /**
      * 个人主页
      */
-    public async myHome() {
+    public myHome() {
         if (!checkAuthorize()) {
 
             return;
@@ -205,6 +205,7 @@ export class App extends Widget {
         this.props.isActive = 'APP_WALLET';
         this.paint();
     }
+
 }
 
 // ===================================================== 本地

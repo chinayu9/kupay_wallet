@@ -125,9 +125,16 @@ export class AccountHome extends Widget {
                         imgResize(buffer,(res) => {
                             uploadFile(res.base64);
                         });
+                        imagePicker.close({
+                            success:res => {
+                                console.log('imagePicker close',res);
+                            }
+                        });
                     }
                 });
             });
+        }).catch(err => {
+            console.log('下载文件失败');
         });
         
     }
@@ -181,7 +188,7 @@ export class AccountHome extends Widget {
      * 修改名称
      */
     public changeName() {
-            // tslint:disable-next-line:max-line-length
+        // tslint:disable-next-line:max-line-length
         popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.state.nickName,maxLength:10 },async (res:any) => {
             await changeWalletName(res.content);
             this.state.nickName = res.content;
@@ -207,20 +214,22 @@ export class AccountHome extends Widget {
      */
     public logOutDel() {
         popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
-                // 清除账号数据
+            // 清除账号数据
             clearUser().then(() => {
                     // 初始化数据
                 logoutAccount();
-                gotoPlay();
                 setStore('flags/authorized',false);
-                this.backPrePage();
-                    
+                setTimeout(() => {
+                    this.backPrePage();
+                    gotoPlay();
+                }, 300);
+
             }).catch(err => {
                     // TODO
             });
                 
         });
-
+      
     }
 
     /** 
