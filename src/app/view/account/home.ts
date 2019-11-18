@@ -12,6 +12,7 @@ import { getUserInfo, popNewMessage, rippleShow } from '../../utils/pureUtils';
 // tslint:disable-next-line:max-line-length
 import { changeWalletName, changeWalletNote, changeWalletSex, getUserAvatar, imgResize, logoutAccount, walletNameAvailable } from '../../utils/tools';
 import { gotoPlay } from '../base/app';
+import { loadSettingSource } from '../base/sourceLoaded';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords 
 declare var module: any;
@@ -144,9 +145,17 @@ export class AccountHome extends Widget {
      */
     public changePhone() {
         if (!this.state.phone) {  // 绑定
-            popNew('app-view-setting-phone');
+            const loading = popNew('app-publicComponents-loading-loading1');
+            loadSettingSource().then(() => {
+                popNew('app-view-setting-phone');
+                loading.callback(loading.widget);
+            });
         } else { // 重新绑定
-            popNew('app-view-setting-unbindPhone');
+            const loading = popNew('app-publicComponents-loading-loading1');
+            loadSettingSource().then(() => {
+                popNew('app-view-setting-unbindPhone');
+                loading.callback(loading.widget);
+            });
         }
     }
 
@@ -188,12 +197,16 @@ export class AccountHome extends Widget {
      * 修改名称
      */
     public changeName() {
-        // tslint:disable-next-line:max-line-length
-        popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.state.nickName,maxLength:10 },async (res:any) => {
-            await changeWalletName(res.content);
-            this.state.nickName = res.content;
-            popNewMessage('修改昵称成功');
-            this.paint();
+        const loading = popNew('app-publicComponents-loading-loading1');
+        loadSettingSource().then(() => {
+            // tslint:disable-next-line:max-line-length
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改昵称', contentInput:this.state.nickName,maxLength:10 },async (res:any) => {
+                await changeWalletName(res.content);
+                this.state.nickName = res.content;
+                popNewMessage('修改昵称成功');
+                this.paint();
+            });
+            loading.callback(loading.widget);
         });
     }
 
@@ -201,35 +214,47 @@ export class AccountHome extends Widget {
      * 修改个性签名
      */
     public changeSignature() {
-        popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:140 },(res:any) => {
-            changeWalletNote(res.content);
-            this.state.note = res.content;
-            popNewMessage('修改个性签名成功');
-            this.paint();
+        const loading = popNew('app-publicComponents-loading-loading1');
+        loadSettingSource().then(() => {
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:140 },(res:any) => {
+                changeWalletNote(res.content);
+                this.state.note = res.content;
+                popNewMessage('修改个性签名成功');
+                this.paint();
+            });
+            loading.callback(loading.widget);
         });
+       
     }
 
     /**
      * 注销账户
      */
     public logOutDel() {
-        popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
-            // 清除账号数据
-            clearUser().then(() => {
-                    // 初始化数据
-                logoutAccount();
-                setStore('flags/authorized',false);
-                setTimeout(() => {
-                    this.backPrePage();
-                    gotoPlay();
-                }, 300);
-
-            }).catch(err => {
-                    // TODO
-            });
+        const loading = popNew('app-publicComponents-loading-loading1');
+        loadSettingSource().then(() => {
+            popNew('app-components-modalBox-modalBox', { title: '确认退出', content:'' }, () => {
                 
+                // 清除账号数据
+                clearUser().then(() => {
+                    // 初始化数据
+                    logoutAccount();
+                    setStore('flags/authorized',false);
+                    setTimeout(() => {
+                        this.backPrePage();
+                        gotoPlay();
+                    }, 300);
+
+                }).catch(err => {
+                    // TODO
+                });
+                
+            });
+            loading.callback(loading.widget);
+        }).catch(err => {
+            // TODO
         });
-      
+        
     }
 
     /** 

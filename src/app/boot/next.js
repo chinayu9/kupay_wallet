@@ -324,11 +324,18 @@ winit.initNext = function () {
 			'app/components1/',
 			"chat/client/app/view/",
 			"chat/client/app/widget/",
-			"chat/client/app/widget1/",
-			//加载开宝箱资源
-			'app/publicComponents/blankDiv/',
-			'app/components/topBar/',
-			'app/publicComponents/loading/',
+			"chat/client/app/widget1/"
+		], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
+			loadLeftEarnSource();
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
+	}
+
+	// 加载活动所有资源
+	var loadLeftEarnSource = function(){
+		util.loadDir([ 
 			'app/net/',
 			'earn/client/app/components/',
 			'earn/client/app/view/',
@@ -336,17 +343,14 @@ winit.initNext = function () {
 			'earn/server/rpc/',
 			'earn/client/app/net/',
 			'earn/xlsx/',
-			'chat/client/app/widget1/',
-			'chat/client/app/view/info/',
 		], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_earnPage_loaded',true);
 			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});
 	}
 
-	
 	/**
 	 * pc版加载VM
 	 */
