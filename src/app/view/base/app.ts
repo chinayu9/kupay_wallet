@@ -159,6 +159,10 @@ export class App extends Widget {
      */
     public initTabBarStyle() {
         this.props.types = 2;   // 全部加载
+        // setTimeout(()=>{
+        //     alert(123)
+        //     this.paint();
+        // },5000)        
         this.paint();
     }
     
