@@ -201,68 +201,46 @@ export class MyHome extends Widget {
         const msg = JSON.parse(localStorage.getItem(`redFlags_${this.props.user.acc_id}`));
         switch (i) {
             case 0:
-                loadMallSource().then(() => {
-                    popNew('earn-client-app-view-mall-exchange');
-                });
+                popNew('earn-client-app-view-mall-exchange');
                 break;
             case 1:
-                loadRedEnvelopeSource().then(() => {
-                    popNew('app-view-redEnvelope-writeRedEnv');
-                });
+                popNew('app-view-redEnvelope-writeRedEnv');
                 break;
             case 2:
                 break;
             case 3:
                 msg.invite = false;
-                loadShareSource().then(() => {
-                    popNew('earn-client-app-view-share-inviteFriend');
-                });
+                popNew('earn-client-app-view-share-inviteFriend');
                 break;
             case 4:
                 msg.treasureChest = false;
-                loadOpenBoxSource().then(() => {
-                    popNew('earn-client-app-view-openBox-openBox');
-                });
+                popNew('earn-client-app-view-openBox-openBox');
                 break;
             case 5:
                 msg.turntable = false;
-                loadTurntableSource().then(() => {
-                    popNew('earn-client-app-view-turntable-turntable');
-                });
+                popNew('earn-client-app-view-turntable-turntable');
                 break;
             case 6:
                 msg.mining = false;
-                loadMiningSource().then(() => {
-                    popNew('earn-client-app-view-mining-miningHome');
-                });
+                popNew('earn-client-app-view-mining-miningHome');
                 break;
             case 7:
                 goRecharge();
                 break;
             case 8:
-                loadAboutAppSource().then(() => {
-                    popNew('app-view-aboutApp-aboutus');
-                });
+                popNew('app-view-aboutApp-aboutus');
                 break;
             case 9:
-                loadAboutAppSource().then(() => {
-                    popNew('app-view-aboutApp-help');
-                });
+                popNew('app-view-aboutApp-help');
                 break;
             case 10:
-                loadMedalSource().then(() => {
-                    popNew('earn-client-app-view-medal-medal');
-                });
+                popNew('earn-client-app-view-medal-medal');
                 break;
             case 11:
-                loadHaihaiSource().then(() => {
-                    popNew('chat-client-app-view-info-userDetail', { uid: this.props.uid });
-                });
+                popNew('chat-client-app-view-info-userDetail', { uid: this.props.uid });
                 break;
             case 12:
-                loadAboutAppSource().then(() => {
-                    popNew('app-view-aboutApp-contanctUs');
-                });
+                popNew('app-view-aboutApp-contanctUs');
                 break;
             default:
         }
