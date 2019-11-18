@@ -2,11 +2,12 @@
  * radioList
  */
 // =============================================导入
-import { appLanguageList, LocalLanguageMgr } from '../../../pi/browser/localLanguage';
+import { appLanguageList } from '../../../pi/browser/localLanguage';
 import { Json } from '../../../pi/lang/type';
 import { setLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { setStore } from '../../store/memstore';
+import { setAppLanguage } from '../../utils/native';
 // ================================================导出
 export class ItemList extends Widget {
     public ok: () => void;
@@ -39,13 +40,7 @@ export class ItemList extends Widget {
     public changeSelect(e:any) {
         if (this.props.flag === 0) {
             setLang(this.props.keys[e.value === 2 ? 0 :e.value]);
-            const appLanguage = new LocalLanguageMgr();
-            appLanguage.init();
-            appLanguage.setAppLan({
-                success: (localLan) => {},
-                fail: (result) => {},
-                language:appLanguageList[this.props.keys[e.value === 2 ? 0 :e.value]]
-            });
+            setAppLanguage(appLanguageList[this.props.keys[e.value === 2 ? 0 :e.value]]);
             setStore('setting/language',this.props.keys[e.value === 2 ? 0 :e.value]);
         } else if (this.props.flag === 1) {
             setStore('setting/currencyUnit',this.props.keys[e.value]);            

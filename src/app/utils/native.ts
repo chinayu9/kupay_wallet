@@ -3,6 +3,7 @@
  */
 import { AdPlatform, ADUnion, PlayEvent } from '../../pi/browser/ad_unoin';
 import { ImagePicker } from '../../pi/browser/imagePicker';
+import { appLanguageList, LocalLanguageMgr } from '../../pi/browser/localLanguage';
 import { WebViewManager } from '../../pi/browser/webview';
 import { setStore } from '../store/memstore';
 import { piRequire } from '../utils/commonjsTools';
@@ -29,6 +30,7 @@ export const selectImage = (ok?,cancel?) => {
         success: (width, height, url) => {
             ok && ok(width, height, url);
             close && close.callback(close.widget);
+            
         },
         fail: (result) => {
             cancel && cancel(result);
@@ -37,6 +39,11 @@ export const selectImage = (ok?,cancel?) => {
         useCamera: 1,
         single: 1,
         max: 1
+    });
+    imagePicker.close({
+        success:(res) => {
+            console.log('imagePicker close ',res);
+        }
     });
     let close;
     setTimeout(() => {
@@ -69,6 +76,8 @@ export const doScanQrCode = (ok?,cancel?) => {
                 console.log(`close result:${r}`);
             }
         });
+    }).catch(err => {
+        console.log('下载文件失败',err);
     });
 };
 
@@ -88,6 +97,49 @@ export const makeScreenShot = (okCB?,errCB?) => {
         });
     });
     
+};
+
+/**
+ * 设置手机语言
+ */
+export const setAppLanguage = (language:string,okCB?,errCB?) => {
+    const appLanguage = new LocalLanguageMgr();
+    appLanguage.init();
+    appLanguage.setAppLan({
+        language: appLanguageList[language],
+        success: (result) => { 
+            okCB && okCB(result);
+        },
+        fail: (result) => { 
+            errCB && errCB(result);
+        }
+    });
+    appLanguage.close({
+        success:(r) => {
+            console.log(`close result:${r}`);
+        }
+    });
+};
+
+/**
+ * 获取系统语言
+ */
+export const getSystemLanguage = (okCB?,errCB?) => {
+    const appLanguage = new LocalLanguageMgr();
+    appLanguage.init();
+    appLanguage.getSysLan({
+        success: (result) => { 
+            okCB && okCB(result);
+        },
+        fail: (result) => { 
+            errCB && errCB(result);
+        }
+    });
+    appLanguage.close({
+        success:(r) => {
+            console.log(`close result:${r}`);
+        }
+    });
 };
 
 /**
