@@ -15,7 +15,6 @@ import { GENERATOR_TYPE } from '../../../chat/server/data/db/user.s';
 import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
-import { logoutAccount } from '../../viewLogic/login';
 
 interface Props {
     title:string;

@@ -20,6 +20,7 @@ export const init = (fl:any,fm:any,sc:any) => {
  * 加载开宝箱资源
  */
 export const loadOpenBoxSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadOpenBoxSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -33,7 +34,7 @@ export const loadOpenBoxSource = () => {
         'app/net/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {
         setStore('flags/loadOpenBoxSource',true);
     });
 };
@@ -42,6 +43,7 @@ export const loadOpenBoxSource = () => {
  * 加载大转盘资源
  */
 export const loadTurntableSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadTurntableSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -57,7 +59,7 @@ export const loadTurntableSource = () => {
         'app/net/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {
         setStore('flags/loadOpenBoxSource',true);
     });
 };
@@ -66,6 +68,7 @@ export const loadTurntableSource = () => {
  * 加载我的勋章资源
  */
 export const loadMedalSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadMedalSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -75,7 +78,7 @@ export const loadMedalSource = () => {
         'earn/client/app/net/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {
         setStore('flags/loadMedalSource',true); 
     });
 };
@@ -84,6 +87,7 @@ export const loadMedalSource = () => {
  * 加载挖矿资源
  */
 export const loadMiningSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadMiningSource;
     const sourceList = [
         'earn/client/app/view/mining/',
@@ -100,7 +104,7 @@ export const loadMiningSource = () => {
         'earn/client/app/net/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {
         setStore('flags/loadMiningSource',true);
     });
 };
@@ -109,6 +113,7 @@ export const loadMiningSource = () => {
  * 加载分享资源
  */
 export const loadShareSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadShareSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -117,7 +122,7 @@ export const loadShareSource = () => {
         'earn/client/app/view/share/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => { 
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => { 
         setStore('flags/loadShareSource',true);  
     });
 };
@@ -126,6 +131,7 @@ export const loadShareSource = () => {
  * 加载嗨豆商城资源
  */
 export const loadMallSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadMallSource;
     const sourceList = [
         'earn/client/app/view/mall/',
@@ -133,7 +139,7 @@ export const loadMallSource = () => {
         'app/components/topBar/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {    
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {    
         setStore('flags/loadMallSource',true);   
     });
 };
@@ -142,6 +148,7 @@ export const loadMallSource = () => {
  * 加载关于好嗨相关资源 (公众号 联系我们 关于好嗨 帮助)
  */
 export const loadAboutAppSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadAboutAppSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -158,7 +165,7 @@ export const loadAboutAppSource = () => {
         'app/components/topBar/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {     
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {     
         setStore('flags/loadAboutAppSource',true);
     });
 };
@@ -167,6 +174,7 @@ export const loadAboutAppSource = () => {
  * 加载红包资源 
  */
 export const loadRedEnvelopeSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadRedEnvelopeSource;
     const sourceList = [
         'app/view/redEnvelope/',
@@ -184,7 +192,7 @@ export const loadRedEnvelopeSource = () => {
         'app/components/share/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {   
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {   
         setStore('flags/loadRedEnvelopeSource',true);   
     });
 };
@@ -193,6 +201,7 @@ export const loadRedEnvelopeSource = () => {
  * 加载分红资源 
  */
 export const loadDividendSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadDividendSource;
     const sourceList = [
         'app/publicComponents/blankDiv/',
@@ -200,7 +209,7 @@ export const loadDividendSource = () => {
         'app/view/dividend/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {   
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {   
         setStore('flags/loadDividendSource',true);  
     });
 };
@@ -209,6 +218,7 @@ export const loadDividendSource = () => {
  * 加载用户信息资源 
  */
 export const loadAccountSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadAccountSource;
     const sourceList = [
         'app/view/account/home.tpl',
@@ -222,7 +232,7 @@ export const loadAccountSource = () => {
         'app/components1/img/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {     
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {     
         setStore('flags/loadAccountSource',true);  
     });
 };
@@ -231,6 +241,7 @@ export const loadAccountSource = () => {
  * 加载设置资源 
  */
 export const loadSettingSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadSettingSource;
     const sourceList = [
         'app/view/setting/',
@@ -249,7 +260,7 @@ export const loadSettingSource = () => {
         'earn/client/app/components/noviceTaskAward/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => { 
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => { 
         setStore('flags/loadSettingSource',true);  
     });
 };
@@ -258,6 +269,7 @@ export const loadSettingSource = () => {
  * 加载嗨嗨号资源
  */
 export const loadHaihaiSource = () => {
+    const earnSource = getStore('flags',{}).level_3_earnPage_loaded;
     const fg = getStore('flags',{}).loadHaihaiSource;
     const sourceList = [
         'chat/client/app/view/info/',
@@ -265,7 +277,7 @@ export const loadHaihaiSource = () => {
         'app/publicComponents/blankDiv/'
     ];
 
-    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {    
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,earnSource || fg).then(() => {    
         setStore('flags/loadHaihaiSource',true); 
     });
 };

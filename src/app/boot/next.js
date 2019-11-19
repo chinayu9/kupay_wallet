@@ -257,7 +257,6 @@ winit.initNext = function () {
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
-			pi_modules.commonjs.exports.relativeGet("app/view/base/sourceLoaded").exports.init(flags,fm,suffixCfg);
 			// 聊天登录
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/init").exports.registerRpcStruct(fm);
 			// 活动注册
@@ -322,19 +321,36 @@ winit.initNext = function () {
 		util.loadDir([ 
 			"app/components/",
 			"app/view/",
-
+			'app/components1/',
 			"chat/client/app/view/",
 			"chat/client/app/widget/",
 			"chat/client/app/widget1/"
 		], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
+			loadLeftEarnSource();
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
+	}
+
+	// 加载活动所有资源
+	var loadLeftEarnSource = function(){
+		util.loadDir([ 
+			'app/net/',
+			'earn/client/app/components/',
+			'earn/client/app/view/',
+			'earn/client/app/xls/',
+			'earn/server/rpc/',
+			'earn/client/app/net/',
+			'earn/xlsx/',
+		], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_earnPage_loaded',true);
 			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});
 	}
 
-	
 	/**
 	 * pc版加载VM
 	 */
