@@ -362,11 +362,11 @@ winit.initNext = function () {
 		util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
 			
-	// 	}, function (r) {
-	// 		console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-	// 	}, function(){});
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
 		
-	// }
+	}
 	
 
 	// 加载pisdk初始化及登录

@@ -2,11 +2,10 @@
  * 钱包向 VM 通信调用的方法
  */
 import { WebViewManager } from '../../pi/browser/webview';
-import { addStoreLoadedListener } from '../postMessage/vmPush';
+import { addStoreLoadedListener, isPC } from '../postMessage/vmPush';
 
 let count = 0;
 const obj = {};
-const isPC = navigator.userAgent.indexOf('YINENG') > 0 ? false : true;
 /**
  * vm rpc 调用
  * rpc调用有两种模式 callback放在rpc函数调用最后面实现对同步函数的rpc调用  放置rpcData 下params参数最后面实现对异步函数的rpc调用
@@ -26,8 +25,12 @@ export const vmRpcCall = (methodName:string,params: any[]):Promise<any> => {
                 if (error) reject(error);
                 resolve(res);
             });
+            let moduleName = 'app/remote/vmApi';
+            if (isPC) {
+                moduleName = 'vm/remote/vmApi';
+            }
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'vm/remote/vmApi', 
+                moduleName, 
                 methodName, 
                 params
             });

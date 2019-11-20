@@ -2,7 +2,7 @@
  * pi sdk 入口文件
  */
 // tslint:disable-next-line:max-line-length
-import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
+import { closePopBox, createThirdApiStyleTag, createThirdBaseStyle, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
 declare var pi_modules;
 
@@ -21,7 +21,7 @@ const piStore:any = pi_sdk.store || {       // store
 // tslint:disable-next-line:variable-name
 const piConfig:any = pi_sdk.config || {};  // 配置信息
 
-const inApp = navigator.userAgent.indexOf('YINENG_ANDROID') >= 0 || navigator.userAgent.indexOf('YINENG_IOS') >= 0;  // 是否app包
+const inApp = navigator.userAgent.indexOf('YINENG') >= 0;  // 是否app包
 
 /**
  * button id定义
@@ -146,7 +146,7 @@ const piService = {
                     window.JSBridge.webViewBindService(JSON.stringify(autoInfo));
                     setTimeout(handler, step);
                 } else {
-                    window.pi_sdk.piService.onBindService(null,autoInfo);
+                    window.pi_sdk.piService.onBindService(null,JSON.stringify(autoInfo));
                 }
             }
         };
@@ -245,16 +245,17 @@ enum ButtonMods {
 
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
-piConfig.jsApi = 'app/remote/JSAPI';
+piConfig.jsApi = 'vm/remote/JSAPI';
+if (inApp) {
+    piConfig.jsApi = 'app/remote/JSAPI';
+}
 piConfig.imgUrlPre = 'http://app.herominer.net/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 
-if (inApp) {
-    pi_sdk.setWebviewManager = setWebviewManager;
-    pi_sdk.piSdkInit = piSdkInit;
-    pi_sdk.config = piConfig;
-    pi_sdk.store = piStore;
-    pi_sdk.piService = piService;
-    
-    window.pi_sdk = pi_sdk; 
-}
+pi_sdk.setWebviewManager = setWebviewManager;
+pi_sdk.piSdkInit = piSdkInit;
+pi_sdk.config = piConfig;
+pi_sdk.store = piStore;
+pi_sdk.piService = piService;
+
+window.pi_sdk = pi_sdk;

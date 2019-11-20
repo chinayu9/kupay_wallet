@@ -2,18 +2,15 @@
  * 监听VM的store变化
  */
 import { WebViewManager } from '../../pi/browser/webview';
-import { addStoreLoadedListener } from './vmPush';
+import { addStoreLoadedListener, isPC } from './vmPush';
 
 /**
  * 注册store监听 VM准备好后执行
  */
 export const registerStoreData = (keyName: string, cb: Function) => {
-    console.log('registerStoreData!!!');
     addStoreLoadedListener(() => {
-        console.log('addStoreLoadedListener');
         addStoreListener(keyName,cb);
     });
-    console.log('after registerStoreData');
 };
 
 const handlerMap = new Map();
@@ -33,8 +30,12 @@ export const addStoreListener = (key:string,cb:Function) => {
     if (!frameId && registerKeys.length > 0) {
         frameId = requestAnimationFrame(() => {   // 在下一帧之前一次性注册所有key
             const keysStr = registerKeys.join(',');
+            let moduleName = 'app/remote/vmApi';
+            if (isPC) {
+                moduleName = 'vm/remote/vmApi';
+            }
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'vm/remote/vmApi', 
+                moduleName, 
                 methodName:'vmRegisterStore', 
                 params:[keysStr]   
             });

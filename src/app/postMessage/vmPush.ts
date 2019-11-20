@@ -3,6 +3,8 @@
  */
 import { LoadedStage } from '../public/constant';
 
+export const isPC = navigator.userAgent.indexOf('YINENG') === -1;
+
 const storeLoadedCbs = [];           // store加载完成回调
 
 let vmLoadedStage = LoadedStage.START;   // vm资源准备阶段
