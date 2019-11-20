@@ -217,6 +217,9 @@ winit.initNext = function () {
 			html.checkWebpFeature(function (r) {
 				flags.webp = flags.webp || r;
 				loadPiSdk();
+				if(!pi_update.inApp){
+					vmLoad(util,fm);
+				}
 				firstStageLoaded();
 			});
 
@@ -264,10 +267,7 @@ winit.initNext = function () {
 			pi_modules.commonjs.exports.relativeGet("earn/client/app/net/init").exports.registerRpcStruct(fm);
 			var tab = util.loadCssRes(fileMap);
 			tab.timeout = 90000;
-			tab.release();
-			if(!pi_update.inApp){
-				vmLoad(util,fm);
-			}		
+			tab.release();			
 			window.isWalletLoadReady = true;	
 			enterApp();
 		}, function (r) {
