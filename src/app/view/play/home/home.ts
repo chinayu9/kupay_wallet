@@ -240,7 +240,6 @@ export class PlayHome extends Widget {
 
     public async goGame(num:number,gameList:any) {
         if (!checkAuthorize()) {
-
             return;
         }
 

@@ -432,7 +432,7 @@
 		var name = "wallet"; // 每个项目需要定义自己的名称，该名称决定了访问域名和本地存储名
 		var main = document.domain.replace(/^(\D+\w*\.)(\w+\.[\w\.]+)/, "$2");
 		var remote = (document.domain != main || /^\w+\.\w+$/.test(document.domain)) ? name + "." : "";
-		winit.store = name;		
+		winit.store = name;
 		winit.debug = true; 
 		// main = location.port ? main + ":" + location.port : main;
 		winit.isLoc = location.protocol.indexOf("file")>=0
@@ -445,7 +445,7 @@
 			winit.severPort = location.port ? location.port : "80";		
 		}else{// 本地包需要配置服务器ip和port
 			// 外网 39.98.200.23   high.herominer.net 
-			winit.severIp = "192.168.31.226";  // 本地服务器
+			winit.severIp = "192.168.31.23";  // 本地服务器
 			// winit.severIp = "39.98.200.23";  // 外网测试服
 			winit.severPort = "80";	
 		}

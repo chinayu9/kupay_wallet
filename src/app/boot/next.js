@@ -257,6 +257,7 @@ winit.initNext = function () {
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
+			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
 			// 聊天登录
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/init").exports.registerRpcStruct(fm);
 			// 活动注册
@@ -264,9 +265,9 @@ winit.initNext = function () {
 			var tab = util.loadCssRes(fileMap);
 			tab.timeout = 90000;
 			tab.release();
-			// if(!pi_update.inApp){
-				// vmLoad(util,fm);
-			// }		
+			if(!pi_update.inApp){
+				vmLoad(util,fm);
+			}		
 			window.isWalletLoadReady = true;	
 			enterApp();
 		}, function (r) {
@@ -351,14 +352,15 @@ winit.initNext = function () {
 		}, function(){});
 	}
 
+	
 	/**
 	 * pc版加载VM
 	 */
-	// function vmLoad(util,fm) {
-	// 	// 开始flag
-	// 	console.log("vm项目开始了。。。。。。。");
-	// 	util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
-	// 		pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
+	function vmLoad(util,fm) {
+		// 开始flag
+		console.log("vm项目开始了。。。。。。。");
+		util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
 			
 	// 	}, function (r) {
 	// 		console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);

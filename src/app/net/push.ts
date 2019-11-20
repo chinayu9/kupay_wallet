@@ -2,6 +2,7 @@
  * 后端主动推消息给后端
  */
 import { setMsgHandler } from '../../pi/net/ui/con_mgr';
+import { getServerCloudBalance } from '../../vm/remote/pull';
 import { CMD } from '../public/config';
 import { ServerPushKey } from '../public/interface';
 import { getStore, setStore } from '../store/memstore';
@@ -54,6 +55,7 @@ export const initPush = () => {
                 invite.push([res.accId,(new Date().getTime()),'invite']);  
             } 
             setStore('inviteUsers/invite_success',invite);
+
         }
   
     });
