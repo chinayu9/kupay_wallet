@@ -30,9 +30,9 @@ export const initPush = () => {
     // 监听充值成功事件
     setMsgHandler(ServerPushKey.EVENTPAYOK,(res) => {
         // const value = res.value.toJSNumber ? res.value.toJSNumber() : res.value;
-        getServerCloudBalance().then(res => {
-            console.log('服务器推送成功 云端余额更新==========================',res);
-        });
+        // getServerCloudBalance().then(res => {
+        //     console.log('服务器推送成功 云端余额更新==========================',res);
+        // });
         console.log('服务器推送成功==========================',res);
         payOk();
     });
@@ -80,9 +80,9 @@ export const initPush = () => {
     // 监听余额变化事件
     setMsgHandler(ServerPushKey.ALTERBALANCEOK,async (res) => {
         console.log('alter_balance_ok服务器推送成功===========调用排名===============',res);
-        await getServerCloudBalance();
-        const wallet = getStore('wallet');
-        const userInfo = getStore('user/info');
+        // await getServerCloudBalance();
+        // const wallet = getStore('wallet');
+        // const userInfo = getStore('user/info');
         // let popType = -1;           // 弹框类型 -1 无弹框 0 密码弹框   1 绑定手机弹框
         // debugger;
         // if (!wallet.setPsw) {
@@ -108,5 +108,5 @@ export const initPush = () => {
     // });
 };
 
-initPush();
-// ===================================================== 本地
+// 与后端的链接建立在VM，钱包里不会收到推送
+// initPush();

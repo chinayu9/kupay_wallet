@@ -126,9 +126,16 @@ export class AccountHome extends Widget {
                         imgResize(buffer,(res) => {
                             uploadFile(res.base64);
                         });
+                        imagePicker.close({
+                            success:res => {
+                                console.log('imagePicker close',res);
+                            }
+                        });
                     }
                 });
             });
+        }).catch(err => {
+            console.log('下载文件失败');
         });
         
     }
@@ -209,7 +216,7 @@ export class AccountHome extends Widget {
     public changeSignature() {
         const loading = popNew('app-publicComponents-loading-loading1');
         loadSettingSource().then(() => {
-            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:100 },(res:any) => {
+            popNew('chat-client-app-widget-pageEdit-pageEdit',{ title:'修改个性签名', contentInput:this.state.note,maxLength:140 },(res:any) => {
                 changeWalletNote(res.content);
                 this.state.note = res.content;
                 popNewMessage('修改个性签名成功');
@@ -232,10 +239,12 @@ export class AccountHome extends Widget {
                 clearUser().then(() => {
                     // 初始化数据
                     logoutAccount();
-                    gotoPlay();
                     setStore('flags/authorized',false);
-                    this.backPrePage();
-                    
+                    setTimeout(() => {
+                        this.backPrePage();
+                        gotoPlay();
+                    }, 300);
+
                 }).catch(err => {
                     // TODO
                 });
@@ -270,8 +279,8 @@ registerStoreData('user', (r) => {
     const w: any = forelet.getWidget(WIDGET_NAME);
     let phone = '';
     if (r.info.phoneNumber) {
-        const str = String(r.info.phoneNumber).substr(3, 6);
-        phone = r.info.phoneNumber.replace(str, '******');
+        /^\d{3}\*{6}\d{2}$/;
+        phone = r.info.phoneNumber.replace(/(\d{3})\d{6}(\d{2})/,'$1****$2');
     }
     STATE = {
         nickName: r.info.nickName,

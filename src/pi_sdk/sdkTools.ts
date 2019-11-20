@@ -1001,18 +1001,20 @@ const dragDom = (element, callback?) => {
                     const floatWidth = document.querySelector('.pi-float-button').clientWidth;
                     floatRed.style.left = `${floatWidth - floatRed.clientWidth}px`;
                 }
+                element.style.left = `${nowLeft}px`;
             } else {
                 // 右侧
-                nowLeft = params.leftLimit + (elementWidth / 3);
+                const nowRight = -elementWidth / 3; 
                 // 小红点存在则在左侧显示
                 if (floatRed) {
                     floatRed.style.left = '0px';
                 }
+                element.style.left =  `auto`;
+                element.style.right =  `${nowRight}px`;
             }
-            element.style.left =  `${nowLeft}px`;
             nowLeft = -1;
-            
         }
+        
         params.flag = false;    
         if (getCss(element, 'left') !== 'auto') {
             params.left = getCss(element, 'left');

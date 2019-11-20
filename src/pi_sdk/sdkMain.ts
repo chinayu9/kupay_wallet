@@ -2,7 +2,6 @@
  * pi sdk 入口文件
  */
 // tslint:disable-next-line:max-line-length
-import {PostMessage } from '../app/postMessage/postMessage';
 import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
 declare var pi_modules;
@@ -133,11 +132,12 @@ const piService = {
             if (!that.hasCallBind) {
                 return;
             }
+
             start += step;
             if (start > timeMS) {
                 callback({
                     code: -3,
-                    reason: 'timeout'         
+                    reason: 'timeout'
                 });
                 return;
             }
@@ -146,7 +146,7 @@ const piService = {
                     window.JSBridge.webViewBindService(JSON.stringify(autoInfo));
                     setTimeout(handler, step);
                 } else {
-                    pi_sdk.piService.onBindService(null,JSON.stringify(autoInfo));
+                    window.pi_sdk.piService.onBindService(null,autoInfo);
                 }
             }
         };
@@ -222,7 +222,6 @@ const setWebviewManager = (path:string) => {
  * 初始化
  */
 const piSdkInit = (param:{webviewName:string;appid:string;isHorizontal:boolean;buttonMod:number}, cb:any) => {
-    
     piService.bind(6 * 1000, { webviewName: param.webviewName, appid: param.appid }, cb);
     
     piConfig.webviewName = param.webviewName;
@@ -246,14 +245,16 @@ enum ButtonMods {
 
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
-piConfig.jsApi = 'vm/remote/JSAPI';
+piConfig.jsApi = 'app/remote/JSAPI';
 piConfig.imgUrlPre = 'http://app.herominer.net/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 
-pi_sdk.setWebviewManager = setWebviewManager;
-pi_sdk.piSdkInit = piSdkInit;
-pi_sdk.config = piConfig;
-pi_sdk.store = piStore;
-pi_sdk.piService = piService;
-
-window.pi_sdk = pi_sdk; 
+if (inApp) {
+    pi_sdk.setWebviewManager = setWebviewManager;
+    pi_sdk.piSdkInit = piSdkInit;
+    pi_sdk.config = piConfig;
+    pi_sdk.store = piStore;
+    pi_sdk.piService = piService;
+    
+    window.pi_sdk = pi_sdk; 
+}

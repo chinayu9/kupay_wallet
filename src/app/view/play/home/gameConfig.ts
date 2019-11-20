@@ -30,10 +30,7 @@ export const getGameItem = (webviewName:string) => {
  * @param cb 回调函数
  */
 export const openGame = (gameUrl:string,title:string,webviewName:string,screenMode:screenMode,cb?:Function) => {
-    ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {
-        if (document.querySelector('#gameFloatBox')) {  // 删掉游戏的悬浮窗
-            document.querySelector('#gameFloatBox').remove();
-        }
+    ajax.get(`${gameUrl}?${Math.random()}`, {}, undefined, undefined, 1000,(res:string) => {        
         WebViewManager.open(webviewName, `${gameUrl}?${Math.random()}`, title, '', screenMode);
         cb && cb();
     },(err:any) => {

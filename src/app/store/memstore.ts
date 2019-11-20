@@ -3,12 +3,13 @@
  * @author donghr
  */
 // ============================================ 导入
-import { appLanguageList, LocalLanguageMgr } from '../../pi/browser/localLanguage';
+import { appLanguageList } from '../../pi/browser/localLanguage';
 import { HandlerMap } from '../../pi/util/event';
 import { setLang } from '../../pi/util/lang';
 import { defaultSetting, topHeight } from '../public/config';
 // tslint:disable-next-line:max-line-length
 import { BtcMinerFee, CloudCurrencyType, CloudWallet, Currency2USDT, GasPrice, Setting, Silver, Store, UserInfo } from '../public/interface';
+import { getSystemLanguage } from '../utils/native';
 // tslint:disable-next-line:max-line-length
 import { deleteFile, getLocalStorage, initFileStore, initLocalStorageFileStore, setLocalStorage } from './filestore';
 
@@ -220,29 +221,22 @@ const initAccount = () => {
 const initSettings = () => {
 
     let langNum;
-    const appLanguage = new LocalLanguageMgr();
-    appLanguage.init();
-    appLanguage.getSysLan({
-        success: (localLan) => {
-            // tslint:disable-next-line:radix
-            langNum = parseInt(localLan);
-            getLocalStorage('setting').then(localSet => {
-                if (!localSet) {
-                    if (langNum === appLanguageList.zh_Hans || langNum === appLanguageList.zh_Hant) {
-                        setLang(appLanguageList[langNum]);
-                        store.setting.language = appLanguageList[langNum];
-                    } else {
-                        setLang(defaultSetting.DEFAULT_LANGUAGE);
-                        store.setting.language = defaultSetting.DEFAULT_LANGUAGE;
-                    }
+    getSystemLanguage((localLan) => {
+        // tslint:disable-next-line:radix
+        langNum = parseInt(localLan);
+        getLocalStorage('setting').then(localSet => {
+            if (!localSet) {
+                if (langNum === appLanguageList.zh_Hans || langNum === appLanguageList.zh_Hant) {
+                    setLang(appLanguageList[langNum]);
+                    store.setting.language = appLanguageList[langNum];
+                } else {
+                    setLang(defaultSetting.DEFAULT_LANGUAGE);
+                    store.setting.language = defaultSetting.DEFAULT_LANGUAGE;
                 }
-            });
-
-        },
-        fail: (result) => {
-            console.log(result);
-        }
+            }
+        });
     });
+    
     getLocalStorage('setting', {
         language: defaultSetting.DEFAULT_LANGUAGE,
         changeColor: defaultSetting.DEFAULT_CHANGECOLOR,
@@ -479,7 +473,8 @@ const store: Store = {
         allGame:[],// 全部游戏
         hotGame:[],// 热门游戏
         oftenGame:[],// 最近在玩的游戏
-        recommendGame:[]// 推荐游戏
+        recommendGame:[],// 推荐游戏
+        recommendedToday:[]// 今日推荐
     }
 };
 

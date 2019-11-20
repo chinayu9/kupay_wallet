@@ -9,7 +9,7 @@
         </div>
         <div w-class="content">
             {{for i,v of it.sexList}}
-            <div w-class="sex {{it.active==i?'active':''}}" on-tap="checkTypeSex({{i}})" on-down="onShow">
+            <div w-class="sex {{it.active==i?(it.active==0?'activeBoy':'activeGirl'):''}}" on-tap="checkTypeSex({{i}})" on-down="onShow">
                 <img src="{{v.src}}" alt="" w-class="sexImg"/>
                 <div w-class="sexValue">{{v.sex}}</div>
             </div>

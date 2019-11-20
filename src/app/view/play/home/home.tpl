@@ -34,25 +34,25 @@
                 {{end}}
             </div>
         </div>
-        {{if it.recommendedToday.length}}
-        <div w-class="recommendedToday">
-            <div w-class="recommendedTodayTitle">今日推荐</div>
-            <div w-class="showGame" style="position: relative">
-               <div w-class="userHead">
-                    <div w-class="gameImg" on-tap="todayGame" style="background-image:url({{it.recommendedToday[0].img[1]}});">
-                    </div>
-                    <div w-class="gameInfos">
-                        <div style="margin:0 15px 20px 15px; display: flex;">
-                            <img src="{{it.recommendedToday[0].img[0]}}" loading="lazy" alt="" w-class="gameInfoImg"/>
-                            <div w-class="gameInfoName" style="marign-left:20px;">
-                                <div w-class="gameInfosName">{{it.recommendedToday[0].title}}</div>
-                                <div w-class="publishTime">{{it.recommendedToday[0].desc}}</div>
+        {{if it.recommendedToday.length && it.recommendedToday[0]}}
+            <div w-class="recommendedToday">
+                <div w-class="recommendedTodayTitle">今日推荐</div>
+                <div w-class="showGame" style="position: relative">
+                <div w-class="userHead">
+                        <div w-class="gameImg" on-tap="todayGame" style="background-image:url({{it.recommendedToday[0].img[1]}});">
+                        </div>
+                        <div w-class="gameInfos">
+                            <div style="margin:0 15px 20px 15px; display: flex;">
+                                <img src="{{it.recommendedToday[0].img[0]}}" loading="lazy" alt="" w-class="gameInfoImg"/>
+                                <div w-class="gameInfoName" style="marign-left:20px;">
+                                    <div w-class="gameInfosName">{{it.recommendedToday[0].title}}</div>
+                                    <div w-class="publishTime">{{it.recommendedToday[0].desc}}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-               </div>
+                </div>
+                </div>
             </div>
-        </div>
         {{end}}
         {{if it.popular.length}}
             <div w-class="recommendedToday">

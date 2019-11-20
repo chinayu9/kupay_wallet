@@ -169,7 +169,7 @@ winit.initNext = function () {
 			}, function () {
 				setTimeout(function(){
 					pi_update.closePop();
-					console.log(`更新重启location.pathname is ${location.pathname}`);
+					console.log("更新重启location.pathname is ",location.pathname);
 					// 重启
 					h5UpdateMod.reload('/wallet/app/boot/index.html');
 				},200);
@@ -199,7 +199,7 @@ winit.initNext = function () {
 			util = mods[1],
 			lang = mods[2];
 			fm = tmpfm;
-			const setting = JSON.parse(localStorage.getItem('setting'));
+			var setting = JSON.parse(localStorage.getItem('setting'));
 			lang.setLang(setting && setting.language || 'zh_Hans');  // 初始化语言为简体中文
 	
 			// 判断是否第一次进入,决定是显示片头界面还是开始界面
@@ -224,6 +224,8 @@ winit.initNext = function () {
 			alert("加载基础模块失败, " + result.error + ":" + result.reason);
 		}, modProcess.handler);
 	}
+
+	// 钱包首页资源加载
 	var firstStageLoaded = function(){
 		var sourceList = [
 			"pi/ui/root.js",
@@ -239,6 +241,7 @@ winit.initNext = function () {
 			"app/components1/btn/",
 			"app/components1/img/",
 			"app/components1/topBar/",
+			"app/components/floatBox/",
 			"app/publicComponents/",
 			"app/postMessage/",
 			"app/api/thirdApi.js",
@@ -247,11 +250,14 @@ winit.initNext = function () {
 			"earn/client/app/net/init.js",
 			
 			"chat/client/app/net/init.js",
-			"chat/client/app/res/css/"
+			"chat/client/app/res/css/",
+			"chat/client/app/view/home/",
+			"chat/client/app/widget1/imgShow/"
 		];
 		util.loadDir(sourceList, flags, fm, suffixCfg, function (fileMap) {
 			console.timeEnd("firstStageLoaded success");
-			pi_modules.commonjs.exports.relativeGet("app/view/base/sourceLoaded").exports.init(flags,fm,suffixCfg);
+			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
+			pi_modules.commonjs.exports.relativeGet("chat/client/app/data/store").exports.setStore('flags/firstStageLoaded',true);
 			// 聊天登录
 			pi_modules.commonjs.exports.relativeGet("chat/client/app/net/init").exports.registerRpcStruct(fm);
 			// 活动注册
@@ -261,7 +267,8 @@ winit.initNext = function () {
 			tab.release();
 			if(!pi_update.inApp){
 				vmLoad(util,fm);
-			}
+			}		
+			window.isWalletLoadReady = true;	
 			enterApp();
 		}, function (r) {
 			alert("加载目录失败, " + r.error + ":" + r.reason);
@@ -271,9 +278,13 @@ winit.initNext = function () {
 	// 全部所需资源下载完成,进入app,显示界面
 	var enterApp = function(){
 		// 加载根组件
+		if(!window.isvmWalletBindSuccess || !window.isWalletLoadReady){
+			return;
+		}
 		var root = pi_modules.commonjs.exports.relativeGet("pi/ui/root").exports;
 		root.cfg.full = false; //PC模式
 		var index = pi_modules.commonjs.exports.relativeGet("app/view/base/main").exports;
+
 		index.run(function () {
 			// 关闭读取界面
 			var rcmj = document.getElementById('rcmj_loading_log');
@@ -281,12 +292,11 @@ winit.initNext = function () {
 				document.body.removeChild(document.getElementById('rcmj_loading_log'));
 			}
 			loadFirstPageLeftSource();
-			loadLeftChatSource();
 			loadLeftWalletSource();
-		});
+		});	
 	}
 
-	// 加载钱包首页剩余资源
+	// 加载钱包首页所需的剩余资源
 	var loadFirstPageLeftSource = function(){
 		util.loadDir([ 
 			"earn/xlsx/item.c.js",
@@ -295,35 +305,48 @@ winit.initNext = function () {
 			"earn/xlsx/awardCfg.s.js",
 			"earn/client/app/components/noviceTaskAward/",
 			"earn/client/app/res/css/",
-			"earn/client/app/view/home/",
-			"chat/client/app/res/css/",
-			"chat/client/app/view/home/",
-			"chat/client/app/widget1/imgShow/"
+			"earn/client/app/view/home/"			
 		], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/firstPageLoaded',true);
+			if(!pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.getStore('flags',{}).firstPageLoaded){
+			    pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/firstPageLoaded',true);
+			}
 			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});
 	}
 
-	// 加载剩余的聊天资源
-	var loadLeftChatSource = function(){
-		util.loadDir([ "chat/client/app/view/","chat/client/app/widget/","chat/client/app/widget1/"], flags, fm, undefined, function (fileMap) {
-			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
-			
-		}, function (r) {
-			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-		}, function(){});
-	}
 
 	// 加载剩余所有资源
 	var loadLeftWalletSource = function(){
 		util.loadDir([ 
 			"app/components/",
-			"app/view/"
+			"app/view/",
+			'app/components1/',
+			"chat/client/app/view/",
+			"chat/client/app/widget/",
+			"chat/client/app/widget1/"
 		], flags, fm, undefined, function (fileMap) {
-			// TODO
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
+			loadLeftEarnSource();
+		}, function (r) {
+			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+		}, function(){});
+	}
+
+	// 加载活动所有资源
+	var loadLeftEarnSource = function(){
+		util.loadDir([ 
+			'app/net/',
+			'earn/client/app/components/',
+			'earn/client/app/view/',
+			'earn/client/app/xls/',
+			'earn/server/rpc/',
+			'earn/client/app/net/',
+			'earn/xlsx/',
+		], flags, fm, undefined, function (fileMap) {
+			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_earnPage_loaded',true);
+			
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});
@@ -339,11 +362,11 @@ winit.initNext = function () {
 		util.loadDir([ "vm/remote/","vm/store"], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("vm/remote/login").exports.openConnect();
 			
-		}, function (r) {
-			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
-		}, function(){});
+	// 	}, function (r) {
+	// 		console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
+	// 	}, function(){});
 		
-	}
+	// }
 	
 
 	// 加载pisdk初始化及登录
@@ -363,6 +386,14 @@ winit.initNext = function () {
 				webviewName: 'wallet',   // 应用名字 由好嗨唯一分配
 				isHorizontal: false,      // 是否横屏 由游戏决定
 			},function(res) {
+				if(!res){
+					window.isvmWalletBindSuccess = true;
+					enterApp();
+				}else{
+					window.isvmWalletBindSuccess = false;
+					alert('vm 绑定失败，请退出后重试');
+				}
+				
 				console.timeEnd('pisdk init complete');
 				console.log('bind vm result: ', JSON.stringify(res));
 				// 钱包授权
@@ -466,58 +497,67 @@ function updateUiInit(){
 			$updateItemInnerHtml += $item;
 		}
 
-		var newVersion = option.version ? `：V${option.version}` : "";
+		var newVersion = option.version ? "：V"+option.version : "";
 		var errorTips = "正在连接服务器";
 		if(option.updateError){
-			$root.innerHTML = `
-			<div class="pi-mask">
-				<div class="pi-update-box animated bounceInUp">
-					<img src="../res/image/rocket.png" class="pi-update-rocket" />
-					<div class="pi-update-content">
-					<div class="pi-update-title">发现新版本<span id="pi-version">${newVersion}</span></div>
-					<div class="pi-update-items">
-						${$updateItemInnerHtml}
-					</div>
-					</div>
-					<div class="pi-update-bottom">
-						<div class="pi-update-btns">
-							<div class="pi-update-cancel-btn">${option.confirmCancel}</div>
-							<div class="pi-update-ok-btn">${option.confirmOk}</div>
-						</div>
-						<div class="pi-update-progress-container">
-							${errorTips}
-						</div>
-						<div class="pi-update-complete-btn"></div>
-					</div>
-				</div>
-			</div>`;
+			$root.innerHTML = '<div class="pi-mask">'+
+				'<div class="pi-update-box animated bounceInUp">'+
+					'<img src="../res/image/rocket.png" class="pi-update-rocket" />'+
+					'<div class="pi-update-content">'+
+					'<div class="pi-update-title">发现新版本<span id="pi-version">'+
+						newVersion+
+					'</span></div>'+
+					'<div class="pi-update-items">'+
+						$updateItemInnerHtml+
+					'</div>'+
+					'</div>'+
+					'<div class="pi-update-bottom">'+
+						'<div class="pi-update-btns">'+
+							'<div class="pi-update-cancel-btn">'+
+								option.confirmCancel+
+							'</div>'+
+							'<div class="pi-update-ok-btn">'+
+								option.confirmOk+
+							'</div>'+
+						'</div>'+
+						'<div class="pi-update-progress-container">'+
+							errorTips+
+						'</div>'+
+						'<div class="pi-update-complete-btn"></div>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
 		}else{
-			$root.innerHTML = `
-			<div class="pi-mask">
-				<div class="pi-update-box animated bounceInUp">
-					<img src="../res/image/rocket.png" class="pi-update-rocket" />
-					<div class="pi-update-content">
-					<div class="pi-update-title">发现新版本<span id="pi-version">${newVersion}</span></div>
-					<div class="pi-update-items">
-						${$updateItemInnerHtml}
-					</div>
-					</div>
-					<div class="pi-update-bottom">
-						<div class="pi-update-btns">
-							<div class="pi-update-cancel-btn">${option.confirmCancel}</div>
-							<div class="pi-update-ok-btn">${option.confirmOk}</div>
-						</div>
-						<div class="pi-update-progress-container">
-							<div class="pi-update-progress-bg">
-								<div class="pi-update-progress"></div>
-							</div>
-							<div class="pi-update-progress-text">0%</div>
-						</div>
-						<div class="pi-update-complete-btn"></div>
-					</div>
-				</div>
-			</div>
-			`;
+			$root.innerHTML = '<div class="pi-mask">'+
+				'<div class="pi-update-box animated bounceInUp">'+
+					'<img src="../res/image/rocket.png" class="pi-update-rocket" />'+
+					'<div class="pi-update-content">'+
+					'<div class="pi-update-title">发现新版本<span id="pi-version">'+
+						newVersion+
+					'</span></div>'+
+					'<div class="pi-update-items">'+
+						$updateItemInnerHtml+
+					'</div>'+
+					'</div>'+
+					'<div class="pi-update-bottom">'+
+						'<div class="pi-update-btns">'+
+							'<div class="pi-update-cancel-btn">'+
+								option.confirmCancel+
+							'</div>'+
+							'<div class="pi-update-ok-btn">'+
+								option.confirmOk+
+							'</div>'+
+						'</div>'+
+						'<div class="pi-update-progress-container">'+
+							'<div class="pi-update-progress-bg">'+
+								'<div class="pi-update-progress"></div>'+
+							'</div>'+
+							'<div class="pi-update-progress-text">0%</div>'+
+						'</div>'+
+						'<div class="pi-update-complete-btn"></div>'+
+					'</div>'+
+				'</div>'+
+			'</div>';
 		}
 		
 		var $body = document.querySelector("body");
@@ -615,11 +655,11 @@ function getUpdateContent(){
 		"androidUpdateContent":["接入了新的支付","支持游戏悬浮窗","支持手机号注册","修复了部分bug"],
 		"iosUpdateContent":["ios底层修复1","ios底层修复2","ios底层修复3","ios底层修复4"],
 	};
-	const updateJsonStr = localStorage.getItem("updateJson");
+	var updateJsonStr = localStorage.getItem("updateJson");
 	pi_update.updateJson = updateJsonStr ? JSON.parse(updateJsonStr) : defaultUpdateJson;
 	var ajax = pi_modules.ajax.exports;
-	const url = winit.appURL + "/update.json";
-	const timeout = 1000;
+	var url = winit.appURL + "/update.json";
+	var timeout = 1000;
 	ajax.get(url + "?" + Math.random(), {}, undefined, undefined, timeout, function (updateJson) {
 		localStorage.setItem("updateJson",updateJson);
 		pi_update.updateJson = JSON.parse(updateJson);

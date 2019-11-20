@@ -3,6 +3,7 @@
  */
 import { AdPlatform, ADUnion, PlayEvent } from '../../pi/browser/ad_unoin';
 import { ImagePicker } from '../../pi/browser/imagePicker';
+import { appLanguageList, LocalLanguageMgr } from '../../pi/browser/localLanguage';
 import { WebViewManager } from '../../pi/browser/webview';
 import { setStore } from '../store/memstore';
 import { piRequire } from '../utils/commonjsTools';
@@ -29,6 +30,7 @@ export const selectImage = (ok?,cancel?) => {
         success: (width, height, url) => {
             ok && ok(width, height, url);
             close && close.callback(close.widget);
+            
         },
         fail: (result) => {
             cancel && cancel(result);
@@ -69,6 +71,8 @@ export const doScanQrCode = (ok?,cancel?) => {
                 console.log(`close result:${r}`);
             }
         });
+    }).catch(err => {
+        console.log('下载文件失败',err);
     });
 };
 
@@ -91,12 +95,56 @@ export const makeScreenShot = (okCB?,errCB?) => {
 };
 
 /**
+ * 设置手机语言
+ */
+export const setAppLanguage = (language:string,okCB?,errCB?) => {
+    const appLanguage = new LocalLanguageMgr();
+    appLanguage.init();
+    appLanguage.setAppLan({
+        language: appLanguageList[language],
+        success: (result) => { 
+            okCB && okCB(result);
+        },
+        fail: (result) => { 
+            errCB && errCB(result);
+        }
+    });
+    appLanguage.close({
+        success:(r) => {
+            console.log(`close result:${r}`);
+        }
+    });
+};
+
+/**
+ * 获取系统语言
+ */
+export const getSystemLanguage = (okCB?,errCB?) => {
+    const appLanguage = new LocalLanguageMgr();
+    appLanguage.init();
+    appLanguage.getSysLan({
+        success: (result) => { 
+            okCB && okCB(result);
+        },
+        fail: (result) => { 
+            errCB && errCB(result);
+        }
+    });
+    appLanguage.close({
+        success:(r) => {
+            console.log(`close result:${r}`);
+        }
+    });
+};
+
+/**
  * 预先下载广告
  */
+const adMgr = ADUnion.getInstance();
 export const preLoadAd = (adType?: AdPlatform,cb?:(str1:string,str2:string) => void) => {
     // adType = adType ? adType : Math.random() > 0.5 ? AdPlatform.GDT : AdPlatform.CSJ;
     adType = AdPlatform.CSJ;  // ios目前只接入了csj
-    ADUnion.loadRewardVideoAD(adType,(str1,str2) => {
+    adMgr.loadRewardVideoAD(adType,(str1,str2) => {
         cb && cb(str1,str2);
     });
 };
@@ -107,7 +155,7 @@ export const preLoadAd = (adType?: AdPlatform,cb?:(str1:string,str2:string) => v
 // tslint:disable-next-line:no-reserved-keywords
 export const watchAd = (adType: AdPlatform,cb?:(isSuccess: number, event: PlayEvent, info: string) => void) => {
     // tslint:disable-next-line:no-reserved-keywords
-    ADUnion.showRewardVideoAD(adType,(isSuccess,event,info) => {
+    adMgr.showRewardVideoAD(adType,(isSuccess,event,info) => {
         cb && cb(isSuccess,event,info);
         preLoadAd();
     });
@@ -118,7 +166,7 @@ export const watchAd = (adType: AdPlatform,cb?:(isSuccess: number, event: PlayEv
  */
 export const chooseAdType = (cb:Function) => {
     const ads = [];
-    ADUnion.getADNumber((gdtAdNumber,csjAdNumber) => {
+    adMgr.getADNumber((gdtAdNumber,csjAdNumber) => {
         for (let i = 0;i < gdtAdNumber;i ++) {
             ads.push(AdPlatform.GDT);
         }
