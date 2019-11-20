@@ -2,6 +2,7 @@
  * pi sdk 入口文件
  */
 // tslint:disable-next-line:max-line-length
+import {PostMessage } from '../app/postMessage/postMessage';
 import { buttonModInit, closePopBox, createThirdApiStyleTag, createThirdBaseStyle, openBulletin, popInputBox, popNewLoading, popNewMessage } from './sdkTools';
 
 declare var pi_modules;
@@ -94,91 +95,6 @@ const showButtons = [{
         });
     }
 }
-// ,{
-//     id:ButtonId.BULLETIN,
-//     img:'gameNotice.png',
-//     text:'公告',
-//     show:true,
-//     clickedClose:true,
-//     redSpot:true,
-//     clickCb:() => {
-//         console.log('click 游戏公告');
-//         openBulletin();
-//     }
-// },{
-//     id:ButtonId.DIVIDEND,
-//     img:'shareMoney.png',
-//     text:'分红',
-//     show:true,
-//     clickedClose:true,
-//     redSpot:false,
-//     clickCb:() => {
-//         console.log('click 分红');
-//         miniWebview('/wallet/chat/client/boot/index.html');
-//         pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
-//             console.log('gotoOfficialGroupChat call success');
-//         });
-//     }
-// },{
-//     id:ButtonId.INVITEFRIENDS,
-//     img:'wx.png',
-//     text:'邀请好友',
-//     show:false,
-//     clickedClose:true,
-//     redSpot:false,
-//     clickCb:() => {
-//         console.log('click 邀请好友');
-//         pi_RPC_Method(piConfig.jsApi, 'inviteFriends', {
-//             nickName:'测试',
-//             inviteCode:'123456',
-//             apkDownloadUrl:'http://xxxxx',
-//             webviewName:piConfig.webviewName
-//         }, (error, result) => {
-//             console.log('inviteFriends call success');
-//         });
-//     }
-// },{
-//     id:ButtonId.RECHARGE,
-//     img:'recharg.png',
-//     text:'去充值',
-//     show:false,
-//     clickedClose:true,
-//     redSpot:false,
-//     clickCb:() => {
-//         console.log('click 去充值');
-//         pi_RPC_Method(piConfig.jsApi, 'gotoRecharge', piConfig.webviewName,  (error, result) => {
-//             console.log('inviteFriends call success');
-//         });
-//     }
-// },{
-//     id:ButtonId.FREESECRET,
-//     startImg:'free_secret_close.png',
-//     closeImg:'free_secret_start.png',
-//     text:'打开免密',
-//     startText:'关闭免密',
-//     closeText:'打开免密支付',
-//     show:false,
-//     clickedClose:false,
-//     redSpot:false,
-//     clickCb:() => {
-//         console.log('click 免密支付');
-//         setFreeSecrectPay(!piStore.freeSecret);
-//     }
-// },{
-//     id:ButtonId.OFFICIALGROUPCHAT,
-//     img:'official_group_chat.png',
-//     text:'官方群聊',
-//     show:false,
-//     clickedClose:true,
-//     redSpot:false,
-//     clickCb:() => {
-//         console.log('click 官方群聊');
-//         miniWebview('/wallet/chat/client/boot/index.html');
-//         pi_RPC_Method(piConfig.jsApi, 'gotoOfficialGroupChat', piConfig.webviewName,  (error, result) => {
-//             console.log('gotoOfficialGroupChat call success');
-//         });
-//     }
-// }
 ];
 
 // 最小化webview
@@ -217,18 +133,21 @@ const piService = {
             if (!that.hasCallBind) {
                 return;
             }
-
             start += step;
             if (start > timeMS) {
                 callback({
                     code: -3,
-                    reason: 'timeout'
+                    reason: 'timeout'         
                 });
                 return;
             }
             if (that.callBackListen) {
-                window.JSBridge.webViewBindService(JSON.stringify(autoInfo));
-                setTimeout(handler, step);
+                if (inApp) {
+                    window.JSBridge.webViewBindService(JSON.stringify(autoInfo));
+                    setTimeout(handler, step);
+                } else {
+                    pi_sdk.piService.onBindService(null,JSON.stringify(autoInfo));
+                }
             }
         };
 
@@ -295,7 +214,7 @@ const setWebviewManager = (path:string) => {
             methodName,  // 方法名
             params:[param,callback]        // 参数组成的数组，参数可以有回调函数
         };
-        exs.WebViewManager.rpc('JSVM',rpcData);        
+        exs.WebViewManager.rpc('JSVM',rpcData);
     };
 };
 
@@ -303,9 +222,8 @@ const setWebviewManager = (path:string) => {
  * 初始化
  */
 const piSdkInit = (param:{webviewName:string;appid:string;isHorizontal:boolean;buttonMod:number}, cb:any) => {
-    if (inApp) {
-        piService.bind(6 * 1000, { webviewName: param.webviewName, appid: param.appid }, cb);
-    }
+    
+    piService.bind(6 * 1000, { webviewName: param.webviewName, appid: param.appid }, cb);
     
     piConfig.webviewName = param.webviewName;
     piConfig.appid = param.appid;
@@ -328,8 +246,8 @@ enum ButtonMods {
 
 piConfig.ButtonId = ButtonId;
 piConfig.showButtons = showButtons;
-piConfig.jsApi = 'vm/app/remote/JSAPI';
-piConfig.imgUrlPre = 'http://192.168.31.226/wallet/app/res/image/third/';
+piConfig.jsApi = 'vm/remote/JSAPI';
+piConfig.imgUrlPre = 'http://app.herominer.net/wallet/app/res/image/third/';
 piConfig.buttonMods = ButtonMods;
 
 pi_sdk.setWebviewManager = setWebviewManager;

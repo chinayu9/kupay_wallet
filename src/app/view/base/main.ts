@@ -12,11 +12,13 @@ import { ExitApp } from '../../../pi/browser/exitApp';
 import { initReport } from '../../../pi/collection/collection';
 import { backCall, backList, popNew } from '../../../pi/ui/root';
 import { addWidget } from '../../../pi/widget/util';
+import { getWebviewName } from '../../api/walletApi';
 import { sourceIp } from '../../public/config';
 import { getScreenModify } from '../../utils/native';
+import { getGameItem } from '../play/home/gameConfig';
 
 // ============================== 导出
-export const run = (cb?): void =>  {
+export const run = async (cb?): Promise<void> =>  {
     const root = document.querySelector('[w-tag="pi-ui-root"]');
     if (root) {
         return;
@@ -29,7 +31,17 @@ export const run = (cb?): void =>  {
         ip:sourceIp
     });
     getScreenModify();
-    popNew('app-view-base-app');
+
+    // 有webview表示跳到广场页面
+    // const webviewName = await getWebviewName();  
+    const webviewName = '';
+    let item:any = {};
+    if (webviewName) {
+        console.log('webviewName ',webviewName);
+        item = getGameItem(webviewName);
+        popNew('app-components-floatBox-floatBox',{ webviewName, imgUrl:item.img[0] });
+    }
+    popNew('app-view-base-app',{ gameName: item.title });
     
     // 锁屏页面;
     // popNewPage();

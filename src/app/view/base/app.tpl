@@ -10,7 +10,7 @@
     {{end}}
 {{elseif it.type === 1}}
     {{let index = it.tabBarList.findIndex(function(v){return v.modulName == it.isActive})}}
-    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}} }</widget>
+    <widget w-tag={{it.tabBarList[index].components}} style="position:absolute;width:100%;height:100%;">{isActive:false,userInfo:{{it.userInfo}},gameName:{{it.gameName}} }</widget>
 {{else}}
     {{for i, v of it.tabBarList}}
         <div ev-myHome="myHome" style="visibility: {{v.modulName == it.isActive ? 'visible' : 'hidden'}}; z-index:{{v.modulName == it.isActive ? 0 :-1}}; position:absolute; width:100%;height:100%;">

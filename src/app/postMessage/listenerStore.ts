@@ -34,9 +34,9 @@ export const addStoreListener = (key:string,cb:Function) => {
         frameId = requestAnimationFrame(() => {   // 在下一帧之前一次性注册所有key
             const keysStr = registerKeys.join(',');
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'vm/app/remote/vmApi', 
+                moduleName:'vm/remote/vmApi', 
                 methodName:'vmRegisterStore', 
-                params:[keysStr] 
+                params:[keysStr]   
             });
             registerKeys.length = 0;
             frameId = undefined;

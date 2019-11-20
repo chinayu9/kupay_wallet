@@ -118,12 +118,14 @@ export class MyHome extends Widget {
             this.props.user.userLevel = userInfo.level;
             this.props.user.acc_id = userInfo.acc_id ? userInfo.acc_id :'000000';
             this.props.user.sex = userInfo.sex;
+            console.log('initData');
             this.props.uid = await getStoreData('user').uid;
-            
+            console.log('after getStoreData!!!');
+            console.log('this is uid' + this.props.uid);
+            this.paint();
             this.medalest();
             this.updateLocalWalletAssetList();
             this.setRedFlags();
-            this.paint();
         });
     }
     // 获取最高勋章

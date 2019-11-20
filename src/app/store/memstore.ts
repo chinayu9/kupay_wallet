@@ -23,6 +23,7 @@ export const initStore = () => {
     return initFile().then(() => {
         initSettings();         // 设置初始化
         initInviteUsers();      // 邀请好友数据初始化
+        gameListInit();// 游戏数据初始化
 
         return initAccount().then(() => { // 账户初始化
             initFileStore().then(() => {  // indexDb数据初始化
@@ -270,6 +271,7 @@ const registerFileStore = () => {
     // registerAccountChange(); // 监听账户变化
     registerThirdChange(); // 监听3方数据变化
     registerSettingChange(); // 监听setting数据变化
+    registerGameChange();// 监听游戏数据变化
 };
 
 /**
@@ -412,6 +414,25 @@ const settingChange = () => {
     setLocalStorage('setting', localSetting);
 };
 
+/**
+ * 游戏数据变化
+ */
+const registerGameChange = () => {
+    register('game', (r:any) => {
+        setLocalStorage('game',r);
+    });
+};
+
+/**
+ * 游戏数据初始化
+ */
+const gameListInit = () => {
+    getLocalStorage('game').then(data => {
+        if (!data) return;
+        console.log('===========================游戏列表初始化', data);
+        setStore('game', data);
+    });
+};
 // ======================================================== 本地
 
 // ============================================ 立即执行
@@ -453,6 +474,12 @@ const store: Store = {
     inviteUsers: {
         invite_success: null,  // 我邀请的所有好友的accid
         convert_invite: null   // 邀请我的好友的accid
+    },
+    game:{
+        allGame:[],// 全部游戏
+        hotGame:[],// 热门游戏
+        oftenGame:[],// 最近在玩的游戏
+        recommendGame:[]// 推荐游戏
     }
 };
 

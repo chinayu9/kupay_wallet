@@ -4,6 +4,7 @@ import { request } from '../../pi/net/ui/con_mgr';
 import { getStoreData } from '../api/walletApi';
 import { getStore,setStore } from '../store/memstore';
 import { popNewMessage } from '../utils/pureUtils';
+import { getAllGame, getGameInfo, getHotGame, getRecommendationsList, getUserRecentGame } from './pull';
 
 /**
  * 登录
@@ -38,6 +39,8 @@ export const walletLogin = (cb?:Function) => {
         if (!err) {
             setStore('flags/authorized',true);
             console.log('钱包注册成功',result);
+            // 获取全部游戏
+            getAllGames();
         } else {
             setStore('flags/authorized',false);
         }
@@ -69,4 +72,60 @@ export const checkAuthorize = () => {
     }
     
     return true;
+};
+
+// 获取全部游戏
+export const getAllGames = async () => {
+    const accId = await getStoreData('user');
+    getAllGame().then(r => {
+        if (r) {
+            const appId = JSON.stringify(r);
+            getGameInfo(appId).then(r => {
+                setStore('game/allGame',r);
+                console.log('全部游戏',r);
+            });
+        }
+    }).catch(() => {
+        popNewMessage('获取全部游戏失败');
+    });
+
+    // 获取热门游戏
+    getHotGame().then(r1 => {
+        if (r1) {
+            getGameInfo(r1).then(res => {
+                setStore('game/hotGame',res);
+                console.log('获取热门游戏',res);
+            });
+           
+        }
+    }).catch(() => {
+        popNewMessage('获取热门游戏失败');
+    });
+
+    // 获取推荐游戏
+    getRecommendationsList().then(r2 => {
+        if (r2) {
+            getGameInfo(r2).then(res => {
+                setStore('game/recommendGame',res);
+                console.log('获取推荐游戏',res);
+            });
+        }
+    }).catch(() => {
+        popNewMessage('获取推荐游戏失败');
+    });
+
+    // 获取最近在玩
+    if (accId.acc_id) {
+        getUserRecentGame(accId.acc_id,10).then(r => {
+            if (r) {
+                const appId = JSON.stringify(r);
+                getGameInfo(appId).then(res => {
+                    setStore('game/oftenGame',res);
+                    console.log('获取最近在玩',res);
+                });
+            }
+        }).catch(() => {
+            popNewMessage('获取最近在玩游戏失败');
+        });
+    }
 };

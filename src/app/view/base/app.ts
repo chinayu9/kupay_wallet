@@ -11,7 +11,7 @@ import { Widget } from '../../../pi/widget/widget';
 import { checkAuthorize } from '../../net/login';
 import { registerStoreData } from '../../postMessage/listenerStore';
 import { getModulConfig } from '../../public/config';
-import { getStore, register } from '../../store/memstore';
+import { getStore, register, setStore } from '../../store/memstore';
 import { piLoadDir } from '../../utils/commonjsTools';
 import { getUserInfo, rippleShow } from '../../utils/pureUtils';
 
@@ -82,6 +82,18 @@ export class App extends Widget {
         });
         
     }
+
+    public setProps(props:any) {
+        this.props = {
+            ...this.props,
+            ...props
+        };
+        if (props.gameName) {
+            this.props.isActive = 'APP_CHAT';
+        }
+        super.setProps(this.props);
+    }
+
     public findPage(isActive:string) {
         return this.props.tabBarList.filter(item => {
             return item.modulName === isActive;
@@ -102,13 +114,11 @@ export class App extends Widget {
                 'earn/xlsx/awardCfg.s.js',
                 'earn/client/app/components/noviceTaskAward/',
                 'earn/client/app/res/css/',
-                'earn/client/app/view/home/',
-                'chat/client/app/res/css/',
-                'chat/client/app/view/home/',
-                'chat/client/app/widget1/imgShow/'
+                'earn/client/app/view/home/'
             ];
             await piLoadDir(firstPage);
             loading.callback(loading.widget);
+            setStore('flags/firstPageLoaded',true);
         }
         rippleShow(event);
         const identfy = this.props.tabBarList[index].modulName;
@@ -141,10 +151,15 @@ export class App extends Widget {
         this.paint();
     }
 
-    public switchToChat(gameName) {  
+    public switchToSquare(gameName) {  
         this.props.isActive = 'APP_CHAT';
-        this.props.gameName = gameName;  // 从游戏跳到广场对应标签
-        this.paint();
+        this.props.gameName = '';  // 从游戏内跳到广场页
+        this.paint(); 
+        // 确保一定会执行setprops，不会停留在消息页
+        if (gameName) {
+            this.props.gameName = gameName; // 定位到对应标签
+            this.paint();     
+        }
     }
 
     public switchToPlay() {
@@ -217,9 +232,9 @@ ChatRegister('flags/unReadFg',(fg) => {
     w && w.changeChatIcon(fg);
 });
 
-export const gotoChat = (gameName?:string) => {
+export const gotoSquare = (gameName?:string) => {
     const w: any = forelet.getWidget(WIDGET_NAME);
-    w && w.switchToChat(gameName);
+    w && w.switchToSquare(gameName);
 };
 
 export const gotoEarn = () => {

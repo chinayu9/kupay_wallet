@@ -27,7 +27,7 @@ export const vmRpcCall = (methodName:string,params: any[]):Promise<any> => {
                 resolve(res);
             });
             WebViewManager.rpc('JSVM',{ 
-                moduleName:'vm/app/remote/vmApi', 
+                moduleName:'vm/remote/vmApi', 
                 methodName, 
                 params
             });

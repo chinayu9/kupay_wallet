@@ -1,5 +1,4 @@
 cd ..
-if exist .git\hooks\commit-msg goto :compile
 copy /Y jira_script\jira_git\rely\commit-msg .git\hooks
 goto :compile
 
