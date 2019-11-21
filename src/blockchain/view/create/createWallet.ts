@@ -1,6 +1,7 @@
 /**
  * create wallet
  */
+import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { createWallet, CreateWalletType } from '../../logic/localWallet';
@@ -10,6 +11,7 @@ import { uploadFile } from '../../net/pull';
 import { setStore } from '../../store/memstore';
 import { pswEqualed } from '../../utils/account';
 import { imgResize, popNew3, popNewMessage } from '../../utils/tools';
+
 interface Props {
     itype: CreateWalletType;
     mnemonic?: string;// 助记词
@@ -33,7 +35,6 @@ export class CreateWallet extends Widget {
             pswEqualed: false,
             userProtocolReaded: true,
             walletPswAvailable: false,
-            chooseImage: false,
             avatarHtml: '',
             imagePicker:null
         };
@@ -64,15 +65,6 @@ export class CreateWallet extends Widget {
     public pwsClear() {
         this.props.walletPsw = '';
         this.paint();
-    }
-    public selectImageClick() {
-        this.props.imagePicker = selectImage((width, height, url) => {
-            console.log('selectImage url = ',url);
-            // tslint:disable-next-line:max-line-length
-            this.props.avatarHtml = `<div style="background-image: url(${url});width: 160px;height: 160px;background-size: cover;background-position: center;background-repeat: no-repeat;border-radius:50%"></div>`;
-            this.props.chooseImage = true;
-            this.paint();
-        });
     }
 
     public async createClick() {
@@ -109,18 +101,7 @@ export class CreateWallet extends Widget {
         if (!secrectHash) {
             popNewMessage(this.language.tips[4]);
         }
-        if (this.props.chooseImage) {
-            this.props.imagePicker.getContent({
-                quality:70,
-                success(buffer:ArrayBuffer) {
-                    imgResize(buffer,(res) => {
-                        uploadFile(res.base64);
-                    });
-                }
-            });
-            
-        }
-        
+        popNew('blockchain-view-home-home');
         this.ok && this.ok();
     }
 

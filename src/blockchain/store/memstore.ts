@@ -3,12 +3,10 @@
  * @author donghr
  */
 // ============================================ 导入
-import { appLanguageList, LocalLanguageMgr } from '../../pi/browser/localLanguage';
 import { HandlerMap } from '../../pi/util/event';
 import { setLang } from '../../pi/util/lang';
 import { cryptoRandomInt } from '../../pi/util/math';
 import { defaultSetting } from '../config';
-import { topHeight } from '../utils/constants';
 import { deleteFile, getFile, getLocalStorage, initFileStore, setLocalStorage, writeFile } from './filestore';
 // tslint:disable-next-line:max-line-length
 import { AddrInfo, BtcMinerFee, ChangellyPayinAddr, ChangellyTempTxs, CloudCurrencyType, CloudWallet, Currency2USDT, CurrencyRecord, GasPrice, Setting, Silver, Store, TxHistory, UserInfo, Wallet } from './interface';
@@ -164,7 +162,7 @@ export const initCloudWallets = () => {
  */
 export const getAllAccount = () => {
     const localAcccounts = getLocalStorage('accounts', {
-        currenctId: '',
+        currentId: '',
         accounts: {}
     });
     const accounts = [];
@@ -182,7 +180,7 @@ export const getAllAccount = () => {
  */
 export const deleteAccount = (id: string) => {
     const localAcccounts = getLocalStorage('accounts', {
-        currenctId: '',
+        currentId: '',
         accounts: {}
     });
     deleteFile(id);
@@ -253,10 +251,10 @@ const getTxHistory = (fileTxHistorys: FileTxHistory[], currencyName: string, add
  */
 const initAccount = () => {
     const localAcccounts = getLocalStorage('accounts', {
-        currenctId: '',
+        currentId: '',
         accounts: {}
     });
-    const curAccount = localAcccounts.accounts[localAcccounts.currenctId];
+    const curAccount = localAcccounts.accounts[localAcccounts.currentId];
     if (curAccount) {
         const fileUser = curAccount.user;
 
@@ -405,7 +403,7 @@ const inviteUsersChange = () => {
 const accountChange = () => {
     const storeUser = store.user;
     const localAccounts = getLocalStorage('accounts', {
-        currenctId: '',
+        currentId: '',
         accounts: {}
     });
 
@@ -413,13 +411,13 @@ const accountChange = () => {
         const flags = getStore('flags');
         const saveAccount = flags.saveAccount;
         if (saveAccount) {
-            localAccounts.accounts[localAccounts.currenctId].wallet.logoutTimestamp = new Date().getTime();
-            localAccounts.currenctId = '';
+            localAccounts.accounts[localAccounts.currentId].wallet.logoutTimestamp = new Date().getTime();
+            localAccounts.currentId = '';
             setLocalStorage('accounts', localAccounts);
         } else {
-            deleteFile(localAccounts.currenctId);
-            delete localAccounts.accounts[localAccounts.currenctId];
-            localAccounts.currenctId = '';
+            deleteFile(localAccounts.currentId);
+            delete localAccounts.accounts[localAccounts.currentId];
+            localAccounts.currentId = '';
             setLocalStorage('accounts', localAccounts);
 
         }
@@ -481,7 +479,7 @@ const accountChange = () => {
         cloud: { cloudWallets: [...localCloudWallets] }
     };
 
-    localAccounts.currenctId = storeUser.id;
+    localAccounts.currentId = storeUser.id;
     localAccounts.accounts[storeUser.id] = newAccount;
 
     setLocalStorage('accounts', localAccounts);
@@ -566,7 +564,7 @@ initStore();
  * 本地所有账户
  */
 export interface Accounts {
-    currenctId: string;  // 当前账户id
+    currentId: string;  // 当前账户id
     accounts: {
         // 所有账户
         [key: string]: Account;
