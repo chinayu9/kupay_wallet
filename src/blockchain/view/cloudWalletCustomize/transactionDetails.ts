@@ -1,6 +1,7 @@
 /**
  * 交易详情页面
  */
+import { getModulConfig } from '../../../app/public/config';
 import { ShareType } from '../../../pi/browser/shareToPlatforms';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';

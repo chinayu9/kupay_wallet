@@ -38,16 +38,16 @@ export class CloudWalletHome extends Widget {
             topBarTitle:this.props.currencyName,
             tabs:[{
                 tab:this.language.total,
-                components:'app-view-wallet-cloudWallet-totalRecord'
+                components:'blockchain-view-cloudWallet-totalRecord'
             },{  
                 tab:this.language.other,
-                components:'app-view-wallet-cloudWallet-otherRecord'
+                components:'blockchain-view-cloudWallet-otherRecord'
             },{
                 tab:this.language.recharge,
-                components:'app-view-wallet-cloudWallet-rechargeRecord'
+                components:'blockchain-view-cloudWallet-rechargeRecord'
             },{
                 tab:this.language.withdraw,
-                components:'app-view-wallet-cloudWallet-withdrawRecord'
+                components:'blockchain-view-cloudWallet-withdrawRecord'
             }],
             activeNum:0,
             gain:fetchCoinGain(currencyName),
@@ -76,13 +76,13 @@ export class CloudWalletHome extends Widget {
      * 充值
      */
     public rechargeClick() {
-        popNew('app-view-wallet-cloudWallet-recharge',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-cloudWallet-recharge',{ currencyName:this.props.currencyName });
     }
     /**
      * 提币
      */
     public withdrawClick() {
-        popNew('app-view-wallet-cloudWallet-withdraw',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-cloudWallet-withdraw',{ currencyName:this.props.currencyName });
     }
 
     /**

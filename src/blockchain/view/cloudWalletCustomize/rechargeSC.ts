@@ -2,6 +2,7 @@
  * 充值SC
  */
 
+import { getModulConfig } from '../../../app/public/config';
 import { setStore } from '../../../chat/client/app/data/store';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';

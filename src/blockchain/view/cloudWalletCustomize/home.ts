@@ -1,6 +1,7 @@
 /**
  * SC 交易记录主页
  */
+import { getModulConfig } from '../../../app/public/config';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
@@ -35,13 +36,13 @@ export class CloudWalletHome extends Widget {
             titleShow,
             tabs:[{
                 tab:{ zh_Hans:'全部',zh_Hant:'全部',en:'' },
-                components:'app-view-wallet-cloudWalletCustomize-totalRecord'
+                components:'blockchain-view-cloudWalletCustomize-totalRecord'
             },{
                 tab:{ zh_Hans:'入账',zh_Hant:'入賬',en:'' },
-                components:'app-view-wallet-cloudWalletCustomize-accountEntry'
+                components:'blockchain-view-cloudWalletCustomize-accountEntry'
             },{
                 tab:{ zh_Hans:'出账',zh_Hant:'出賬',en:'' },
-                components:'app-view-wallet-cloudWalletCustomize-accountOut'
+                components:'blockchain-view-cloudWalletCustomize-accountOut'
             }],
             activeNum:0,
             gain:fetchCloudGain(),

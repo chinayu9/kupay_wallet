@@ -1,6 +1,7 @@
 /**
  * cloud home
  */
+import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { getProductList, getServerCloudBalance } from '../../net/pull';
@@ -41,9 +42,9 @@ export class CloudHome extends Widget {
         const index = e.index;
         const v = this.props.assetList[index];
         if (v.currencyName === CloudCurrencyType[CloudCurrencyType.SC] || v.currencyName === CloudCurrencyType[CloudCurrencyType.KT]) {
-            popNew3('app-view-wallet-cloudWalletCustomize-home',{ currencyName:v.currencyName,gain:v.gain });
+            popNew('blockchain-view-cloudWalletCustomize-home',{ currencyName:v.currencyName,gain:v.gain });
         } else {
-            popNew3('app-view-wallet-cloudWallet-home',{ currencyName:v.currencyName,gain:v.gain });
+            popNew('blockchain-view-cloudWallet-home',{ currencyName:v.currencyName,gain:v.gain });
         }
     }
     
@@ -57,13 +58,6 @@ export class CloudHome extends Widget {
         this.props.assetList = fetchCloudWalletAssetList();
         this.paint();
     }
-    public optimalClick() {
-        popNew3('app-view-wallet-financialManagement-home',{ activeNum:0 });
-    }
-    public fmItemClick(e:any,index:number) {
-        const product = this.props.productList[index];
-        popNew3('app-view-wallet-financialManagement-productDetail',{ product });
-    }
 
     public currencyUnitChange() {
         this.props.totalAsset = formatBalanceValue(fetchCloudTotalAssets());
@@ -72,69 +66,3 @@ export class CloudHome extends Widget {
         this.paint();
     }
 }
-
-// =======================本地
-register('user',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-
-// 云端余额变化
-register('cloud/cloudWallets',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateBalance();
-    }
-});
-
-// 货币涨跌幅度变化
-register('currency2USDTMap',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateBalance();
-    }
-});
-
-// 理财产品变化
-register('activity/financialManagement/products', async (productList) => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateProductList(productList);
-    }
-    
-});
-
-// 白银价格变化
-register('third/silver', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateBalance();
-    }
-    
-});
-register('setting/language', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-
-register('setting/changeColor', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-
-// 货币单位变化
-register('setting/currencyUnit',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.currencyUnitChange();
-    }
-});

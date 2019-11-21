@@ -294,6 +294,8 @@ export const loadBlockchainSource = () => {
         'blockchain/view/home/',
         'blockchain/view/account/',
         'blockchain/view/backup/',
+        'blockchain/view/cloudWalletCustomize/',
+        'blockchain/view/cloudWallet/',
         'blockchain/view/components/',
         'blockchain/components/'
     ];

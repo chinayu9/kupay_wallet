@@ -1,6 +1,7 @@
 /**
  * other record
  */
+import { getModulConfig } from '../../../app/public/config';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { getRealNode } from '../../../pi/widget/painter';
