@@ -7,7 +7,7 @@ import { getProductList, getServerCloudBalance } from '../../net/pull';
 import { CloudCurrencyType, Product } from '../../store/interface';
 import { getStore, register } from '../../store/memstore';
 // tslint:disable-next-line:max-line-length
-import { fetchCloudTotalAssets, fetchCloudWalletAssetList, formatBalanceValue, getCurrencyUnitSymbol, hasWallet, popNew3 } from '../../utils/tools';
+import { fetchCloudTotalAssets, fetchCloudWalletAssetList, formatBalanceValue, getCurrencyUnitSymbol } from '../../utils/tools';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
 declare var module: any;
@@ -38,7 +38,6 @@ export class CloudHome extends Widget {
 
     // 条目点击
     public itemClick(e:any) {
-        if (!hasWallet()) return;
         const index = e.index;
         const v = this.props.assetList[index];
         if (v.currencyName === CloudCurrencyType[CloudCurrencyType.SC] || v.currencyName === CloudCurrencyType[CloudCurrencyType.KT]) {

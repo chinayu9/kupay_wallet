@@ -113,19 +113,19 @@ export class TransactionHome extends Widget {
         return false;
     }
     public txListItemClick(e:any,index:number) {
-        popNew('app-view-wallet-transaction-transactionDetails',{ hash:this.props.txList[index].hash });
+        popNew('blockchain-view-transaction-transactionDetails',{ hash:this.props.txList[index].hash });
     }
     // 转账
     public doTransferClick() {
-        popNew('app-view-wallet-transaction-transfer',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-transaction-transfer',{ currencyName:this.props.currencyName });
     }
     // 收款
     public doReceiptClick() {
-        popNew('app-view-wallet-transaction-receipt',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-transaction-receipt',{ currencyName:this.props.currencyName });
     }
 
     public chooseAddrClick() {
-        popNew('app-view-wallet-transaction-chooseAddr',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-transaction-chooseAddr',{ currencyName:this.props.currencyName });
     }
     public updateRate() {
         this.props.rate = formatBalanceValue(fetchBalanceValueOfCoin(this.props.currencyName,1));
@@ -133,7 +133,7 @@ export class TransactionHome extends Widget {
     }
 
     public convertCurrencyClick() {
-        popNew('app-view-wallet-coinConvert-coinConvert',{ currencyName:this.props.currencyName });
+        popNew('blockchain-view-coinConvert-coinConvert',{ currencyName:this.props.currencyName });
     }
 
     public currencyUnitChange() {

@@ -10,8 +10,10 @@ import { getRealNode } from '../../pi/widget/painter';
 import { resize } from '../../pi/widget/resize/resize';
 import { lookup } from '../../pi/widget/widget';
 import { Config, ERC20Tokens, MainChainCoin, uploadFileUrlPrefix } from '../config';
+import { toMnemonic } from '../core/genmnemonic';
 import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType } from '../store/interface';
 import { getCloudBalances, getStore,setStore } from '../store/memstore';
+import { decrypt } from './cipherTools';
 import { getCipherToolsMod, getDataCenter, getGenmnemonicMod, piLoadDir, piRequire } from './commonjsTools';
 // tslint:disable-next-line:max-line-length
 import { currencyConfirmBlockNumber, defalutShowCurrencys, lang, notSwtichShowCurrencys, preShowCurrencys, resendInterval, USD2CNYRateDefault } from './constants';
@@ -269,18 +271,12 @@ export const calcHashValuePromise = (pwd, salt?):Promise<string> => {
  */
 export const popPswBox = (content = [],onlyOk:boolean = false,cancelDel:boolean = false):Promise<string> => {
     return new Promise(async (resolve) => {
-        const name = 'app-components-modalBoxInput-modalBoxInput';
-        if (!lookup(name)) {
-            const name1 = name.replace(/-/g,'/');
-            const sourceList = [`${name1}.tpl`,`${name1}.js`,`${name1}.wcss`,`${name1}.cfg`,`${name1}.widget`];
-            await piLoadDir(sourceList);
-        }
         const BoxInputTitle = Config[getLang()].userInfo.PswBoxInputTitle;
-        popNew('app-components-modalBoxInput-modalBoxInput', { itype: 'password', title: BoxInputTitle, content,onlyOk }, (r: string) => {
+        // tslint:disable-next-line:max-line-length
+        popNew('blockchain-components-modalBoxInput-modalBoxInput', { itype: 'password', title: BoxInputTitle, content,onlyOk }, (r: string) => {
             resolve(r);
             if (!r && cancelDel) popPswBox(content,onlyOk,cancelDel);
         }, (forgetPsw:boolean) => {
-            if (cancelDel && !forgetPsw) logoutAccount();
             resolve('');
         });
     });
@@ -541,23 +537,6 @@ export const fetchCloudWalletAssetList = () => {
     }
 
     return assetList;
-};
-
-/**
- * 没有创建钱包时
- */
-export const hasWallet = () => {
-    const wallet = getStore('wallet');
-    if (!wallet) {
-        popNew('app-components-modalBox-newUserWelfare',undefined, () => {
-            // popNew('app-view-wallet-create-home');
-            // popNew('app-view-base-localImg');
-        });
-
-        return false;
-    }
-
-    return true;
 };
 
 // 解析交易状态
@@ -1139,14 +1118,11 @@ export const rippleShow = (e:any) => {
  */
 export const getMnemonic = async (passwd) => {
     const wallet = getStore('wallet');
-    const hashPromise = calcHashValuePromise(passwd, getStore('user/salt'));
-    const cipherToolsrPromise = getCipherToolsMod();
-    const genmnemonicPromise = getGenmnemonicMod();
-    const [hash,cipherTools,genmnemonic] = await Promise.all([hashPromise,cipherToolsrPromise,genmnemonicPromise]);
+    const hash = await calcHashValuePromise(passwd, getStore('user/salt'));
     try {
-        const r = cipherTools.decrypt(wallet.vault,hash);
+        const r = decrypt(wallet.vault,hash);
         
-        return genmnemonic.toMnemonic(lang, hexstrToU8Array(r));
+        return toMnemonic(lang, hexstrToU8Array(r));
     } catch (error) {
         console.log(error);
 
