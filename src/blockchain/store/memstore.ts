@@ -24,7 +24,6 @@ export const initStore = () => {
         initAccount();          // 账户初始化
         initSettings();         // 设置初始化
         initThird();            // 三方数据初始化
-        initInviteUsers();      // 邀请好友数据初始化
         initFile().then(() => {
             resolve();
         });             // indexDb数据初始化
@@ -263,12 +262,8 @@ const initAccount = () => {
 
         // store.user init
         store.user.id = fileUser.id;
-        store.user.token = fileUser.token;
         store.user.publicKey = fileUser.publicKey;
         store.user.salt = fileUser.salt;
-        store.user.info = {
-            ...fileUser.info
-        };
 
         // store.cloud init
         const localCloudWallets = new Map<CloudCurrencyType, LocalCloudWallet>(curAccount.cloud.cloudWallets);
@@ -302,10 +297,7 @@ const initAccount = () => {
         
         const wallet: Wallet = {
             vault: localWallet.vault,
-            setPsw:localWallet.setPsw,
             isBackup: localWallet.isBackup,
-            sharePart:false,
-            helpWord:false,
             showCurrencys: localWallet.showCurrencys,
             currencyRecords,
             changellyPayinAddress:localWallet.changellyPayinAddress || [],
@@ -322,48 +314,16 @@ const initAccount = () => {
  * 设置初始
  */
 const initSettings = () => {
-
-    let langNum;
-    const appLanguage = new LocalLanguageMgr();
-    appLanguage.init();
-    appLanguage.getSysLan({
-        success: (localLan) => {
-            // tslint:disable-next-line:radix
-            langNum = parseInt(localLan);
-            const localSet = getLocalStorage('setting');
-            if (!localSet) {
-                if (langNum === appLanguageList.zh_Hans || langNum === appLanguageList.zh_Hant) {
-                    setLang(appLanguageList[langNum]);
-                    store.setting.language = appLanguageList[langNum];
-                } else {
-                    setLang(defaultSetting.DEFAULT_LANGUAGE);
-                    store.setting.language = defaultSetting.DEFAULT_LANGUAGE;
-                }
-            }
-
-        },
-        fail: (result) => {
-            console.log(result);
-        }
-    });
     const setting = getLocalStorage('setting', {
         language: defaultSetting.DEFAULT_LANGUAGE,
         changeColor: defaultSetting.DEFAULT_CHANGECOLOR,
-        currencyUnit: defaultSetting.DEFAULT_CURRENCY,
-        lockScreen: {
-            open: false,
-            psw: ''
-        },
-        deviceId: '',
-        topHeight,
-        bottomHeight:0
+        currencyUnit: defaultSetting.DEFAULT_CURRENCY
     });
     store.setting = {
         ...store.setting,
         ...setting
     };
     setLang(setting.language);
-
 };
 
 /**
@@ -440,21 +400,10 @@ const inviteUsersChange = () => {
 };
 
 /**
- * 邀请好友数据初始
- */
-const initInviteUsers = () => {
-    const data = getLocalStorage('inviteUsers');
-    if (!data) return;
-    console.log('===========================邀请好友数据初始',data);
-    setStore('inviteUsers/invite_success',data.invite_success);
-    setStore('inviteUsers/convert_invite',data.convert_invite);
-};
-
-/**
  * 当前账户变化
  */
 const accountChange = () => {
-    const storeUser = getStore('user');
+    const storeUser = store.user;
     const localAccounts = getLocalStorage('accounts', {
         currenctId: '',
         accounts: {}
@@ -479,13 +428,11 @@ const accountChange = () => {
     }
     const localUser: LocalUser = {
         id: storeUser.id,
-        token: storeUser.token,
         publicKey: storeUser.publicKey,
-        salt: storeUser.salt,
-        info: storeUser.info
+        salt: storeUser.salt
     };
 
-    const storeCloudWallets: Map<CloudCurrencyType, LocalCloudWallet> = getStore('cloud/cloudWallets');
+    const storeCloudWallets = store.cloud.cloudWallets;
     const localCloudWallets = new Map<CloudCurrencyType, LocalCloudWallet>();
 
     for (const [k, v] of storeCloudWallets) {
@@ -493,7 +440,7 @@ const accountChange = () => {
         localCloudWallets.set(k, cloudWallet);
     }
 
-    const wallet = getStore('wallet');
+    const wallet = store.wallet;
     const fileTxHistorys = [];
     let localWallet: LocalWallet = null;
     if (wallet) {
@@ -520,20 +467,18 @@ const accountChange = () => {
 
         localWallet = {
             vault: wallet.vault,
-            setPsw:wallet.setPsw,
             isBackup: wallet.isBackup,
             showCurrencys: wallet.showCurrencys,
             currencyRecords: localCurrencyRecords,
             changellyPayinAddress:wallet.changellyPayinAddress,
-            changellyTempTxs:wallet.changellyTempTxs,
-            logoutTimestamp:wallet.logoutTimestamp
+            changellyTempTxs:wallet.changellyTempTxs
         };
     }
 
     const newAccount: Account = {
         user: localUser,
         wallet: localWallet,
-        cloud: { cloudWallets: localCloudWallets }
+        cloud: { cloudWallets: [...localCloudWallets] }
     };
 
     localAccounts.currenctId = storeUser.id;
@@ -566,12 +511,7 @@ const settingChange = () => {
     const localSetting: Setting = {
         language: getStore('setting/language'),
         changeColor: getStore('setting/changeColor'),
-        currencyUnit: getStore('setting/currencyUnit'),
-        lockScreen: getStore('setting/lockScreen'),
-        deviceId: getStore('setting/deviceId'),
-        deviceInfo:getStore('setting/deviceInfo'),
-        topHeight: getStore('setting/topHeight'),
-        bottomHeight:getStore('setting/bottomHeight')
+        currencyUnit: getStore('setting/currencyUnit')
     };
     setLocalStorage('setting', localSetting);
 };
@@ -589,63 +529,17 @@ const handlerMap: HandlerMap = new HandlerMap();
 const store: Store = {
     user: {
         id: '',                      // 该账号的id
-        offline: false,               // 连接状态
-        isLogin: false,              // 登录状态
-        allIsLogin:false,            // 所有服务登录状态  (钱包  活动  聊天)
-        token: '',                   // 自动登录token
-        conRandom: '',               // 连接随机数
-        conUid: '',                   // 服务器连接uid
         publicKey: '',               // 用户公钥, 第一个以太坊地址的公钥
-        salt: '',                    // 加密 盐值
-        info: {                      // 用户基本信息
-            nickName: '',           // 昵称
-            avatar: '',             // 头像
-            phoneNumber: '',        // 手机号
-            areaCode:'86',          // 区域码
-            isRealUser: false,       // 是否是真实用户
-            acc_id:''                // 好嗨号
-        }
+        salt: ''                    // 加密 盐值
     },
     wallet: null,
     cloud: {
         cloudWallets: initCloudWallets()     // 云端钱包相关数据, 余额  充值提现记录...
     },
-    activity: {
-        luckyMoney: {
-            sends: null,          // 发送红包记录
-            exchange: null,       // 兑换红包记录
-            invite: null          // 邀请码记录
-        },
-        mining: {
-            total: null,      // 挖矿汇总信息
-            history: null, // 挖矿历史记录
-            addMine: [],  // 矿山增加项目
-            mineRank: null,    // 矿山排名
-            miningRank: null,  // 挖矿排名
-            itemJump: null
-        },                       // 挖矿
-        dividend: {
-            total: null,         // 分红汇总信息
-            history: null       // 分红历史记录
-        },
-        financialManagement: {          // 理财
-            products: null,
-            purchaseHistories: null
-        }
-    },
     setting: {
-        lockScreen: {         // 锁屏
-            psw: '',
-            open: false,
-            locked: false
-        },
         language: '',             // 语言
         changeColor: '',          // 涨跌颜色设置，默认：红跌绿张
-        currencyUnit: '',         // 显示哪个国家的货币
-        deviceId: '',             // 设备唯一ID
-        deviceInfo:null,           // 设备信息
-        topHeight,              // 设备头部应空出来的高度
-        bottomHeight:0            // 设备底部应空出来的高度
+        currencyUnit: ''         // 显示哪个国家的货币
     },
     third: {
         gasPrice: null,                             // gasPrice分档次
@@ -661,11 +555,7 @@ const store: Store = {
         },
         currency2USDTMap: new Map<string, Currency2USDT>()  // k线  --> 计算涨跌幅
     },
-    flags: {},
-    inviteUsers:{
-        invite_success: null,  // 我邀请的所有好友的accid
-        convert_invite: null   // 邀请我的好友的accid
-    }
+    flags: {}
 };
 
 initStore();
@@ -697,10 +587,8 @@ export interface Account {
  */
 export interface LocalUser {
     id: string;            // 该账号的id (第一个ETH地址)
-    token: string;         // 自动登录token
     publicKey: string;     // 用户公钥, 第一个以太坊地址的公钥
     salt: string;          // 加密 盐值
-    info: UserInfo;        // 基本信息
 }
 
 export interface LocalCurrencyRecord {
@@ -721,7 +609,7 @@ export interface LocalAddrInfo {
  * 当前用户前端数据
  */
 export interface LocalCloud {
-    cloudWallets: Map<CloudCurrencyType, LocalCloudWallet>;     // 云端钱包相关数据, 余额  充值提现记录...
+    cloudWallets:[CloudCurrencyType, LocalCloudWallet][];     // 云端钱包相关数据, 余额  充值提现记录...
 }
 
 /**
@@ -736,13 +624,11 @@ export interface LocalCloudWallet {
  */
 export interface LocalWallet {
     vault: string;                      // 钱包核心
-    setPsw:boolean;                     // 是否已经设置密码
     isBackup: boolean;                  // 备份助记词与否
     showCurrencys: string[];            // 显示的货币列表
     currencyRecords: LocalCurrencyRecord[];  // 支持的所有货币记录
     changellyPayinAddress:ChangellyPayinAddr[]; // changelly payinAddress
     changellyTempTxs:ChangellyTempTxs[]; // changelly临时交易记录
-    logoutTimestamp?:number;      // 登出时间戳
 }
 
 /**

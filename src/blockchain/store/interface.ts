@@ -11,13 +11,9 @@ export interface Store {
     user: User;          // 账号
     wallet: Wallet;      // 钱包
     cloud: Cloud;        // 云端
-    activity: Activity;  // 活动：红包，挖矿，分成，理财
-
     setting: Setting;     // 设置
-
     third: Third;        // 第三方通信数据，如：changelly...
     flags: object;       // 全局的标识
-    inviteUsers:object;  // 邀请好友
 }
 
 /**
@@ -64,21 +60,9 @@ export enum TxType {
  * 当前用户数据
  */
 export interface User {
-
     id: string;            // 该账号的id,实际上是第一个以太坊地址
-
-    offline: boolean;       // 连接状态
-    isLogin: boolean;      // 钱包登录状态
-    allIsLogin:boolean;     // 所有服务登录状态  (钱包  活动  聊天)
-
-    token: string;         // 自动登录token
-    conRandom: string;     // 连接随机数
-    conUid: string;        // 服务器连接uid
     publicKey: string;     // 用户公钥, 第一个以太坊地址的公钥
-
     salt: string;          // 加密 盐值
-
-    info: UserInfo;        // 基本信息
 }
 
 /**
@@ -108,14 +92,9 @@ export interface Third {
  * 用户设置
  */
 export interface Setting {
-    lockScreen: LockScreen;       // 锁屏
     language: string;             // 语言
     changeColor: string;          // 涨跌颜色设置，默认：红跌绿张
     currencyUnit: string;         // 显示哪个国家的货币
-    deviceId:string;              // 设备唯一id
-    deviceInfo:any;               // 设备信息 
-    topHeight:number;             // 设备头部应空出来的高度(刘海高度)
-    bottomHeight:number;          // 设备底部应空出来的高度
 }
 
 /**
@@ -227,10 +206,7 @@ export interface UserInfo {
  */
 export interface Wallet {
     vault: string;                      // 钱包核心
-    setPsw:boolean;                     // 是否已经设置过密码
     isBackup: boolean;                  // 备份助记词与否
-    sharePart:boolean;                  // 是否有通过分享片段备份
-    helpWord:boolean;                   // 是否通过助计词备份
     showCurrencys: string[];            // 显示的货币列表
     currencyRecords: CurrencyRecord[];  // 支持的所有货币记录
     changellyPayinAddress:ChangellyPayinAddr[];           // changelly 交易记录的changelly方收币地址
