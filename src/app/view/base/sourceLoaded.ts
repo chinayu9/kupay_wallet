@@ -292,6 +292,9 @@ export const loadBlockchainSource = () => {
         'blockchain/view/import/',
         'blockchain/view/transaction/',
         'blockchain/view/home/',
+        'blockchain/view/account/',
+        'blockchain/view/backup/',
+        'blockchain/view/components/',
         'blockchain/components/'
     ];
 

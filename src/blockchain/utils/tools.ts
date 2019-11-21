@@ -5,19 +5,39 @@ import { getStore as chatGetStore } from '../../chat/client/app/data/store';
 import { ArgonHash } from '../../pi/browser/argonHash';
 import { backCall, backList, popModalBoxs, popNew } from '../../pi/ui/root';
 import { getLang } from '../../pi/util/lang';
+import { cryptoRandomInt } from '../../pi/util/math';
 import { Callback } from '../../pi/util/util';
 import { getRealNode } from '../../pi/widget/painter';
 import { resize } from '../../pi/widget/resize/resize';
 import { lookup } from '../../pi/widget/widget';
 import { Config, ERC20Tokens, MainChainCoin, uploadFileUrlPrefix } from '../config';
 import { toMnemonic } from '../core/genmnemonic';
-import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType } from '../store/interface';
-import { getCloudBalances, getStore,setStore } from '../store/memstore';
+import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType, User } from '../store/interface';
+import { getCloudBalances, getStore,initCloudWallets, setStore } from '../store/memstore';
 import { decrypt } from './cipherTools';
-import { getCipherToolsMod, getDataCenter, getGenmnemonicMod, piLoadDir, piRequire } from './commonjsTools';
+import {  piLoadDir } from './commonjsTools';
 // tslint:disable-next-line:max-line-length
 import { currencyConfirmBlockNumber, defalutShowCurrencys, lang, notSwtichShowCurrencys, preShowCurrencys, resendInterval, USD2CNYRateDefault } from './constants';
 
+/**
+ * 注销账户并删除数据
+ */
+export const logoutAccountDel = (noLogin?:boolean) => {
+    const user:User = {
+        id: '',                      // 该账号的id
+        publicKey: '',               // 用户公钥, 第一个以太坊地址的公钥
+        salt: cryptoRandomInt().toString()                    // 加密 盐值
+    };
+    const cloud = {
+        cloudWallets: initCloudWallets()     // 云端钱包相关数据, 余额  充值提现记录...
+    };
+    
+    setStore('wallet',null,false);
+    setStore('cloud',cloud,false);
+    setStore('user',user);
+    setStore('flags/saveAccount', false);  
+    popNew('blockchain-view-create-home');
+};
 /**
  * 获取当前钱包对应货币正在使用的地址信息
  * @param currencyName 货币类型

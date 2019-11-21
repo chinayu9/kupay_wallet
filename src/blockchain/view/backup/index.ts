@@ -14,17 +14,13 @@ export class BackupIndex extends Widget {
     public backPrePage() {
         this.ok && this.ok();
     }
-    public setProps(props:Props,oldProps:Props) {
-        super.setProps(props,oldProps);
-        this.props.walletName = getModulConfig('WALLET_NAME');
-    }
     
     public standardBackupClick() {
-        popNew('app-view-wallet-backup-backupMnemonicWordConfirm',{ mnemonic:this.props.mnemonic },() => {
+        popNew('blockchain-view-backup-backupMnemonicWordConfirm',{ mnemonic:this.props.mnemonic },() => {
             this.ok && this.ok();
         });
     }
     public fragmentsBackupClick() {
-        popNew('app-view-wallet-backup-shareMnemonic',{ fragments:this.props.fragments });
+        popNew('blockchain-view-backup-shareMnemonic',{ fragments:this.props.fragments });
     }
 }
