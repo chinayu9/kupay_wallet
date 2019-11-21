@@ -4,6 +4,7 @@
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
+import { fetchBtcFees, fetchGasPrices } from '../../net/pull';
 import { getStore, register } from '../../store/memstore';
 // tslint:disable-next-line:max-line-length
 import { fetchLocalTotalAssets, fetchWalletAssetList, formatBalanceValue, getCurrencyUnitSymbol } from '../../utils/tools';
@@ -13,6 +14,11 @@ declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
 export class WalletHome extends Widget {
+    public create() {
+        super.create();
+        fetchGasPrices();
+        fetchBtcFees();
+    }
     public setProps(props:any,oldProps:any) {
         super.setProps(props,oldProps);
         this.init();

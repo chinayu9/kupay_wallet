@@ -21,7 +21,7 @@ export const initStore = () => {
         registerFileStore();    // 注册监听
         initAccount();          // 账户初始化
         // initSettings();         // 设置初始化
-        // initThird();            // 三方数据初始化
+        initThird();            // 三方数据初始化
         initFile().then(() => {
             resolve();
         });             // indexDb数据初始化
@@ -494,10 +494,10 @@ const thirdChange = () => {
     const localThird: LocalThird = {
         gasPrice: getStore('third/gasPrice'),
         btcMinerFee: getStore('third/btcMinerFee'),
-        gasLimitMap: getStore('third/gasLimitMap'),
+        gasLimitMap: [...getStore('third/gasLimitMap')],
         rate: getStore('third/rate'),
         silver: getStore('third/silver'),
-        currency2USDTMap: getStore('third/currency2USDTMap')
+        currency2USDTMap: [...getStore('third/currency2USDTMap')]
     };
     setLocalStorage('third', localThird);
 };
@@ -635,10 +635,10 @@ export interface LocalWallet {
 export interface LocalThird {
     gasPrice: GasPrice; // gasPrice分档次
     btcMinerFee: BtcMinerFee; // btc minerfee 分档次
-    gasLimitMap: Map<string, number>; // 各种货币转账需要的gasLimit
+    gasLimitMap:[string, number][]; // 各种货币转账需要的gasLimit
     rate: number; // 货币的美元汇率
     silver: Silver; // 白银价格
-    currency2USDTMap: Map<string, Currency2USDT>; // k线  --> 计算涨跌幅
+    currency2USDTMap: [string, Currency2USDT][]; // k线  --> 计算涨跌幅
 }
 
 /**

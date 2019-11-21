@@ -11,7 +11,6 @@ import { doScanQrCode } from '../../logic/native';
 import { fetchBtcFees, fetchGasPrices } from '../../net/pull';
 import { resendNormalTransfer, transfer, TxPayload } from '../../net/pullWallet';
 import { MinerFeeLevel, TxHistory } from '../../store/interface';
-import { register } from '../../store/memstore';
 import { doErrorShow } from '../../utils/toolMessages';
 // tslint:disable-next-line:max-line-length
 import { fetchBalanceValueOfCoin, formatBalance, getCurrencyUnitSymbol, getCurrentAddrByCurrencyName, getCurrentAddrInfo, getStaticLanguage, judgeAddressAvailable, popNewLoading, popNewMessage, popPswBox, updateLocalTx } from '../../utils/tools';
@@ -30,12 +29,12 @@ interface Props {
 export class Transfer extends Widget {
     public ok:() => void;
     public language:any;
-    public async setProps(props:Props,oldProps:Props) {
+    public setProps(props:Props,oldProps:Props) {
         super.setProps(props,oldProps);
         this.init();
     }
 
-    public async init() {
+    public init() {
         this.language = this.config.value[getLang()];
         if (this.props.currencyName === 'BTC') {
             fetchBtcFees();
@@ -156,7 +155,7 @@ export class Transfer extends Widget {
                     updateLocalTx(tx);
                     dataCenter.updateAddrInfo(tx.addr,tx.currencyName);
                     popNewMessage(getStaticLanguage().transfer.transSuccess);
-                    popNew('app-view-wallet-transaction-transactionDetails', { hash:tx.hash });
+                    popNew('blockchain-view-transaction-transactionDetails', { hash:tx.hash });
                     this.ok && this.ok();
                 } else {
                     doErrorShow(err);
@@ -187,19 +186,3 @@ export class Transfer extends Widget {
     }
 
 }
-
-// gasPrice变化
-register('third/gasPrice',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateMinerFeeList();
-    }
-});
-
-// btcMinerFee变化
-register('third/btcMinerFee',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateMinerFeeList();
-    }
-});
