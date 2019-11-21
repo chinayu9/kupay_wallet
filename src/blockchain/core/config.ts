@@ -14,8 +14,8 @@ export const config = {
         // http://192.168.33.115:8545       
         EthApiBaseUrl: 'https://ropsten.infura.io/Y4zS49bjsYwtRU3Tt4Yj',
         EthMarketPriceOracleUrl: 'https://api.coinmarketcap.com/v2/ticker/1027/?convert=CNY',
-        EthscanRopstenUrl: 'http://api-ropsten.etherscan.io/api?module=account&action=txlist&address=',
-        EthscanRopstenTokenTransferEvent: 'https://api-ropsten.etherscan.io/api?module=account&action=tokentx'
+        EthscanUrl: 'http://api-ropsten.etherscan.io/api?module=account&action=txlist&address=',
+        EthscanTokenTransferEvent: 'https://api-ropsten.etherscan.io/api?module=account&action=tokentx'
     },
     [DevMode.Rinkeby]: {
         // https://api.blockcypher.com/v1/btc/main
@@ -26,16 +26,16 @@ export const config = {
         // http://192.168.33.115:8545       
         EthApiBaseUrl: 'https://rinkeby.infura.io/Y4zS49bjsYwtRU3Tt4Yj',
         EthMarketPriceOracleUrl: 'https://api.coinmarketcap.com/v2/ticker/1027/?convert=CNY',
-        EthscanRopstenUrl: 'http://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=',
-        EthscanRopstenTokenTransferEvent: 'https://api-rinkeby.etherscan.io/api?module=account&action=tokentx'
+        EthscanUrl: 'http://api-rinkeby.etherscan.io/api?module=account&action=txlist&address=',
+        EthscanTokenTransferEvent: 'https://api-rinkeby.etherscan.io/api?module=account&action=tokentx'
     },
     [DevMode.Prod]: {
         BtcApiBaseUrl: 'https://insight.bitpay.com/insight-api',
         BtcMarketPriceOracleUrl: 'https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY',
         EthApiBaseUrl: 'https://mainnet.infura.io/Y4zS49bjsYwtRU3Tt4Yj',
         EthMarketPriceOracleUrl: 'https://api.coinmarketcap.com/v2/ticker/1027/?convert=CNY',
-        EthscanRopstenUrl: 'http://api.etherscan.io/api?module=account&action=txlist&address=',
-        EthscanRopstenTokenTransferEvent: 'https://api.etherscan.io/api?module=account&action=tokentx'
+        EthscanUrl: 'http://api.etherscan.io/api?module=account&action=txlist&address=',
+        EthscanTokenTransferEvent: 'https://api.etherscan.io/api?module=account&action=tokentx'
     }
 };
 

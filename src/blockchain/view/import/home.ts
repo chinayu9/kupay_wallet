@@ -22,13 +22,13 @@ export class ImportHome extends Widget {
         this.props = {
             tabList:[{
                 tab:this.language.tabs[0],
-                components:'app-view-wallet-import-standardImport'
+                components:'blockchain-view-import-standardImport'
             },{
                 tab:this.language.tabs[1],
-                components:'app-view-wallet-import-imageImport'
+                components:'blockchain-view-import-imageImport'
             },{
                 tab:this.language.tabs[2],
-                components:'app-view-wallet-import-fragmentImport'
+                components:'blockchain-view-import-fragmentImport'
             }]
         };
     }

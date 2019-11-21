@@ -2,7 +2,7 @@
     background-color: #fff;
 }
 .body{
-    padding: 0 30px 30px;
+    padding: 0 50px 30px 50px;
 }
 .create-tips{
     margin-top: 65px;
@@ -21,7 +21,7 @@
     font-weight:400;
     color:rgba(136,136,136,1);
     line-height:40px;
-    margin: 35px 0 145px 18px;
+    margin: 35px 0 0px 18px;
 }
 .tip-divid{
     margin-right: 12px;
@@ -48,7 +48,7 @@
 }
 .bottom-box{
     border-radius: 12px;
-    margin-top: 65px;
+    margin-top: 60px;
     position: relative;
 }
 .avatar-container{
@@ -132,9 +132,8 @@
 .registered-protocol{
     display: flex;
     align-items: center;
-    margin-top: 130px;
-    margin-bottom: 60px;
-    padding: 0 30px;
+    margin-top: 60px;
+    margin-bottom: 30px;
 }
 .user-protocol{
     cursor: pointer;
@@ -144,39 +143,24 @@
     text-align: left;
 }
 .btn{
-    margin: 0 30px;
 }
 .login-btns{
     margin: 60px 50px 0;
     height: 100px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size:28px;
     font-family:"PingFangSC-Regular";
     font-weight:400;
-    color:rgba(136,136,136,1);
+    color:#222;
     line-height:40px;
 }
 .login-btn{
     border-bottom: 1px solid rgba(136,136,136,1);
 }
-.login-btnBox1{
-    flex: 1;
-    height: 100%;
-    line-height: 80px;
-    margin-top: -54px;
-}
-.login-btnBox2{
-    flex: 1;
-    height: 100%;
-    line-height: 80px;
-    text-align: right;
-    margin-top: -54px;
-}
 .user-agree{
     font-size: 28px;
     line-height: 33px;
     text-align: left;
-    margin-left: 48px;
 }

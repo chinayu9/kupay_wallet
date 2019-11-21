@@ -10,18 +10,18 @@ let web3;
 if (config.dev_mode === DevMode.Ropsten) {
     var ETH_API_BASE_URL = config[DevMode.Ropsten].EthApiBaseUrl;
     var ETH_MARKET_PRICE_ORACLE_URL = config[DevMode.Ropsten].EthMarketPriceOracleUrl;
-    var ETHSCAN_ROPSTEN_API_URL = config[DevMode.Ropsten].EthscanRopstenUrl;
-    var ETHSCAN_ROPSTEN_TOKEN_TRANSFER_EVENT = config[DevMode.Ropsten].EthscanRopstenTokenTransferEvent;
+    var ETHSCAN_API_URL = config[DevMode.Ropsten].EthscanUrl;
+    var ETHSCAN_TOKEN_TRANSFER_EVENT = config[DevMode.Ropsten].EthscanTokenTransferEvent;
 } else if (config.dev_mode === DevMode.Rinkeby) {
     ETH_API_BASE_URL = config[DevMode.Rinkeby].EthApiBaseUrl;
     ETH_MARKET_PRICE_ORACLE_URL = config[DevMode.Rinkeby].EthMarketPriceOracleUrl;
-    ETHSCAN_ROPSTEN_API_URL = config[DevMode.Rinkeby].EthscanRopstenUrl;
-    ETHSCAN_ROPSTEN_TOKEN_TRANSFER_EVENT = config[DevMode.Rinkeby].EthscanRopstenTokenTransferEvent;
+    ETHSCAN_API_URL = config[DevMode.Rinkeby].EthscanUrl;
+    ETHSCAN_TOKEN_TRANSFER_EVENT = config[DevMode.Rinkeby].EthscanTokenTransferEvent;
 } else if (config.dev_mode === DevMode.Prod) {
     ETH_API_BASE_URL = config[DevMode.Prod].EthApiBaseUrl;
     ETH_MARKET_PRICE_ORACLE_URL = config[DevMode.Prod].EthMarketPriceOracleUrl;
-    ETHSCAN_ROPSTEN_API_URL = config[DevMode.Prod].EthscanRopstenUrl;
-    ETHSCAN_ROPSTEN_TOKEN_TRANSFER_EVENT = config[DevMode.Prod].EthscanRopstenTokenTransferEvent;
+    ETHSCAN_API_URL = config[DevMode.Prod].EthscanUrl;
+    ETHSCAN_TOKEN_TRANSFER_EVENT = config[DevMode.Prod].EthscanTokenTransferEvent;
 }
 
 /* tslint:disable:prefer-template */
@@ -183,7 +183,7 @@ export class Api {
      */
     public async getAllTransactionsOf(address: string): Promise<any> {
         try {
-            const url = ETHSCAN_ROPSTEN_API_URL + address;
+            const url = ETHSCAN_API_URL + address;
             const response = await fetch(url);
 
             return await response.json();
@@ -225,7 +225,7 @@ export class Api {
      * @memberof Api
      */
     public async getTokenTransferEvents(contractAddress: string, address: string): Promise<any> {
-        const path = ETHSCAN_ROPSTEN_TOKEN_TRANSFER_EVENT + `&contractAddress=${contractAddress}&address=${address}`;
+        const path = ETHSCAN_TOKEN_TRANSFER_EVENT + `&contractAddress=${contractAddress}&address=${address}`;
         // console.log(path);
         try {
             const response = await fetch(path);

@@ -9,4 +9,8 @@ export class CreateHome extends Widget {
     public createWallet() {
         popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Random });
     }
+
+    public importWallet() {
+        popNew('blockchain-view-import-home');
+    }
 }
