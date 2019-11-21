@@ -281,3 +281,17 @@ export const loadHaihaiSource = () => {
         setStore('flags/loadHaihaiSource',true); 
     });
 };
+
+/**
+ * 加载区块链资源
+ */
+export const loadBlockchainSource = () => {
+    const fg = getStore('flags',{}).loadBlockchainSource;
+    const sourceList = [
+        'blockchain/view/create/'
+    ];
+
+    return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {    
+        setStore('flags/loadBlockchainSource',true); 
+    });
+};
