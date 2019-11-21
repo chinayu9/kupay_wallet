@@ -19,7 +19,6 @@ interface Props {
 export class CloudHome extends Widget {
     public setProps(props:Props,oldProps:Props) {
         super.setProps(props,oldProps);
-        this.props.financialModulIsShow = getModulConfig('FINANCIAL_SERVICES'); // 优选理财模块配置
         this.init();
         if (props.isActive) {
             getProductList();
@@ -32,7 +31,6 @@ export class CloudHome extends Widget {
             ...this.props,
             totalAsset:formatBalanceValue(fetchCloudTotalAssets()),
             assetList:fetchCloudWalletAssetList(),
-            productList:getStore('activity/financialManagement/products',[]),
             redUp:color === 'redUp',
             currencyUnitSymbol:getCurrencyUnitSymbol()
         };

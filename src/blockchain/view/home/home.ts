@@ -1,170 +1,86 @@
-/**
- * wallet home 
- */
-// ==============================导入
+// ================================ 导入
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
-import { getServerCloudBalance } from '../../net/pull';
-import { getStore, register } from '../../store/memstore';
-import { getDataCenter } from '../../utils/commonjsTools';
-// tslint:disable-next-line:max-line-length
-import { fetchCloudTotalAssets, fetchLocalTotalAssets, formatBalanceValue, getCurrencyUnitSymbol, getUserInfo } from '../../utils/tools';
-// ============================导出
+
+// ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
 declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
-export class Home extends Widget {
-    public setProps(props:any,oldProps:any) {
-        super.setProps(props,oldProps);
-        this.pageInit();
-        this.dataInit();
+
+interface TabBar {
+    modulName:string;
+    text:object;
+    icon:string;
+    iconActive:string;
+    components:string;
+}
+
+interface Props {
+    isActive:string; // 当前活跃的页面
+    tabBarList:TabBar[];
+}
+const TabBarList = [
+    {
+        modulName: 'BLOCKCHAIN_CLOUD',
+        text: { zh_Hans:'云资产',zh_Hant:'云资产',en:'' },
+        icon: 'cloud_icon.png',
+        iconActive: 'cloud_icon.png',
+        components: 'blockchain-view-home-cloudHome'
+    },{
+        modulName: 'BLOCKCHAIN_LOCAL',
+        text: { zh_Hans:'本地资产',zh_Hant:'本地资产',en:'' },
+        icon: 'local_icon.png',
+        iconActive: 'local_icon.png',
+        components: 'blockchain-view-home-walletHome'
+    },{
+        modulName: 'BLOCKCHAIN_GAME',
+        text: { zh_Hans:'游戏',zh_Hant:'游戏',en:'' },
+        icon: 'game_icon.png',
+        iconActive: 'game_icon.png',
+        components: 'blockchain-view-home-gameHome'
+    },{
+        modulName: 'BLOCKCHAIN_ACCOUNT',
+        text: { zh_Hans:'账户',zh_Hant:'账户',en:'' },
+        icon: 'account_icon.png',
+        iconActive: 'account_icon.png',
+        components: 'blockchain-view-home-accountHome'
     }
-    public pageInit() {
+];
+
+/**
+ * 首页
+ */
+export class App extends Widget {
+    public props:Props;
+    public create() {
+        super.create();
+        this.init();
+    }
+
+    public init(): void {
         this.props = {
-            offlienType:OfflienType.WALLET,
-            tabs:[{
-                tab:{ zh_Hans:'云账户',zh_Hant:'雲賬戶',en:'' },
-                components:'app-view-wallet-home-cloudHome'
-            },{
-                tab:{ zh_Hans:'本地钱包',zh_Hant:'本地錢包',en:'' },
-                components:'app-view-wallet-home-walletHome'
-            }],
-            activeNum:0,
-            refreshing:false,
-            avatar:'',
-            totalAsset:'',
-            currencyUnitSymbol:''
+            isActive:'BLOCKCHAIN_CLOUD',
+            tabBarList: TabBarList
         };
-        this.paint();
-        // console.log('updateTest');
     }
 
-    public dataInit() {
-        const userInfo = getUserInfo();
-        this.props.avatar = userInfo && userInfo.avatar;
-        this.props.totalAsset = formatBalanceValue(fetchLocalTotalAssets() + fetchCloudTotalAssets());
-        this.props.currencyUnitSymbol = getCurrencyUnitSymbol(); 
-        this.paint();
+    public findPage(isActive:string) {
+        return this.props.tabBarList.filter(item => {
+            return item.modulName === isActive;
+        })[0].components;
     }
 
-    public tabsChangeClick(event: any, value: number) {
-        this.props.activeNum = value;
+    public tabBarChangeListener(event: any, index: number) {
+        const identfy = this.props.tabBarList[index].modulName;
+        if (this.props.isActive === identfy) return;
+        this.props.isActive = identfy;
         this.paint();
-    }
-
-    public userInfoChange() {
-        const userInfo = getUserInfo();
-        this.props.avatar = userInfo.avatar || '';
-        this.paint();
-    }
-
-    public updateTotalAsset() {
-        this.props.totalAsset = formatBalanceValue(fetchLocalTotalAssets() + fetchCloudTotalAssets());
-        this.paint();
-    }
-
-    public currencyUnitChange() {
-        this.props.totalAsset = formatBalanceValue(fetchLocalTotalAssets() + fetchCloudTotalAssets());
-        this.props.currencyUnitSymbol = getCurrencyUnitSymbol();
-        this.paint();
-    }
-    
-    /**
-     * 刷新页面
-     */
-    public loaded() {
-        // toDo 更新数据 完成之后将loaded变成true 刷新页面
-        setTimeout(() => {
-            // 加载数据完成
-            this.props.loaded = true;
-            this.paint();
-
-        },2000);
-
-    }
-    /**
-     * 刷新前的准备
-     */
-    public beforeLoad() {
-        // '通知刷新状态---'
-        this.props.loaded = false;
-        this.paint();
-    }
-
-    public refreshClick() {
-        if (this.props.refreshing) {
-            return;
-        }
-        this.props.refreshing = true;
-        this.paint();
-        setTimeout(() => {
-            this.props.refreshing = false;
-            this.paint();
-        },1000);
-        getServerCloudBalance();
-        const wallet = getStore('wallet');
-        if (!wallet) return;
-        const list = [];
-        wallet.currencyRecords.forEach(v => {
-            if (wallet.showCurrencys.indexOf(v.currencyName) >= 0) {
-                v.addrs.forEach(addrInfo => {
-                    list.push({ addr: addrInfo.addr, currencyName: v.currencyName });
-                });
-                
-            }
-        });
-       
-        getDataCenter().then(dataCenter => {
-            list.forEach(v => {
-                dataCenter.updateBalance(v.addr, v.currencyName);
-            });
-        });
+        
     }
 
 }
 
-// ==========================本地
-register('user',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.dataInit();
-    }
-});
+// ===================================================== 本地
 
-register('user/info',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.userInfoChange();
-    }
-});
-
-// 云端余额变化
-register('cloud/cloudWallet',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateTotalAsset();
-    }
-});
-
-register('setting/language', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.pageInit();
-    }
-});
-
-// 货币涨跌幅度变化
-register('third/currency2USDTMap',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.updateTotalAsset();
-    }
-});
-// 货币单位变化
-register('setting/currencyUnit',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.currencyUnitChange();
-    }
-});
+// ===================================================== 立即执行

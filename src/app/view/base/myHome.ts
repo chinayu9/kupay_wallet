@@ -221,7 +221,8 @@ export class MyHome extends Widget {
                 break;
             case 2:
                 loadBlockchainSource().then(() => {
-                    popNew('blockchain-view-create-home');
+                    // popNew('blockchain-view-create-home');
+                    popNew('blockchain-view-home-home');
                 });
                 break;
             case 3:

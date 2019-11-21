@@ -288,7 +288,9 @@ export const loadHaihaiSource = () => {
 export const loadBlockchainSource = () => {
     const fg = getStore('flags',{}).loadBlockchainSource;
     const sourceList = [
-        'blockchain/view/create/'
+        'blockchain/view/create/',
+        'blockchain/view/home/',
+        'blockchain/components/'
     ];
 
     return piLoadDir(sourceList,flags,fileMap,suffixCfg,fg).then(() => {    

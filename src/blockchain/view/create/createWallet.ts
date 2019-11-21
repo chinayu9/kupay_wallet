@@ -120,6 +120,7 @@ export class CreateWallet extends Widget {
             });
             
         }
+        
         this.ok && this.ok();
     }
 

@@ -4,6 +4,6 @@
         <img src="../../../res/image1/add.png" w-class="add-asset" on-tap="addAssetClick"/>
     </div>
     <div w-class="asset-list" ev-item-click="itemClick">
-        <app-components1-walletAssetList-walletAssetList>{ assetList:{{it.assetList}},redUp:{{it.redUp}},currencyUnitSymbol:{{it.currencyUnitSymbol}} }</app-components1-walletAssetList-walletAssetList>
+        <blockchain-components-walletAssetList-walletAssetList>{ assetList:{{it.assetList}},redUp:{{it.redUp}},currencyUnitSymbol:{{it.currencyUnitSymbol}} }</blockchain-components-walletAssetList-walletAssetList>
     </div>
 </div>
