@@ -19,7 +19,6 @@ export class CreateWalletByImage extends Widget {
             imageHtml:'',
             imagePsw:'',
             imagePswAvailable:false,
-            walletName:getModulConfig('WALLET_NAME'),
             imagePicker:null
         };
         super.setProps(this.props,oldProps);
@@ -66,7 +65,7 @@ export class CreateWalletByImage extends Widget {
                 });
             });
             setStore('flags/imgArgon2HashPromise',imgArgon2HashPromise);
-            popNew('app-view-wallet-create-createWallet',{ itype:CreateWalletType.Image });
+            popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Image });
             this.ok && this.ok();
         }
     }

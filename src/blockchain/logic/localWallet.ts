@@ -3,10 +3,12 @@
  */
 import { base64ToArrayBuffer } from '../../pi/util/base64';
 import { ERC20Tokens } from '../config';
+import { generateByHash, sha3, toMnemonic } from '../core/genmnemonic';
 import { GlobalWallet } from '../core/globalWallet';
 import { AddrInfo, Wallet } from '../store/interface';
 import { getStore, setStore } from '../store/memstore';
 import { defalutShowCurrencys, lang } from '../utils/constants';
+import { restoreSecret } from '../utils/secretsBase';
 import { calcHashValuePromise,getMnemonic,getXOR,hexstrToU8Array,popNewLoading, popNewMessage, u8ArrayToHexstr } from '../utils/tools';
 import { dataCenter } from './dataCenter';
 
@@ -67,44 +69,6 @@ export const createWallet = async (itype: CreateWalletType, option: Option) => {
 };
 
 /**
- * 游客登录创建钱包
- */
-export const touristLogin = async (option: Option) => {
-    const close = popNewLoading({ zh_Hans:'游客登录中',zh_Hant:'遊客登錄中',en:'' });
-    let secrectHash;
-    try {
-        secrectHash = await createWalletRandom(option,true);
-    } catch (err) {
-        return '';
-    } finally {
-        close.callback(close.widget);
-    }
-    
-    // 刷新本地钱包
-    getDataCenter().then(dataCenter => {
-        dataCenter.refreshAllTx();
-    });
-    getDataCenter().then(dataCenter => {
-        dataCenter.initErc20GasLimit();
-    });
-
-    return secrectHash;
-};
-
-/**
- * 手机号导入
- */
-export const phoneImport = async (option: Option) => {
-    let secrectHash;
-    try {
-        secrectHash = await createWalletRandom(option,true);
-    } catch (err) {
-        return '';
-    }
-
-    return secrectHash;
-};
-/**
  * 随机创建钱包
  */
 export const createWalletRandom = async (option: Option,tourist?:boolean) => {
@@ -113,10 +77,7 @@ export const createWalletRandom = async (option: Option,tourist?:boolean) => {
     // 创建钱包基础数据
     const wallet: Wallet = {
         vault: gwlt.vault,
-        setPsw:tourist ? false : true,
         isBackup: gwlt.isBackup,
-        sharePart:false,
-        helpWord:false,
         showCurrencys: defalutShowCurrencys,
         currencyRecords: gwlt.currencyRecords,
         changellyPayinAddress:[],
@@ -140,10 +101,8 @@ export const createWalletByImage = async (option: Option) => {
 
     const imgArgon2HashPromise = getStore('flags').imgArgon2HashPromise;
 
-    const GlobalWalletPromise = getGlobalWalletClass();
-    
     console.time('pi_create Promise all need');
-    const [secrectHash,vault,GlobalWallet] = await Promise.all([secrectHashPromise,imgArgon2HashPromise,GlobalWalletPromise]);
+    const [secrectHash,vault] = await Promise.all([secrectHashPromise,imgArgon2HashPromise]);
     console.timeEnd('pi_create Promise all need');
     
     console.time('pi_create GlobalWallet generate need');
@@ -152,10 +111,7 @@ export const createWalletByImage = async (option: Option) => {
     // 创建钱包基础数据
     const wallet: Wallet = {
         vault: gwlt.vault,
-        setPsw:true,
         isBackup: gwlt.isBackup,
-        sharePart:false,
-        helpWord:false,
         showCurrencys: defalutShowCurrencys,
         currencyRecords: gwlt.currencyRecords,
         changellyPayinAddress:[],
@@ -164,39 +120,10 @@ export const createWalletByImage = async (option: Option) => {
     const user = getStore('user');
     user.id = gwlt.glwtId;
     user.publicKey = gwlt.publicKey;
-    user.info = {
-        ...user.info,
-        nickName: option.nickName
-    };
     setStore('wallet', wallet,false);
     setStore('user', user);
 
     return secrectHash;
-};
-
-/**
- * 获取图片ahash
- * @param imageBase64 base64
- */
-const getImageAhash = (imageBase64: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-            piRequire(['pi/util/canvas']).then(mods => {
-                const drawImg = mods[0].drawImg;
-                const ab = drawImg(img);
-                getAhashMod().then(ahashMod => {
-                    const r = ahashMod.ahash(new Uint8Array(ab), img.width, img.height, 4);
-                    resolve(r);
-                });
-            });
-        };
-        img.onerror = e => {
-            reject(e);
-        };
-        img.crossOrigin = 'Anonymous';
-        img.src = imageBase64;
-    });
 };
 
 /**
@@ -205,25 +132,15 @@ const getImageAhash = (imageBase64: string): Promise<string> => {
  * @param ahash ahash
  */
 export const ahashToArgon2Hash = async (ahash: string, imagePsw: string) => {
-    const genmnemonic = await getGenmnemonicMod(); 
-    const sha3Hash = await genmnemonic.sha3(ahash + imagePsw, false);
+    const sha3Hash = await sha3(ahash + imagePsw, false);
     const hash = await calcHashValuePromise(sha3Hash);
-    const sha3Hash1 = await genmnemonic.sha3(hash, true);
+    const sha3Hash1 = await sha3(hash, true);
     
     const len = sha3Hash1.length;
     // 生成助记词的随机数仅需要128位即可，这里对256位随机数进行折半取异或的处理
     const sha3Hash2 = getXOR(sha3Hash1.slice(0, len / 2),sha3Hash1.slice(len / 2));
 
-    return genmnemonic.generateByHash(sha3Hash2);
-};
-
-/**
- * 计算图片Argon2 Hash
- */
-export const calcImgArgon2Hash = async (imageBase64: string,imagePsw: string) => {
-    const ahash = await getImageAhash(imageBase64);
-
-    return ahashToArgon2Hash(ahash, imagePsw);
+    return generateByHash(sha3Hash2);
 };
 
 /**
@@ -257,12 +174,9 @@ export const importWalletByFragment = async (option: Option) => {
     const shares = [option.fragment1, option.fragment2].map(v =>
     u8ArrayToHexstr(new Uint8Array(base64ToArrayBuffer(v)))
   );
-    const secretsBasePromise = getSecretsBaseMod();
-    const genmnemonicPromise = getGenmnemonicMod();
-    const [secretsBase,genmnemonic] = await Promise.all([secretsBasePromise,genmnemonicPromise]);
-    const comb = secretsBase.restoreSecret(shares);
+    const comb = restoreSecret(shares);
     
-    const mnemonic = await genmnemonic.toMnemonic(lang, hexstrToU8Array(comb));
+    const mnemonic = await toMnemonic(lang, hexstrToU8Array(comb));
     option.mnemonic = mnemonic;
     // tslint:disable-next-line:no-unnecessary-local-variable
     const secretHash = await importWalletByMnemonic(option);
@@ -277,8 +191,6 @@ export const createNewAddr = async (passwd: string, currencyName: string) => {
     const close = popNewLoading({ zh_Hans:'添加中...',zh_Hant:'添加中...',en:'' });
     const wallet = getStore('wallet');
     const mnemonic = await getMnemonic(passwd);
-    const GlobalWalletPromise = getGlobalWalletClass();
-    const [GlobalWallet] = await Promise.all([GlobalWalletPromise]);
     close.callback(close.widget);
     if (mnemonic) {
         const record = wallet.currencyRecords.filter(v => v.currencyName === currencyName)[0];
@@ -291,7 +203,6 @@ export const createNewAddr = async (passwd: string, currencyName: string) => {
         };
         record.addrs.push(addrInfo);
         record.currentAddr = address;
-        const dataCenter = await getDataCenter();
         dataCenter.updateAddrInfo(address, currencyName);
         if (ERC20Tokens[currencyName]) {
             dataCenter.fetchErc20GasLimit(currencyName);
