@@ -5,12 +5,8 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { createWallet, CreateWalletType } from '../../logic/localWallet';
-import { selectImage } from '../../logic/native';
-import { openConnect } from '../../net/login';
-import { uploadFile } from '../../net/pull';
-import { setStore } from '../../store/memstore';
 import { pswEqualed } from '../../utils/account';
-import { imgResize, popNew3, popNewMessage } from '../../utils/tools';
+import { popNewMessage } from '../../utils/tools';
 
 interface Props {
     itype: CreateWalletType;
@@ -109,20 +105,20 @@ export class CreateWallet extends Widget {
      * 查看隐私条约
      */
     public agreementClick() {
-        popNew3('app-view-mine-other-privacypolicy');
+        popNew('app-view-mine-other-privacypolicy');
     }
 
     /**
      * 照片注册
      */
     public imgLoginClick() {
-        popNew3('app-view-wallet-create-createWalletByImage',{},() => {
+        popNew('blockchain-view-create-createWalletByImage',{},() => {
             this.ok && this.ok();
         });
     }
 
     public haveAccountClick() {
-        popNew3('app-view-wallet-import-standardImport',{},() => {
+        popNew('blockchain-view-import-standardImport',{},() => {
             this.ok && this.ok();
         });
     }

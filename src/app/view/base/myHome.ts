@@ -221,13 +221,13 @@ export class MyHome extends Widget {
                 break;
             case 2:
                 loadBlockchainSource().then(() => {
-                    const accounts = JSON.parse(localStorage.getItem('accounts'));
-                    if (accounts && accounts.currentId) {
-                        popNew('blockchain-view-home-home');
-                    } else {
-                        popNew('blockchain-view-create-home');
-                    }
-                    
+                    // const accounts = JSON.parse(localStorage.getItem('accounts'));
+                    // if (accounts && accounts.currentId) {
+                    //     popNew('blockchain-view-home-home');
+                    // } else {
+                    //     popNew('blockchain-view-create-home');
+                    // }
+                    popNew('blockchain-view-create-home');
                 });
                 break;
             case 3:

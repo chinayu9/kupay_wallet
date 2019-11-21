@@ -20,8 +20,8 @@ export const initStore = () => {
     return new Promise(resolve => {
         registerFileStore();    // 注册监听
         initAccount();          // 账户初始化
-        initSettings();         // 设置初始化
-        initThird();            // 三方数据初始化
+        // initSettings();         // 设置初始化
+        // initThird();            // 三方数据初始化
         initFile().then(() => {
             resolve();
         });             // indexDb数据初始化

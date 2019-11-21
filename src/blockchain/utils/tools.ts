@@ -1134,7 +1134,6 @@ export const rippleShow = (e:any) => {
     }, 500);
 };
 
-
 /**
  * 获取助记词
  */
@@ -1162,40 +1161,6 @@ export const calCurrencyLogoUrl = (currencyName:string) => {
     const directory = preShowCurrencys.indexOf(currencyName) >= 0 ? 'image1' : 'image';
     
     return `app/res/${directory}/currency/${currencyName}.png`;
-};
-
-/**
- * 弹出三级页面
- */
-export const popNew3 = (name: string, props?: any, ok?: Callback, cancel?: Callback) => {
-    const level_3_page_loaded = getStore('flags').level_3_page_loaded;
-    if (level_3_page_loaded) {
-        popNew(name,props,ok,cancel);
-    } else {
-        const loading = popNew('app-components1-loading-loading1');
-        const level3SourceList = [
-            'app/core/',
-            'app/logic/',
-            'app/components/',
-            'app/res/',
-            'app/api/',
-            'app/view/',
-            'chat/client/app/view/',
-            'chat/client/app/widget/',
-            'chat/client/app/res/',
-            'earn/client/app/view/',
-            'earn/client/app/test/',
-            'earn/client/app/components/',
-            'earn/client/app/res/',
-            'earn/client/app/xls/',
-            'earn/xlsx/'
-        ];
-        piLoadDir(level3SourceList).then(() => {
-            console.log('popNew3 ------ all resource loaded');
-            popNew(name,props,ok,cancel);
-            loading.callback(loading.widget);
-        });
-    }
 };
 
 /**

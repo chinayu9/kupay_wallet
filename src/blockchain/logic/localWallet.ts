@@ -230,17 +230,12 @@ export const calcImgArgon2Hash = async (imageBase64: string,imagePsw: string) =>
  * 通过助记词导入钱包
  */
 export const importWalletByMnemonic = async (option: Option) => {
-    const secrectHashPromise = calcHashValuePromise(option.psw,getStore('user/salt'));
-    const GlobalWalletPromise = getGlobalWalletClass();
-    const [secrectHash,GlobalWallet] = await Promise.all([secrectHashPromise,GlobalWalletPromise]);
+    const secrectHash = await calcHashValuePromise(option.psw,getStore('user/salt'));
     const gwlt = GlobalWallet.fromMnemonic(secrectHash, option.mnemonic);
   // 创建钱包基础数据
     const wallet: Wallet = {
         vault: gwlt.vault,
-        setPsw:true,
         isBackup: gwlt.isBackup,
-        sharePart:false,
-        helpWord:false,
         showCurrencys: defalutShowCurrencys,
         currencyRecords: gwlt.currencyRecords,
         changellyPayinAddress:[],
@@ -249,10 +244,6 @@ export const importWalletByMnemonic = async (option: Option) => {
     const user = getStore('user');
     user.id = gwlt.glwtId;
     user.publicKey = gwlt.publicKey;
-    user.info = {
-        ...user.info,
-        nickName: option.nickName
-    };
     setStore('wallet', wallet,false);
     setStore('user', user);
     
