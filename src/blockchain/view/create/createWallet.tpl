@@ -20,12 +20,12 @@
             </div>
             <div ev-btn-tap="createClick" w-class="btn">
                 {{: btnName = {"zh_Hans":"继续","zh_Hant":"繼續","en":""} }}
-                <app-components1-btn-btn>{"name":{{btnName}},"types":"big","color":"blue","cannotClick":{{!it.userProtocolReaded}} }</app-components1-btn-btn>
+                <blockchain-components-btn-btn>{"name":{{btnName}},"types":"big","color":"blue","cannotClick":{{!it.userProtocolReaded}} }</blockchain-components-btn-btn>
             </div>
             {{: imageCreate = {"zh_Hans":"用图片创建钱包","zh_Hant":"用圖片創建錢包","en":""} }}
             {{if it.itype === it.createWalletType.Random}}
             <div w-class="login-btns">
-                <div w-class="login-btnBox1" on-tap="haveAccountClick">
+                <div w-class="login-btnBox1" on-tap="imageCreateClick">
                     <pi-ui-lang w-class="login-btn" >{{imageCreate}}</pi-ui-lang>
                 </div>
             </div>

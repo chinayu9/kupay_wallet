@@ -1,11 +1,11 @@
 /**
  * other record
  */
-import { getModulConfig } from '../../../app/public/config';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { getRealNode } from '../../../pi/widget/painter';
 import { Widget } from '../../../pi/widget/widget';
+import { fetchModulConfig } from '../../logic/wrap';
 import { getWithdrawLogs } from '../../net/pull';
 import { CloudCurrencyType } from '../../store/interface';
 import { getStore, register } from '../../store/memstore';
@@ -49,7 +49,7 @@ export class AccountOut extends Widget {
     // tslint:disable-next-line:typedef
     public parseRecordList(list) {
         // tslint:disable-next-line:max-line-length
-        const titleShow = this.props.currencyName === CloudCurrencyType[CloudCurrencyType.SC] ? getModulConfig('SC_SHOW') : getModulConfig('KT_SHOW');
+        const titleShow = this.props.currencyName === CloudCurrencyType[CloudCurrencyType.SC] ? fetchModulConfig('SC_SHOW') : fetchModulConfig('KT_SHOW');
         list.forEach((item) => {
             item.amountShow = `${item.amount} ${currencyType(titleShow)}`;
             item.timeShow = timestampFormat(item.time).slice(5);

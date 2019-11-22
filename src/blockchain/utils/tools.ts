@@ -12,6 +12,7 @@ import { resize } from '../../pi/widget/resize/resize';
 import { lookup } from '../../pi/widget/widget';
 import { Config, ERC20Tokens, MainChainCoin, uploadFileUrlPrefix } from '../config';
 import { toMnemonic } from '../core/genmnemonic';
+import { fetchModulConfig } from '../logic/wrap';
 import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType, User } from '../store/interface';
 import { getCloudBalances, getStore,initCloudWallets, setStore } from '../store/memstore';
 import { decrypt } from './cipherTools';
@@ -1171,11 +1172,11 @@ export const closeAllPage = () => {
 // 货币判断
 export const currencyType = (str:string) => {
     if (str === 'ST') {
-        return getModulConfig('ST_SHOW');
+        return fetchModulConfig('ST_SHOW');
     } else if (str === 'KT') {
-        return getModulConfig('KT_SHOW');
+        return fetchModulConfig('KT_SHOW');
     } else if (str === 'SC') {
-        return getModulConfig('SC_SHOW');
+        return fetchModulConfig('SC_SHOW');
     } else {
         return str;
     }

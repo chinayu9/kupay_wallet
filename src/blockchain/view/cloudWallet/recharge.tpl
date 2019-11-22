@@ -4,16 +4,16 @@
         <app-components-topBar-topBar>{"title":{{topBarTitle}},background:"linear-gradient(to right,#38CFE7,#318DE6)"}</app-components-topBar-topBar>
         <div w-class="head2">
             <div w-class="item">
-                <img src="../../../res/image/local_wallet.png" w-class="icon" />
+                <img src="../../res/images/local_wallet.png" w-class="icon" />
                 <div w-class="text">
                     <pi-ui-lang>{"zh_Hans":"本地钱包","zh_Hant":"本地錢包","en":""}</pi-ui-lang>
                 </div>
             </div>
             <div w-class="arow">
-                <img src="../../../res/image/left_arrow_white.png" />
+                <img src="../../res/images/left_arrow_white.png" />
             </div>
             <div w-class="item">
-                <img src="../../../res/image/cloud_wallet.png" w-class="icon" />
+                <img src="../../res/images/cloud_wallet.png" w-class="icon" />
                 <div w-class="text">
                     <pi-ui-lang>{"zh_Hans":"云账户","zh_Hant":"雲賬戶","en":""}</pi-ui-lang>
                 </div>
@@ -43,7 +43,7 @@
                             <pi-ui-lang>{{it.minerFeeList[it.curLevel].text}}</pi-ui-lang>
                         </span>
                     </div>
-                    <img src="../../../res/image/41_gray.png" on-tap="speedDescClick" style="border: 20px solid transparent;margin: -20px;width: 32px;"/>
+                    <img src="../../res/images/41_gray.png" on-tap="speedDescClick" style="border: 20px solid transparent;margin: -20px;width: 32px;"/>
                 </div>
                 <div w-class="speed-time">
                     <pi-ui-lang>{{it.minerFeeList[it.curLevel].time}}</pi-ui-lang>
@@ -51,7 +51,7 @@
             </div>
             <div w-class="choose-fee" on-tap="chooseMinerFee">
                     <pi-ui-lang>{{phrase[3]}}</pi-ui-lang>
-                <div w-class="fees"><span w-class="fee">{{it.minerFee+it.currencyName}}</span><img src="../../../res/image/right_arrow_blue.png"/></div>
+                <div w-class="fees"><span w-class="fee">{{it.minerFee+it.currencyName}}</span><img src="../../res/images/right_arrow_blue.png"/></div>
             </div>
             <div w-class="bottom-container">
                 {{if it.balance <= it.amount + it.minerFee}}

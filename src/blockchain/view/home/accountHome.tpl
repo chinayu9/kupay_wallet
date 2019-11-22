@@ -1,6 +1,4 @@
 <div class="new-page" ev-back-click="backPrePage">
-    {{: topBarTitle = {"zh_Hans":"账户","zh_Hant":"賬戶","en":""} }}
-    <app-components-topBar-topBar>{title:{{topBarTitle}} }</app-components-topBar-topBar>
     <div w-class="body">
         {{: itemTitle = [
             {"zh_Hans":"备份助记词","zh_Hant":"備份助記詞","en":""},

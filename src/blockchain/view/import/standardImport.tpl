@@ -1,6 +1,4 @@
 <div class="new-page" w-class="new-page" ev-back-click="backPrePage">
-    {{: topBarTitle = {"zh_Hans":"已有区块链账号","zh_Hant":"已有區塊鏈賬號","en":""} }}
-    <app-components-topBar-topBar>{"title":{{topBarTitle}} }</app-components-topBar-topBar>
     <div w-class="body">
         {{: createTips = {"zh_Hans":"按序输入助记词","zh_Hant":"按序輸入助記詞","en":""} }}
         <div w-class="create-tips"><div w-class="tip-divid"></div><pi-ui-lang>{{createTips}}</pi-ui-lang><img src="../../../res/image/41_blue.png" w-class="what-is" on-tap="whatIsMnemonicClick"/></div>

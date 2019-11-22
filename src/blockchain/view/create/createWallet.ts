@@ -109,17 +109,12 @@ export class CreateWallet extends Widget {
     }
 
     /**
-     * 照片注册
+     * 照片创建
      */
-    public imgLoginClick() {
+    public imageCreateClick() {
         popNew('blockchain-view-create-createWalletByImage',{},() => {
             this.ok && this.ok();
         });
     }
 
-    public haveAccountClick() {
-        popNew('blockchain-view-import-standardImport',{},() => {
-            this.ok && this.ok();
-        });
-    }
 }

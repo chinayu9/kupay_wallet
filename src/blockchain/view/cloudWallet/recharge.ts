@@ -5,6 +5,7 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
+import { fetchModulConfig } from '../../logic/wrap';
 import { fetchBtcFees, fetchGasPrices } from '../../net/pull';
 import { recharge, resendRecharge } from '../../net/pullWallet';
 import { MinerFeeLevel, TxHistory, TxStatus, TxType } from '../../store/interface';
@@ -44,7 +45,7 @@ export class Recharge extends Widget {
         const curLevel:MinerFeeLevel = tx ? tx.minerFeeLevel + 1 : MinerFeeLevel.Standard;
         let topBarTitle = '';
         if (this.props.currencyName === 'KT') {
-            topBarTitle = getModulConfig('KT_SHOW');
+            topBarTitle = fetchModulConfig('KT_SHOW');
         } else {
             topBarTitle = this.props.currencyName;
         }

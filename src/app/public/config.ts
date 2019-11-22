@@ -19,8 +19,8 @@ export const sourceIp = location.host || '192.168.31.10';  // 测试服
 
 // erlang逻辑服务器ip
 // app.herominer.net
-// export const erlangLogicIp = '39.98.200.23'; 
-export const erlangLogicIp = sourceIp; 
+export const erlangLogicIp = '39.98.200.23'; 
+// export const erlangLogicIp = sourceIp; 
 
 // erlang逻辑服务器port
 export const erlangLogicPort = '2081';

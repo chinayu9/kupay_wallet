@@ -1,10 +1,10 @@
 /**
  * SC 交易记录主页
  */
-import { getModulConfig } from '../../../app/public/config';
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
+import { fetchModulConfig } from '../../logic/wrap';
 import { getAccountDetail } from '../../net/pull';
 import { CloudCurrencyType } from '../../store/interface';
 import { getCloudBalances, getStore, register } from '../../store/memstore';
@@ -30,7 +30,8 @@ export class CloudWalletHome extends Widget {
         const balance = formatBalance(getCloudBalances().get(CloudCurrencyType[currencyName]));
         const balanceValue = formatBalanceValue(fetchBalanceValueOfCoin(currencyName,balance));
         const color = getStore('setting/changeColor','redUp');
-        const titleShow = currencyName === CloudCurrencyType[CloudCurrencyType.SC] ? getModulConfig('SC_SHOW') : getModulConfig('KT_SHOW');
+        // tslint:disable-next-line:max-line-length
+        const titleShow = currencyName === CloudCurrencyType[CloudCurrencyType.SC] ? fetchModulConfig('SC_SHOW') : fetchModulConfig('KT_SHOW');
         this.props = {
             ...this.props,
             titleShow,

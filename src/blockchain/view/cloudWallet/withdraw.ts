@@ -5,6 +5,7 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { withdrawMinerFee } from '../../config';
+import { fetchModulConfig } from '../../logic/wrap';
 import { withdraw } from '../../net/pullWallet';
 import { CloudCurrencyType } from '../../store/interface';
 import { getCloudBalances, getStore } from '../../store/memstore';
@@ -40,7 +41,7 @@ export class Withdraw extends Widget {
         this.ok && this.ok();
     }
     public minerFeeDescClick() {
-        const ktShow = getModulConfig('KT_SHOW');
+        const ktShow = fetchModulConfig('KT_SHOW');
         const tips = {
             zh_Hans:{ 
                 title:'提币收费标准',
