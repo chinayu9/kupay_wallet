@@ -3,7 +3,7 @@
 <div w-class="outer {{flag1?'':'outer-bottom'}}" style="background: {{it.background}}">
     <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
     <div w-class="ga-top-banner" >
-        <img src="{{it.avatar}}" w-class="avatar" />
+        <img src="{{it1 && it1.avatar}}" w-class="avatar" />
         <div w-class="container">
             {{if typeof(it.title) == "string"}}
             <span>{{it.title}}</span>
@@ -11,7 +11,7 @@
             <pi-ui-lang>{{it.title}}</pi-ui-lang>
             {{end}}
         </div>
-        {{if !it.isBackup}}
+        {{if it1 && !it1.isBackup}}
         <div w-class="box"><span w-class="dot"></span>备份</div>
         {{end}}
     </div>

@@ -328,7 +328,7 @@ winit.initNext = function () {
 			"chat/client/app/widget1/"
 		], flags, fm, undefined, function (fileMap) {
 			pi_modules.commonjs.exports.relativeGet("app/store/memstore").exports.setStore('flags/level_3_page_loaded',true);
-			loadLeftEarnSource();
+			// loadLeftEarnSource();
 		}, function (r) {
 			console.log("加载目录失败, " + r.url + ", " + r.error + ":" + r.reason);
 		}, function(){});

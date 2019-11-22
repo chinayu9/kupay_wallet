@@ -6,11 +6,16 @@ import { Widget } from '../../../pi/widget/widget';
 import { CreateWalletType } from '../../logic/localWallet';
 
 export class CreateHome extends Widget {
+    public ok:() => void;
     public createWallet() {
-        popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Random });
+        popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Random },() => {
+            this.ok && this.ok();
+        });
     }
 
     public importWallet() {
-        popNew('blockchain-view-import-home');
+        popNew('blockchain-view-import-home',undefined,() => {
+            this.ok && this.ok();
+        });
     }
 }

@@ -11,7 +11,7 @@ import { Json } from '../../../pi/lang/type';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { fetchUserInfo } from '../../logic/wrap';
-import { getStore } from '../../store/memstore';
+import { getStore, register } from '../../store/memstore';
 
 interface Props {
     avatar:string;
@@ -30,13 +30,16 @@ export class TopBar extends Widget {
     
     public setProps(props:Json,oldProps:Json) {
         super.setProps(props,oldProps);
-        const backup = getStore('wallet/isBackup');
-        this.props.isBackup = backup;
+        const isBackup = getStore('wallet/isBackup');
+        forelet.paint({ isBackup });
         fetchUserInfo().then(res => {
             console.log(res);
-            this.props.avatar = res.avatar;
-            this.paint();
+            forelet.paint({ isBackup,avatar:res.avatar });
         });
     }
 
 }
+
+register('wallet/isBackup',(isBackup:boolean) => {
+    forelet.paint({ isBackup });
+});

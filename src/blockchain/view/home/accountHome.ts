@@ -74,7 +74,10 @@ export class AccountHome extends Widget {
     // 退出钱包
     public exitWallet() {
         // TODO
-        logoutAccountDel();
+        popNew('blockchain-components-modalBox-modalBox',{ title:'',content:'退出前请确认您已备份',sureText:'退出',cancelText:'暂不退出' },() => {
+            logoutAccountDel();
+        });
+        
     }
     public itemClick(e:any,i:number) {
         if (i === 0) {

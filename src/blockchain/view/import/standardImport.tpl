@@ -13,16 +13,6 @@
                 {{: btnName = {"zh_Hans":"继续","zh_Hant":"繼續","en":""} }}
                 <app-components1-btn-btn>{"name":{{btnName}},"types":"big","color":"blue"}</app-components1-btn-btn>
             </div>
-            <div w-class="other-btns">
-                <div w-class="other-btnBox1" on-tap="imageImportClick">
-                    {{: imgLogin = {"zh_Hans":"照片登录","zh_Hant":"照片登錄","en":""} }}
-                    <pi-ui-lang w-class="other-btn" >{{imgLogin}}</pi-ui-lang>
-                </div>
-                <div w-class="other-btnBox2" on-tap="fragmentImportClick">
-                    {{: fragmentLogin = {"zh_Hans":"片段登录","zh_Hant":"片段登錄","en":""} }}
-                    <pi-ui-lang w-class="other-btn" >{{fragmentLogin}}</pi-ui-lang>
-                </div>
-            </div>
         </div>
     </div>
 </div>
