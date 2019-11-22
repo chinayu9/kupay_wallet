@@ -71,7 +71,7 @@ export const createWallet = async (itype: CreateWalletType, option: Option) => {
 /**
  * 随机创建钱包
  */
-export const createWalletRandom = async (option: Option,tourist?:boolean) => {
+export const createWalletRandom = async (option: Option) => {
     const secrectHash = await calcHashValuePromise(option.psw,getStore('user/salt'));
     const gwlt = GlobalWallet.generate(secrectHash);
     // 创建钱包基础数据

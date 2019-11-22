@@ -1,16 +1,14 @@
 /**
  * common tools
  */
-import { getStore as chatGetStore } from '../../chat/client/app/data/store';
 import { ArgonHash } from '../../pi/browser/argonHash';
-import { backCall, backList, popModalBoxs, popNew } from '../../pi/ui/root';
+import {  popNew } from '../../pi/ui/root';
 import { getLang } from '../../pi/util/lang';
 import { cryptoRandomInt } from '../../pi/util/math';
-import { Callback } from '../../pi/util/util';
 import { getRealNode } from '../../pi/widget/painter';
 import { resize } from '../../pi/widget/resize/resize';
 import { lookup } from '../../pi/widget/widget';
-import { Config, ERC20Tokens, MainChainCoin, uploadFileUrlPrefix } from '../config';
+import { Config, ERC20Tokens, MainChainCoin } from '../config';
 import { toMnemonic } from '../core/genmnemonic';
 import { fetchModulConfig } from '../logic/wrap';
 import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType, User } from '../store/interface';
@@ -19,6 +17,17 @@ import { decrypt } from './cipherTools';
 import {  piLoadDir } from './commonjsTools';
 // tslint:disable-next-line:max-line-length
 import { currencyConfirmBlockNumber, defalutShowCurrencys, lang, notSwtichShowCurrencys, preShowCurrencys, resendInterval, USD2CNYRateDefault } from './constants';
+
+/**
+ * 判断密码是否相等
+ * @param psw1 password one
+ * @param psw2 password two
+ */
+export const pswEqualed = (psw1, psw2) => {
+    if (!psw1 || !psw2) return false;
+    
+    return psw1.trim() === psw2.trim();
+};
 
 /**
  * 注销账户并删除数据
@@ -297,7 +306,7 @@ export const popPswBox = (content = [],onlyOk:boolean = false,cancelDel:boolean 
         popNew('blockchain-components-modalBoxInput-modalBoxInput', { itype: 'password', title: BoxInputTitle, content,onlyOk }, (r: string) => {
             resolve(r);
             if (!r && cancelDel) popPswBox(content,onlyOk,cancelDel);
-        }, (forgetPsw:boolean) => {
+        }, () => {
             resolve('');
         });
     });
@@ -317,6 +326,7 @@ export const popNewMessage = (content: any) => {
         popNew(name, { content });
     }
 };
+
 // 弹出loading
 export const popNewLoading = (text: any) => {
     return popNew('app-publicComponents-loading-loading', { text });
@@ -693,51 +703,6 @@ export const parseRtype = (rType) => {
 
     return '';
 };
-/**
- * 获取某id理财产品持有量，不算已经赎回的
- */
-export const fetchHoldedProductAmount = (id: string) => {
-    const purchaseRecord = getStore('activity/financialManagement/purchaseHistories');
-    let holdAmout = 0;
-    for (let i = 0; i < purchaseRecord.length; i++) {
-        const one = purchaseRecord[i];
-        if (one.id === id && one.state === 1) {
-            holdAmout += one.amount;
-        }
-    }
-
-    return holdAmout;
-};
-
-/**
- * 计算剩余百分比
- */
-export const calPercent = (surplus: number, total: number) => {
-    if (surplus === 0) {
-        return {
-            left: 0,
-            use: 100
-        };
-    }
-    if (surplus === total) {
-        return {
-            left: 100,
-            use: 0
-        };
-    }
-    if (surplus <= total / 100) {
-        return {
-            left: 1,
-            use: 99
-        };
-    }
-    const r = Number((surplus / total).toString().slice(0, 4));
-
-    return {
-        left: r * 100,
-        use: 100 - r * 100
-    };
-};
 
 /**
  * base64 to blob
@@ -874,47 +839,6 @@ export const mnemonicFragmentDecrypt = (fragment: string) => {
         fragment: fragmentArr.join(''),
         randomStr: randomArr.reverse().join('')
     };
-};
-
-/**
- * 判断是否是有效的货币地址
- */
-export const isValidAddress = (addr: string, currencyName: string) => {
-    if (currencyName === 'BTC') {
-        // todo
-    } else {
-        return isETHValidAddress(addr);
-    }
-};
-
-/**
- * 判断是否是有效的ETH地址
- */
-const isETHValidAddress = (addr: string) => {
-    if (!addr || !addr.startsWith('0x') || addr.length !== 42) return false;
-    if (isNaN(Number(addr))) return false;
-
-    return true;
-};
-
-declare var pi_modules;
-
-// 获取本地版本号
-export const getLocalVersion = () => {
-    const updateMod = pi_modules.update.exports;
-    const versionArr = updateMod.getLocalVersion();
-    const versionStr = versionArr.join('.');
-
-    return versionStr.slice(0, versionStr.length - 7);
-};
-
-// 获取远端版本号
-export const getRemoteVersion = () => {
-    const updateMod = pi_modules.update.exports;
-    const versionArr = updateMod.getRemoteVersion();
-    const versionStr = versionArr.join('.');
-
-    return versionStr.slice(0, versionStr.length - 7);
 };
 
 /**
@@ -1095,36 +1019,6 @@ export const getCurrentEthAddr = () => {
     return getCurrentAddrInfo('ETH').addr;
 };
 
-/**
- * 获取用户基本信息
- */
-export const getUserInfo = () => {
-    const userInfo = getStore('user/info');
-    const nickName = userInfo.nickName;
-    const phoneNumber = userInfo.phoneNumber;
-    const isRealUser = userInfo.isRealUser;
-    const areaCode = userInfo.areaCode;
-    const acc_id = userInfo.acc_id;
-    let avatar = userInfo.avatar;
-    if (avatar && avatar.indexOf('data:image') < 0) {
-        avatar = `${uploadFileUrlPrefix}${avatar}`;
-    } else {
-        avatar = 'app/res/image/default_avater_big.png';
-    }
-
-    const level = chatGetStore(`userInfoMap/${chatGetStore('uid')}`,{ level:0 }).level;
-
-    return {
-        nickName,
-        avatar,
-        phoneNumber,
-        areaCode,
-        isRealUser,
-        acc_id,
-        level
-    };
-};
-
  // 水波纹动画效果展示
 export const rippleShow = (e:any) => {
     getRealNode(e.node).classList.add('ripple');
@@ -1160,15 +1054,6 @@ export const calCurrencyLogoUrl = (currencyName:string) => {
     return `app/res/${directory}/currency/${currencyName}.png`;
 };
 
-/**
- * 关掉所有页面 （不包括首页面）
- */
-export const closeAllPage = () => {
-    for (let i = backList.length;i > 1;i--) {
-        backCall();
-    }
-};
-
 // 货币判断
 export const currencyType = (str:string) => {
     if (str === 'ST') {
@@ -1180,116 +1065,4 @@ export const currencyType = (str:string) => {
     } else {
         return str;
     }
-};
-
-/**
- * 获取手机提示语
- */
-export const getPopPhoneTips = () => {
-    const modalBox = { 
-        zh_Hans:{
-            title:'绑定手机',
-            content:'为了避免您的游戏数据丢失，请绑定手机号',
-            sureText:'去绑定',
-            onlyOk:true
-        },
-        zh_Hant:{
-            title:'綁定手機',
-            content:'為了避免您的遊戲數據丟失，請綁定手機號',
-            sureText:'去綁定',
-            onlyOk:true
-        },
-        en:'' 
-    };
-
-    return modalBox[getLang()];
-};
-// 检查手机弹框提示
-export const checkPopPhoneTips = () => {
-    if (getStore('user/info/phoneNumber')) {
-        delPopPhoneTips();
-        
-        return;
-    }
-    if (localStorage.getItem('popPhoneTips') && getStore('user/id')) {
-        
-        popModalBoxs('app-components-modalBox-modalBox',getPopPhoneTips(),() => { 
-            popNew('app-view-mine-setting-phone',{ jump:true });
-        },undefined,true);      
-    }
-};
-
-// 设置手机弹框提示
-export const setPopPhoneTips = () => {
-    const userInfo = getUserInfo();
-    const popPhoneTips = localStorage.getItem('popPhoneTips');
-    if (!userInfo.phoneNumber && !popPhoneTips) localStorage.setItem('popPhoneTips','1');
-};
-
-/**
- * 删除手机弹框提示
- */
-export const delPopPhoneTips = () => {
-    if (localStorage.getItem('popPhoneTips')) localStorage.removeItem('popPhoneTips');
-};
-
-/**
- * 过滤表情符号
- */
-export const filterEomoji = (str:string) => {
-    const patt = /[\ud800-\udbff][\udc00-\udfff]/g;
-    str = str.replace(patt, (char) => {
-        if (char.length === 2) {   // 辅助平面字符（我们需要做处理的一类）
-
-            return '';
-        } else {
-            return char;
-        }
-    });
-
-    return str;
-};
-/**
- * 表情包转字符
- */
-export const utf16toEntities = (str:string) => { // 检测utf16emoji表情 转换为实体字符以供后台存储
-    const patt = /[\ud800-\udbff][\udc00-\udfff]/g;
-    str = str.replace(patt, (char) => {
-        // tslint:disable-next-line:one-variable-per-declaration
-        let H, L, code;
-        if (char.length === 2) {   // 辅助平面字符（我们需要做处理的一类）
-            H = char.charCodeAt(0); // 取出高位
-            L = char.charCodeAt(1); // 取出低位
-            code = (H - 0xD800) * 0x400 + 0x10000 + L - 0xDC00; // 转换算法
-
-            return `&#${code};`;
-        } else {
-            return char;
-        }
-    });
-
-    return str;
-};
-
-/**
- * 字符转表情
- */
-export const uncodeUtf16 = (str:string) => {
-    const reg = /\&#.*?;/g;
-
-    return str.replace(reg,(char) => {
-        // tslint:disable-next-line:one-variable-per-declaration
-        let H,L,code;
-        if (char.length === 9) {
-            // tslint:disable-next-line:radix
-            code = parseInt(char.match(/[0-9]+/g).toString());
-            H = Math.floor((code - 0x10000) / 0x400) + 0xD800;
-            L = (code - 0x10000) % 0x400 + 0xDC00;
-
-            return unescape(`%u${H.toString(16)}%u${L.toString(16)}`);
-        } else {
-            return char;
-        }
-    });
-
 };

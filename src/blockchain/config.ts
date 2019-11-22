@@ -2,8 +2,8 @@
 /**
  * config file
  */
-// TODO
-const ktShow = '测试';
+// 向资源服务器请求第3方数据url prefix
+export const thirdUrlPre = `http://39.98.200.23/proxy`;
 
 /**
  * 环境配置
@@ -543,14 +543,7 @@ export const Config = {
             'gas过低',
             '交易失败',
             '交易已被确认'
-        ],
-        // KT 增加
-        ktUp: {
-            title: '备份助记词',
-            content: `您的${ktShow}有增加，为了您的资产安全，建议您备份助记词`,
-            sureText: '备份',
-            cancelText: '以后'
-        }
+        ]
 
     },
     /**
@@ -683,14 +676,7 @@ export const Config = {
             'gas過低',
             '交易失败',
             '交易已被確認'
-        ],
-        // 钱包创建成功
-        ktUp: {
-            title: '備份助記詞',
-            content: `您的${ktShow}有增加，為了您的資產安全，建議您備份助記詞`,
-            sureText: '備份',
-            cancelText: '以後'
-        }
+        ]
     },
     /**
      * 英语

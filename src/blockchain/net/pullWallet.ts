@@ -2,7 +2,6 @@
  * 主动向钱包通讯
  */
 // ===================================================== 导入
-import { WebViewManager } from '../../pi/browser/webview';
 import { popNew } from '../../pi/ui/root';
 import { isNumber } from '../../pi/util/util';
 import { ERC20Tokens } from '../config';
@@ -16,7 +15,7 @@ import { MinerFeeLevel, TxHistory, TxStatus, TxType } from '../store/interface';
 import { erc20GasLimitRate } from '../utils/constants';
 import { doErrorShow } from '../utils/toolMessages';
 // tslint:disable-next-line:max-line-length
-import { deletLocalTx, fetchBtcMinerFee, fetchGasPrice, getConfirmBlockNumber, getCurrentEthAddr, getEthNonce, getStaticLanguage, setEthNonce, updateLocalTx, popNewMessage, popNewLoading } from '../utils/tools';
+import { deletLocalTx, fetchBtcMinerFee, fetchGasPrice, getConfirmBlockNumber, getCurrentEthAddr, getEthNonce, getStaticLanguage, popNewLoading, popNewMessage, setEthNonce, updateLocalTx } from '../utils/tools';
 import { btc2Sat, eth2Wei, ethTokenMultiplyDecimals, wei2Eth } from '../utils/unitTools';
 import { fetchMinerFeeList, getWltAddrIndex, VerifyIdentidy } from '../utils/walletTools';
 // tslint:disable-next-line:max-line-length
@@ -83,8 +82,6 @@ export const rpcProviderSendAsync = (payload, callback) => {
         }
     }
 
-    // 关闭webview定时器
-    WebViewManager.endTimer();
 };
 
 /**
@@ -756,7 +753,7 @@ export const ethWithdraw = async (passwd:string,toAddr:string,amount:number | st
 
         return;
     }
-    const hash = await withdrawFromServer(toAddr,eth2Wei(amount),secretHash);
+    const hash = await withdrawFromServer(toAddr,eth2Wei(amount));
     close.callback(close.widget);
     if (hash) {
         popNewMessage(getStaticLanguage().transfer.withdrawSuccess);
@@ -794,7 +791,7 @@ export const btcWithdraw = async (passwd:string,toAddr:string,amount:number | st
 
         return;
     }
-    const hash = await btcWithdrawFromServer(toAddr,btc2Sat(amount).toString(),secretHash);
+    const hash = await btcWithdrawFromServer(toAddr,btc2Sat(amount).toString());
     close.callback(close.widget);
     if (hash) {
         popNewMessage(getStaticLanguage().transfer.withdrawSuccess);

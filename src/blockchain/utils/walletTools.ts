@@ -8,9 +8,8 @@ import { BTCWallet } from '../core/btc/wallet';
 import { ibanToAddress, isValidIban } from '../core/eth/helper';
 import { EthWallet } from '../core/eth/wallet';
 import { toMnemonic } from '../core/genmnemonic';
-import { buyProduct, getPurchaseRecord, getServerCloudBalance } from '../net/pull';
 import { getStore, setStore } from '../store/memstore';
-import { decrypt, encrypt, sha256 } from './cipherTools';
+import { decrypt, encrypt } from './cipherTools';
 import { defaultGasLimit, lang, MAX_SHARE_LEN, MIN_SHARE_LEN, timeOfArrival } from './constants';
 import { shareSecret } from './secretsBase';
 // tslint:disable-next-line:max-line-length
@@ -178,28 +177,6 @@ export const fetchLocalTxByHash1 = (hash:string) => {
     }
 };
 
-// 购买理财
-export const purchaseProduct = async (psw:string,productId:string,amount:number) => {
-    const close = popNewLoading(Config[getLang()].bugProduct.buying);  // 购买中  
-    const secretHash = await VerifyIdentidy(psw);
-    if (!secretHash) {
-        close.callback(close.widget);
-        popNewMessage(Config[getLang()].bugProduct.wrong);  // 密码错误  
-        
-        return;
-    }
-    const data = await buyProduct(productId,amount,secretHash);
-    close.callback(close.widget);
-    if (data) {
-        popNewMessage(Config[getLang()].bugProduct.buySuccess); // 购买成功
-        getServerCloudBalance();
-        console.log('data',data);
-        getPurchaseRecord();// 购买之后获取购买记录
-    }
-    
-    return data;
-};
-
 // 获取助记词片段
 export const fetchMnemonicFragment = async (hash) => {
     const mnemonicHexstr =  getMnemonicHexstr(hash);
@@ -295,16 +272,4 @@ export const fetchMinerFeeList = (currencyName) => {
     }
 
     return minerFeeList;
-};
-
-// 锁屏密码验证
-export const lockScreenVerify = (psw) => {
-    const hash256 = sha256(psw + getStore('user/salt'));
-    const localHash256 = getStore('setting/lockScreen').psw;
-
-    return hash256 === localHash256;
-};
-// 锁屏密码hash算法
-export const lockScreenHash = (psw) => {
-    return sha256(psw + getStore('user/salt'));
 };

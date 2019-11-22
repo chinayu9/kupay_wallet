@@ -5,8 +5,7 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { createWallet, CreateWalletType } from '../../logic/localWallet';
-import { pswEqualed } from '../../utils/account';
-import { popNewMessage } from '../../utils/tools';
+import { popNewMessage, pswEqualed } from '../../utils/tools';
 
 interface Props {
     itype: CreateWalletType;

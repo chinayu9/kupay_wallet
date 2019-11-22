@@ -288,16 +288,7 @@ export const loadHaihaiSource = () => {
 export const loadBlockchainSource = () => {
     const fg = getStore('flags',{}).loadBlockchainSource;
     const sourceList = [
-        'blockchain/view/create/',
-        'blockchain/view/import/',
-        'blockchain/view/transaction/',
-        'blockchain/view/home/',
-        'blockchain/view/account/',
-        'blockchain/view/backup/',
-        'blockchain/view/cloudWalletCustomize/',
-        'blockchain/view/cloudWallet/',
-        'blockchain/view/components/',
-        'blockchain/view/localWallet/',
+        'blockchain/view/',
         'blockchain/components/'
     ];
 

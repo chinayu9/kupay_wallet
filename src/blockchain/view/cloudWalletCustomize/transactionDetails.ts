@@ -7,10 +7,9 @@ import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { makeScreenShot } from '../../logic/native';
 import { fetchModulConfig } from '../../logic/wrap';
-import { getOneUserInfo } from '../../net/pull';
+import { getOneUserInfo, getOrderDetail, getOrderLocal } from '../../net/pull';
 import { TaskSid } from '../../store/parse';
 import { SCPrecision } from '../../utils/constants';
-import { getOrderDetail, getOrderLocal } from '../../utils/recharge';
 import { popNewMessage, timestampFormat } from '../../utils/tools';
 
 // ============================导出

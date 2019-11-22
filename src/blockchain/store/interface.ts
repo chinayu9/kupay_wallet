@@ -28,15 +28,6 @@ export enum CloudCurrencyType {
 }
 
 /**
- * 红包类型
- */
-export enum LuckyMoneyType {
-    Normal = '00',   // 等额红包
-    Random = '01',   // 随机红包
-    Invite = '99'    // 邀请码
-}
-
-/**
  * 交易状态
  */
 export enum TxStatus {
@@ -112,52 +103,6 @@ export interface ChangellyTempTxs {
     hash:string;   // 交易hash
     id:string;    // 交易id
 }
-/**
- * 红包模块
- */
-export interface LuckyMoney {
-    sends: LuckyMoneySendHistory;          // 发送红包记录
-    exchange: LuckyMoneyExchangeHistory;   // 兑换红包记录
-    invite: LuckyMoneyExchangeHistory;     // 邀请码记录
-}
-
-/**
- * 挖矿模块
- */
-export interface Mining {
-    total: MiningTotal;       // 挖矿汇总信息
-    history: DividendHistory; // 挖矿历史记录
-    addMine: AddMineItem[];   // 矿山增加项目
-    mineRank: MineRank;       // 矿山排名
-    miningRank: MiningRank;   // 挖矿排名
-    itemJump: string;         // 矿山增加项目跳转详情
-}
-
-/**
- * 分红模块
- */
-export interface Dividend {
-    total: DividendTotal;         // 分红汇总信息
-    history: DividendHistory;     // 分红历史记录
-}
-
-/**
- * 理财模块
- */
-export interface FinancialManagement {
-    products: Product[];                  // 所有理财产品
-    purchaseHistories: PurchaseHistory[]; // 已购买理财产品
-}
-
-/**
- * 活动
- */
-export interface Activity {
-    luckyMoney: LuckyMoney;                   // 红包
-    mining: Mining;                           // 挖矿
-    dividend: Dividend;                       // 分红
-    financialManagement: FinancialManagement; // 理财
-}
 
 /**
  * 云端钱包
@@ -187,18 +132,6 @@ export interface CloudWallet {
 export interface Currency2USDT {
     open: number;  // 开盘价
     close: number; // 收盘价
-}
-
-/**
- * 云端用户基础数据
- */
-export interface UserInfo {
-    nickName: string;      // 昵称
-    avatar: string;        // 头像
-    phoneNumber: string;   // 手机号
-    areaCode:string;     // 手机区号
-    isRealUser: boolean;    // 是否是真实用户
-    acc_id:string;  // 账户ID 钱包，聊天，活动统一账号
 }
 
 /**
@@ -282,140 +215,6 @@ export interface BtcMinerFee {
 }
 
 /**
- * 挖矿汇总信息
- */
-export interface MiningTotal {
-    totalNum: number; // 矿山总量
-    thisNum: number;  // 本次可挖
-    holdNum: number;  // 已挖数量
-}
-
-/**
- * 分红信息
- */
-export interface DividendTotal {
-    total: number;      // 累计分红
-    thisDivid: number;  // 本次分红
-    totalDays: number;  // 分红天数
-    yearIncome: number; // 年华收益
-}
-
-/**
- * 挖矿，分红历史记录单项
- */
-export interface DividendItem {
-    num: number;
-    time: string;
-    total: number;
-}
-
-/**
- * 挖矿，分红历史记录
- */
-export interface DividendHistory {
-    list: DividendItem[];
-    start: number;
-    canLoadMore: boolean;
-}
-
-/**
- * 矿山增加项目
- */
-export interface AddMineItem {
-    isComplete: boolean;  // 是否已完成该挖矿步骤
-    itemNum: number;      // 该项目已得到数量
-}
-
-/**
- * 矿山，挖矿排名单项
- */
-export interface MineRankItem {
-    index: number;         // 名次
-    name: string;          // 用户名称
-    num: number;           // 矿山，挖矿总量
-}
-
-/**
- * 矿山排名
- */
-export interface MineRank {
-    page: number;            // 矿山排名列表页码
-    isMore: boolean;         // 矿山排名是否还有更多  
-    rank: MineRankItem[];    // 矿山排名分页数据
-    myRank: number;          // 当前用户的排名
-}
-
-/**
- * 挖矿排名
- */
-export interface MiningRank {
-    page: number;            // 挖矿排名列表页码
-    isMore: boolean;         // 挖矿排名是否还有更多  
-    rank: MineRankItem[];    // 挖矿排名分页数据
-    myRank: number;          // 当前用户的排名
-}
-
-/**
- * 发送红包记录
- */
-export interface LuckyMoneySendHistory {
-    sendNumber: number;            // 发送红包总数
-    start: string;                 // 翻页start
-    list: LuckyMoneySendDetail[];  // 详情列表
-}
-/**
- * 发送红包记录详情
- */
-export interface LuckyMoneySendDetail {
-    rid: string;                // 红包id
-    rtype: number;              // 红包类型
-    ctype: number;              // 币种
-    ctypeShow: string;          // 币种显示格式
-    amount: number;             // 金额
-    time: number;               // 时间
-    timeShow: string;           // 时间显示格式
-    codes: string[];            // 兑换码
-    curNum: number;             // 红包已兑换个数
-    totalNum: number;            // 总个数
-}
-
-/**
- * 兑换红包记录
- */
-export interface LuckyMoneyExchangeHistory {
-    exchangeNumber: number;                      // 兑换红包总数
-    start: string;                               // 翻页start
-    list: LuckyMoneyExchangeDetail[];            // 详情列表
-}
-/**
- * 兑换红包记录详情
- */
-export interface LuckyMoneyExchangeDetail {
-    suid: number;              // 发送者uid
-    rid: string;               // 红包id
-    rtype: number;             // 红包类型 0-普通红包，1-拼手气红包，99-邀请码
-    rtypeShow: string;
-    ctype: number;             // 币种
-    ctypeShow: string;
-    amount: number;            // 金额
-    time: number;              // 时间
-    timeShow: string;
-}
-
-/**
- * 红包详情
- */
-export interface LuckyMoneyDetail {
-    suid: number;            // 发送者uid
-    cuid: number;            // 兑换者uid
-    rtype: number;           // 红包类型
-    ctype: number;           // 货币类型
-    amount: number;          // 金额
-    time: number;            // 时间
-    timeShow: string;
-}
-
-/**
  * 充值提现记录
  */
 export interface RechargeWithdrawalLog {
@@ -435,61 +234,6 @@ export interface OtherLogs {
     amount: number;    // 数据
     behavior: string;  // 标签
     time: number;      // 时间
-}
-
-/**
- * 理财产品数据结构
- */
-export interface Product {
-    id: string;                     // 产品id
-    title: string;                  // 标题
-    profit: string;                 // 预期年化收益
-    productName: string;            // 产品名称
-    productDescribe: string;        // 产品描述
-    unitPrice: number;              // 单价
-    coinType: string;               // 购买币种
-    days: string;                   // 累计天数
-    total: number;                  // 总量
-    surplus: number;                // 剩余数量
-    purchaseDate: string;           // 起购日
-    interestDate: string;           // 收益日
-    endDate: string;                // 截止日
-    productIntroduction: number;    //
-    limit: number;                  // 限购量
-    lockday: string;                // 锁定期
-    isSoldOut: boolean;             // 售罄与否
-
-}
-
-/**
- * 理财购买记录数据结构
- */
-export interface PurchaseHistory {
-    id: string;                  // 产品id
-    yesterdayIncoming: number;      // 昨日收益
-    totalIncoming: number;          // 总收益
-    profit: string;              // 预期年化收益
-    productName: string;         // 产品名称
-    unitPrice: number;           // 单价
-    amount: number;              // 购买数量
-    coinType: string;            // 购买币种
-    days: string;                // 累计天数
-    purchaseDate: string;        // 起购日
-    interestDate: string;        // 起息日
-    endDate: string;             // 结束日
-    purchaseTimeStamp: string;   // 购买时间戳
-    productIntroduction: number; // 产品简介
-    lockday: string;             // 锁定期
-    state: number;                  // 状态
-}
-
-/**
- * 锁屏密码相关
- */
-export interface LockScreen {
-    psw?: string;           // 锁屏密码
-    open?: boolean;         // 锁屏功能是否打开
-    locked?: boolean;       // 是否3次解锁机会都用完
 }
 
 /**
