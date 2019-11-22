@@ -1,0 +1,78 @@
+.outer{
+    background-color: #fff;
+    width: 100%;
+    position: relative;
+}
+.outer-bottom{
+}
+.ga-top-banner{
+    height: 110px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    color: #222;
+    box-sizing: border-box;
+}
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size:40px;
+    font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+    font-weight:500;
+    color:rgba(34,34,34,1);
+    line-height:60px;
+    flex: 1 0 0;
+}
+.ga-back{
+    width: 48px;
+    height: 48px;
+    margin: 0 15px;
+    border: 15px solid transparent;
+    line-height: 88px;
+}
+.ga-next{
+    width: 48px;
+    height: 48px;
+    margin: 0 15px;
+    border: 15px solid transparent;
+    line-height: 88px;
+}
+.refreshBtn{
+    width: 48px;
+    height: 48px;
+    margin-right: 15px;
+    margin-left: -15px;
+    border: 15px solid transparent;
+    line-height: 88px;
+}
+.text{
+    height: 78px;
+    line-height: 78px;
+    font-size: 24px;
+    text-align: right;
+    margin-right: -20px;
+}
+.dot{
+    width: 16px;
+    height: 16px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.box{
+    display: flex;
+    align-items: center;
+    font-size:32px;
+    font-weight:400;
+    color:rgba(34,34,34,1);
+    margin-right: 30px;
+}
+.avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 25px;
+}

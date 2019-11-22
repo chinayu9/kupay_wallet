@@ -1,0 +1,37 @@
+.body{
+    padding: 0 20px;
+}
+.banner{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url(../../res/images/fomosports.jpg);
+    height: 304px;
+}
+.item{
+    display: flex;
+    margin-top: 20px;
+}
+.icon{
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+}
+.title{
+    font-size:32px;
+    font-family:SourceHanSansCN-Medium,SourceHanSansCN;
+    font-weight:500;
+    color:rgba(34,34,34,1);
+    line-height:48px;
+}
+.desc{
+    font-size:24px;
+    font-family:SourceHanSansCN-Normal,SourceHanSansCN;
+    font-weight:400;
+    color:rgba(136,136,136,1);
+    line-height:36px;
+    margin-top: 10px;
+}

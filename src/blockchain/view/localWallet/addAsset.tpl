@@ -1,8 +1,8 @@
 <div class="new-page" w-class="new-page">
-    <app-components1-blankDiv-topDiv></app-components1-blankDiv-topDiv>
+    <app-publicComponents-blankDiv-topDiv></app-publicComponents-blankDiv-topDiv>
     <div w-class="top-bar">
         <div w-class="top-bar-container">
-            <img on-tap="backPrePage" src="../../../res/image/left_arrow_blue.png" w-class="ga-back" />
+            <img on-tap="backPrePage" src="../../res/images/left_arrow_blue.png" w-class="ga-back" />
             <div w-class="input-father" ev-input-change="searchTextChange" ev-input-clear="searchTextClear">
                 {{: Search = {"zh_Hans":"Search","zh_Hant":"Search","en":""} }}
                 <app-components1-input-input>{placeHolder:{{Search}},clearable:"true",style:"background-color:#f3f6f9;",notUnderLine:true}</app-components1-input-input>

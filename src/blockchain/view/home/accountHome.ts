@@ -83,9 +83,7 @@ export class AccountHome extends Widget {
             this.exportPrivateKeyClick();
         } else if (i === 2) {
             this.changePsw();
-        } else if (i === 3) {
-            this.exitWallet();
-        }
+        } 
     }
 
 }

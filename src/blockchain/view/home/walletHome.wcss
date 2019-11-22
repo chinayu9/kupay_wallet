@@ -4,6 +4,7 @@
     overflow-y: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    height: 100%;
 }
 .total-asset-container{
     height: 120px;
@@ -27,4 +28,17 @@
 .asset-list{
     flex: 1 0 0;
     margin-bottom: 120px;
+}
+.add-btn{
+    height:100px;
+    border-radius:50px;
+    border:1px solid rgba(136,136,136,1);
+    margin: 0 60px;
+    font-size:32px;
+    font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+    font-weight:400;
+    color:rgba(136,136,136,1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

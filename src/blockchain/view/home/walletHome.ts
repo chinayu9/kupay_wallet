@@ -42,7 +42,7 @@ export class WalletHome extends Widget {
     }
     // 添加资产
     public addAssetClick() {
-        popNew('app-view-wallet-localWallet-addAsset');
+        popNew('blockchain-view-localWallet-addAsset');
     }
 
     // 条目点击
@@ -61,14 +61,6 @@ export class WalletHome extends Widget {
 }
 
 // ==================本地
-register('user',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-
 // 钱包记录变化
 register('wallet',() => {
     const w: any = forelet.getWidget(WIDGET_NAME);
@@ -99,27 +91,5 @@ register('third/rate',() => {
     const w: any = forelet.getWidget(WIDGET_NAME);
     if (w) {
         w.updateBalance();
-    }
-});
-register('setting/language', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-register('setting/changeColor', () => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.init();
-        w.paint();
-    }
-});
-
-// 货币单位变化
-register('setting/currencyUnit',() => {
-    const w: any = forelet.getWidget(WIDGET_NAME);
-    if (w) {
-        w.currencyUnitChange();
     }
 });

@@ -22,7 +22,6 @@ export class CloudHome extends Widget {
         super.setProps(props,oldProps);
         this.init();
         if (props.isActive) {
-            getProductList();
             getServerCloudBalance();
         }
     }
