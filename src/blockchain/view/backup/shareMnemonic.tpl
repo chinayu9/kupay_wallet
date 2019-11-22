@@ -8,7 +8,7 @@
         <div w-class="bottom-box">
             {{for i,v of it.successList}}
             <div w-class="item" on-tap="shareItemClick(e,{{i}})">
-                <img src="../../../res/image/number{{i + 1}}.png"/>
+                <img src="../../res/images/number{{i + 1}}.png"/>
                 <div w-class="share-box">
                     <div w-class="share-title">
                         <pi-ui-lang>{"zh_Hans":"分享给好友","zh_Hant":"分享給好友","en":""}</pi-ui-lang>
@@ -17,7 +17,7 @@
                 </div>
                 <div w-class="choose-box">
                     {{if v}}
-                    <img src="../../../res/image/icon_right2.png" w-class="choosed"/>
+                    <img src="../../res/images/icon_right2.png" w-class="choosed"/>
                     {{else}}
                     <div w-class="choose-inner"></div>
                     {{end}}

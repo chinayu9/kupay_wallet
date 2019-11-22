@@ -58,7 +58,7 @@ export class ShareMnemonic extends Widget {
             sharePart();
             const tips = { zh_Hans:'分享成功',zh_Hant:'分享成功',en:'' };
             popNewMessage(tips[getLang()]);
-            // this.ok && this.ok();
+            this.ok && this.ok();
         }
     }
 }

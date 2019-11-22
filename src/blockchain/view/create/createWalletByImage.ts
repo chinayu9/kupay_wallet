@@ -54,19 +54,23 @@ export class CreateWalletByImage extends Widget {
 
             return;
         }
-        const imagePsw = this.props.imagePsw;
-        if (this.props.imagePswAvailable) {
-            const imgArgon2HashPromise = new Promise((resolve) => {
-                this.props.imagePicker.getAHash({
-                    success(ahash:string) {
-                        console.log('image ahash = ',ahash);
-                        resolve(ahashToArgon2Hash(ahash,imagePsw));
-                    }
-                });
-            });
-            setStore('flags/imgArgon2HashPromise',imgArgon2HashPromise);
-            popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Image });
-            this.ok && this.ok();
+        if (!this.props.imagePswAvailable) {
+            const tips = { zh_Hans:'字符错误',zh_Hant:'字符錯誤',en:'' };
+            popNewMessage(tips[getLang()]);
+
+            return;
         }
+        const imagePsw = this.props.imagePsw;
+        const imgArgon2HashPromise = new Promise((resolve) => {
+            this.props.imagePicker.getAHash({
+                success(ahash:string) {
+                    console.log('image ahash = ',ahash);
+                    resolve(ahashToArgon2Hash(ahash,imagePsw));
+                }
+            });
+        });
+        // setStore('flags/imgArgon2HashPromise',imgArgon2HashPromise);
+        popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Image });
+        this.ok && this.ok();
     }
 }

@@ -25,15 +25,10 @@ export class Receipt extends Widget {
     }
     public init() {
         this.language = this.config.value[getLang()];
-        const userInfo = getUserInfo();
         this.props = {
             ...this.props,
             fromAddr:getCurrentAddrByCurrencyName(this.props.currencyName)
         };
-        if (userInfo) {
-            this.props.avatar = userInfo.avatar ? userInfo.avatar : 'app/res/image/default_avater_big.png';
-        }
-        
     }
 
     public copyClick() {

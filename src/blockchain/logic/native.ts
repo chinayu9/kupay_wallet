@@ -42,17 +42,23 @@ export const doScanQrCode = (ok?,cancel?) => {
             success: (res) => {
                 ok && ok(res);
                 console.log('scan-------------',res);
+                qrcode.close({
+                    success: (r) => {
+                        console.log(`close result:${r}`);
+                    }
+                });
             },
             fail: (r) => {
                 cancel && cancel();
                 console.log(`scan fail:${r}`);
+                qrcode.close({
+                    success: (r) => {
+                        console.log(`close result:${r}`);
+                    }
+                });
             }
         });
-        qrcode.close({
-            success: (r) => {
-                console.log(`close result:${r}`);
-            }
-        });
+        
     });
 };
 
