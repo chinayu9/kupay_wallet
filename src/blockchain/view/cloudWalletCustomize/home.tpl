@@ -7,11 +7,6 @@
                 <span w-class="balance">{{it.balance%1===0?it.balance.toFixed(2):it.balance}}</span>
                 <span w-class="balance-value">{{it.currencyUnitSymbol}}{{it.balanceValue}}</span>
             </div>
-            <div w-class="head2-right">
-                {{if it.currencyName === 'SC'}}
-                <span w-class="btn" on-tap="rechargeClick"><pi-ui-lang>{"zh_Hans":"去充值","zh_Hant":"去充值","en":""}</pi-ui-lang></span>
-                {{end}}
-            </div>
         </div>
         <div w-class="nav-wrap">
             <div w-class="nav">

@@ -2,7 +2,8 @@
  * 主动向后端通讯
  */
 import { request } from '../../pi/net/ui/con_mgr';
-import { MainChainCoin, uploadFileUrl } from '../config';
+import { MainChainCoin } from '../config';
+import { requestAsync } from '../logic/wrap';
 import {  CloudCurrencyType , MinerFeeLevel } from '../store/interface';
 import { getStore, setStore } from '../store/memstore';
 // tslint:disable-next-line:max-line-length
@@ -11,24 +12,6 @@ import { PAGELIMIT } from '../utils/constants';
 import { showError } from '../utils/toolMessages';
 import { base64ToFile, getUserInfo, popNewMessage, unicodeArray2Str } from '../utils/tools';
 import { kpt2kt, largeUnit2SmallUnit, wei2Eth } from '../utils/unitTools';
-
-/**
- * 通用的异步通信
- */
-export const requestAsync = (msg: any):Promise<any> => {
-    return new Promise((resolve, reject) => {
-        request(msg, (resp: any) => {
-            if (resp.type) {
-                console.log(`错误信息为${resp.type}`);
-                reject(resp);
-            } else if (resp.result !== 1) {
-                reject(resp);
-            } else {
-                resolve(resp);
-            }
-        });
-    });
-};
 
 /**
  * 获取所有的货币余额

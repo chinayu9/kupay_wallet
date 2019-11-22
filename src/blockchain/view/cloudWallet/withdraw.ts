@@ -55,7 +55,7 @@ export class Withdraw extends Widget {
             },
             en:{}
         };
-        popNew('app-components-allModalBox-modalBox1',this.language.modalBox);
+        popNew('app-components-allModalBox-modalBox1',tips);
     }
 
      // 提币金额变化

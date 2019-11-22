@@ -69,7 +69,7 @@ export class CreateWalletByImage extends Widget {
                 }
             });
         });
-        // setStore('flags/imgArgon2HashPromise',imgArgon2HashPromise);
+        setStore('flags/imgArgon2HashPromise',imgArgon2HashPromise);
         popNew('blockchain-view-create-createWallet',{ itype:CreateWalletType.Image });
         this.ok && this.ok();
     }
