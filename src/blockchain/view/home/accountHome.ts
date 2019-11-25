@@ -6,7 +6,7 @@ import { getLang } from '../../../pi/util/lang';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { getMnemonic, logoutAccountDel, popNewLoading, popNewMessage, popPswBox, rippleShow } from '../../utils/tools';
-import { backupMnemonic } from '../../utils/walletTools';
+import { backupMnemonic, VerifyIdentidy } from '../../utils/walletTools';
 // ================================ 导出
 // tslint:disable-next-line:no-reserved-keywords
 declare var module: any;
@@ -66,8 +66,18 @@ export class AccountHome extends Widget {
     /**
      * 修改密码
      */
-    public changePsw() {
-        popNew('blockchain-view-account-changePsw');
+    public async changePsw() {
+        const psw = await popPswBox();
+        if (!psw) return;
+        const close = popNewLoading(this.language.verify);
+        const secretHash = await VerifyIdentidy(psw);
+        close.callback(close.widget);
+        if (!secretHash) {
+            popNewMessage('密码错误');
+
+            return;
+        }
+        popNew('blockchain-view-account-changePsw',{ secretHash });
         
     }
 

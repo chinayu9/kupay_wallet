@@ -1,107 +1,83 @@
 /**
- * changePSW
+ * create wallet
  */
-// =============================================导入
 import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
-import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
+import { createWallet, CreateWalletType } from '../../logic/localWallet';
 import { popNewLoading, popNewMessage, pswEqualed } from '../../utils/tools';
-import { passwordChange, VerifyIdentidy } from '../../utils/walletTools';
-// ================================ 导出
-// tslint:disable-next-line:no-reserved-keywords
-declare var module: any;
-export const forelet = new Forelet();
-export const WIDGET_NAME = module.id.replace(/\//g, '-');
+import { passwordChange } from '../../utils/walletTools';
 
-export class ChangePSW extends Widget {
+interface Props {
+    secretHash:string;
+}
+export class CreateWallet extends Widget {
+    public props: any;
     public ok: () => void;
-    public language:any;
-    constructor() {
-        super();
-    }
+    public cancel: () => void;
+    public language: any;
 
-    public create() {
-        super.create();
+    public init() {
         this.language = this.config.value[getLang()];
         this.props = {
-            oldPassword:'',
-            newPassword:'',
-            rePassword:'',
-            pswEqualed:false,
-            pswAvailable:false
+            ...this.props,
+            walletPsw: '',
+            walletPswConfirm: '',
+            pswEqualed: false,
+            walletPswAvailable: false,
+            walletPswConfirmAvailable: false
         };
+        console.log(this.props);
     }
 
+    public setProps(props: Props, oldProps: Props) {
+        super.setProps(props, oldProps);
+        this.init();
+    }
     public backPrePage() {
-        this.ok && this.ok();
+        this.cancel && this.cancel();
     }
-
-    public oldPswChange(e: any) {
-        this.props.oldPassword = e.value;
-    }
-    public newPswChange(e: any) {
-        this.props.pswAvailable = e.success;
-        this.props.newPassword = e.password;
-        this.props.pswEqualed = pswEqualed(this.props.newPassword, this.props.rePassword) && e.success;
+    public pswConfirmChange(r: any) {
+        this.props.walletPswConfirmAvailable = r.success;
+        this.props.walletPswConfirm = r.value;
+        this.props.pswEqualed = pswEqualed(this.props.walletPsw, this.props.walletPswConfirm);
         this.paint();
     }
-    public rePswChange(e: any) {
-        this.props.rePassword = e.value;
-        this.props.pswEqualed = pswEqualed(this.props.newPassword, this.props.rePassword) && this.props.pswAvailable;
+    // 密码格式正确通知
+    public pswChange(res: any) {
+        this.props.walletPswAvailable = res.success;
+        this.props.walletPsw = res.password;
+        this.props.pswEqualed = pswEqualed(this.props.walletPsw, this.props.walletPswConfirm);
         this.paint();
     }
-    public pswClear(pswType: number) {
-        switch (pswType) {
-            case 0:
-                this.props.oldPassword = '';
-                break;
-            case 1:
-                this.props.newPassword = '';
-                break;
-            case 2:
-                this.props.rePassword = '';
-                break;
-            default:
-        }
+
+    // 清除密码
+    public pwsClear() {
+        this.props.walletPsw = '';
+        this.paint();
     }
 
-    /**
-     * 点击确认按钮
-     */
-    public async btnClicked() {
-        const oldPassword = this.props.oldPassword;
-        const newPassword = this.props.newPassword;
-        const rePassword = this.props.rePassword;
-        if (!oldPassword || !newPassword || !rePassword) {
-            popNewMessage(this.language.tips[0]);
-
-            return;
-        }
-        // 判断输入的密码是否符合规则
-        if (!this.props.pswAvailable) {
+    public async changePswClick() {
+        if (!this.props.walletPsw || !this.props.walletPswConfirm) {
             popNewMessage(this.language.tips[1]);
 
             return;
         }
-        // 判断两次输入的密码是否相同
-        if (!this.props.pswEqualed) {
+        if (!this.props.walletPswAvailable) {
             popNewMessage(this.language.tips[2]);
 
             return;
         }
-        const loading = popNewLoading(this.language.loading);
-        const secretHash = await VerifyIdentidy(oldPassword);
-        // 判断原密码是否正确
-        if (!secretHash) {
+        if (!this.props.pswEqualed) {
             popNewMessage(this.language.tips[3]);
-            loading.callback(loading.widget);
 
             return;
         }
-        await passwordChange(secretHash, newPassword);
+        const loading = popNewLoading('修改中...');
+        await passwordChange(this.props.secretHash, this.props.walletPsw);
         loading.callback(loading.widget);
         popNewMessage(this.language.tips[4]);
         this.backPrePage();
     }
+
 }
