@@ -12,7 +12,7 @@
             {{end}}
         </div>
         {{if it1 && !it1.isBackup}}
-        <div w-class="box"><span w-class="dot"></span>备份</div>
+        <div w-class="box" on-tap="backupWalletClick"><span w-class="dot"></span>备份</div>
         {{end}}
     </div>
 </div>

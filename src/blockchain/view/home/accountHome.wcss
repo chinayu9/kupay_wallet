@@ -1,5 +1,4 @@
 .body{
-    padding: 30px 20px;
 }
 .head-container{
     position:relative;
@@ -34,16 +33,15 @@
 }
 .other{
     margin-top: 30px;
-    border-radius: 12px;
+    padding: 0 40px;
     background-color: #fff;
-    padding: 0 10px;
 }
 .other-item{
     height: 120px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(242,242,242,1);
 }
 .item-title{
     font-size: 28px;

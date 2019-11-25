@@ -3,7 +3,7 @@
     flex-direction: column;
 }
 .top-head{
-    background-image: linear-gradient(to right,#38CFE7,#318DE6);
+    background-color: #fff;
 }
 .head2{
     height: 270px;
@@ -18,7 +18,7 @@
     align-items: center;
     line-height: 45px;
     font-size: 32px;
-    color: #fff;
+    color:rgba(34,34,34,1);
 }
 .icon{
     width: 80px;
@@ -29,25 +29,20 @@
 }
 .body{
     flex: 1 0 0;
-    padding: 30px 20px 20px;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
+    margin-top: 30px;
+    padding: 0 50px;
 }
 .main{
     flex: 1 0 0;
     border-radius: 12px;
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
-    background-color: #fff;
     position: relative;
 }
 .item1{
-    margin: 0 10px;
-    border-bottom: 1px solid #dbdbe5;
-    padding: 30px 20px 0;
 }
 .item2{
-    margin: 0 10px;
-    padding: 10px 0 0 20px;
 }
 .inner-tip{
     font-size: 28px;
@@ -55,6 +50,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 30px;
+}
+.inner-tip1{
+    font-size: 28px;
+    color: #222;
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
 }
 .input-icon{
     position: absolute;
@@ -67,7 +70,7 @@
 .input-father{
     position: relative;
     height: 90px;
-    margin-top: 10px;
+    margin-top: 30px;
 }
 .input-father1{
     position: relative;
@@ -79,8 +82,6 @@
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
-    border-bottom: 1px solid #dbdbe5;
-    margin: 0 30px;
 }
 .fee{
     margin-left: 10px;
@@ -88,7 +89,7 @@
 }
 .bottom-container{
     position: absolute;
-    bottom: 35px;
+    bottom: 50px;
     left: 0;
     right: 0;
 }
@@ -109,4 +110,11 @@
     right: 0;
     font-size: 36px;
     color:#ccc;
+}
+.arrow{
+    transform: rotateZ(90deg);
+}
+.box{
+    display: flex;
+    align-items: center;
 }

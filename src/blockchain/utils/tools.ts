@@ -543,16 +543,16 @@ export const fetchCloudWalletAssetList = () => {
         rate:formatBalanceValue(0)
     };
     assetList.push(ktItem);
-    const scBalance = cloudBalances.get(CloudCurrencyType.SC) || 0;
-    const gtItem = {
-        currencyName: 'SC',
-        description: 'SC',
-        balance: formatBalance(scBalance),
-        balanceValue: formatBalanceValue(fetchBalanceValueOfCoin('SC',scBalance)),
-        gain: fetchCloudGain(),
-        rate:formatBalanceValue(fetchBalanceValueOfCoin('SC',1))
-    };
-    assetList.push(gtItem);
+    // const scBalance = cloudBalances.get(CloudCurrencyType.SC) || 0;
+    // const gtItem = {
+    //     currencyName: 'SC',
+    //     description: 'SC',
+    //     balance: formatBalance(scBalance),
+    //     balanceValue: formatBalanceValue(fetchBalanceValueOfCoin('SC',scBalance)),
+    //     gain: fetchCloudGain(),
+    //     rate:formatBalanceValue(fetchBalanceValueOfCoin('SC',1))
+    // };
+    // assetList.push(gtItem);
     for (const k in CloudCurrencyType) {
         const item: any = {};
         if (MainChainCoin.hasOwnProperty(k)) {

@@ -4,9 +4,9 @@
 import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
-import { getProductList, getServerCloudBalance } from '../../net/pull';
-import { CloudCurrencyType, Product } from '../../store/interface';
-import { getStore, register } from '../../store/memstore';
+import { getServerCloudBalance } from '../../net/pull';
+import { CloudCurrencyType } from '../../store/interface';
+import { getStore } from '../../store/memstore';
 // tslint:disable-next-line:max-line-length
 import { fetchCloudTotalAssets, fetchCloudWalletAssetList, formatBalanceValue, getCurrencyUnitSymbol } from '../../utils/tools';
 // ================================ 导出
@@ -45,11 +45,6 @@ export class CloudHome extends Widget {
         } else {
             popNew('blockchain-view-cloudWallet-home',{ currencyName:v.currencyName,gain:v.gain });
         }
-    }
-    
-    public updateProductList(productList:Product[]) {
-        this.props.productList = productList;
-        this.paint();
     }
     
     public updateBalance() {

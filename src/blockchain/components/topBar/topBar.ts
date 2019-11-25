@@ -8,11 +8,14 @@
  */
 // ================================ 导入
 import { Json } from '../../../pi/lang/type';
+import { popNew } from '../../../pi/ui/root';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { fetchUserInfo } from '../../logic/wrap';
 import { Wallet } from '../../store/interface';
 import { getStore, register } from '../../store/memstore';
+import { popPswBox } from '../../utils/tools';
+import { backupMnemonic } from '../../utils/walletTools';
 
 interface Props {
     avatar:string;
@@ -42,6 +45,16 @@ export class TopBar extends Widget {
             isInit = true;
         }
         
+    }
+    // 备份助记词
+    public async backupWalletClick() {
+        const psw = await popPswBox();
+        if (!psw) return;
+        const ret = await backupMnemonic(psw);
+        if (ret) {
+            popNew('blockchain-view-backup-index', ret);
+        }
+
     }
 }
 const STATE = {

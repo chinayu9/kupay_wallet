@@ -74,7 +74,8 @@ export class AccountHome extends Widget {
     // 退出钱包
     public exitWallet() {
         // TODO
-        popNew('blockchain-components-modalBox-modalBox',{ title:'',content:'退出前请确认您已备份',sureText:'退出',cancelText:'暂不退出' },() => {
+        // tslint:disable-next-line:max-line-length
+        popNew('blockchain-components-modalBox-modalBox',{ style:'display:flex;justify-content: center;',content:'退出前请确认您已备份',sureText:'退出',cancelText:'暂不退出' },() => {
             logoutAccountDel();
         });
         

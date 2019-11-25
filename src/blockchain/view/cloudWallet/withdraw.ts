@@ -55,7 +55,7 @@ export class Withdraw extends Widget {
             },
             en:{}
         };
-        popNew('app-components-allModalBox-modalBox1',tips);
+        popNew('app-components-allModalBox-modalBox1',tips[getLang()]);
     }
 
      // 提币金额变化
@@ -76,7 +76,7 @@ export class Withdraw extends Widget {
     }
 
     public chooseWithdrawAddr() {
-        popNew('app-view-wallet-components-choosetWithdrawAddr',{ addrsInfo:this.props.withdrawAddrInfo },(index) => {
+        popNew('blockchain-view-components-choosetWithdrawAddr',{ addrsInfo:this.props.withdrawAddrInfo },(index) => {
             const addrsInfo = this.props.withdrawAddrInfo;
             for (let i = 0;i < addrsInfo.length;i++) {
                 if (i === index) {

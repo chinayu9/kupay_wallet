@@ -9,7 +9,7 @@
                 <div w-class="item-left">{{v.addrShow}}</div>
                 <div w-class="item-right">{{v.balance%1===0?v.balance.toFixed(2):v.balance}}</div>
                 {{if v.isChoosed}}
-                <img src="../../../res/image/right.png" w-class="choosed"/>
+                <img src="../../res/images/right.png" w-class="choosed"/>
                 {{end}}
             </div>
             {{end}}

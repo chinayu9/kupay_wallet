@@ -1,7 +1,7 @@
 <div class="new-page" w-class="new-page" ev-back-click="backPrePage">
     <div w-class="top-head">
         {{: topBarTitle = {"zh_Hans":it.currencyName+"提币","zh_Hant":it.currencyName+"提幣","en":""} }}
-        <app-components-topBar-topBar>{"title":{{topBarTitle}},background:"linear-gradient(to right,#38CFE7,#318DE6)"}</app-components-topBar-topBar>
+        <app-components-topBar-topBar>{"title":{{topBarTitle}},background:"#fff"}</app-components-topBar-topBar>
         <div w-class="head2">
             <div w-class="item">
                 <img src="../../res/images/cloud_wallet.png" w-class="icon" />
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div w-class="arow">
-                <img src="../../res/images/left_arrow_white.png" />
+                <img src="../../res/images/left_arrow_blue.png" />
             </div>
             <div w-class="item">
                 <img src="../../res/images/local_wallet.png" w-class="icon" />
@@ -32,25 +32,23 @@
                 <div w-class="inner-tip"><pi-ui-lang>{{phrase[0]}}</pi-ui-lang><span w-class="balance"><pi-ui-lang>{{phrase[1]}}</pi-ui-lang>&nbsp;{{it.balance%1===0?it.balance.toFixed(2):it.balance}}</span></div>
                 <div w-class="input-father" ev-input-change="amountChange">
                     {{: inputPlace = {"zh_Hans":"输入金额","zh_Hant":"輸入金額","en":""} }}
-                    <app-components1-input-input>{itype:"number",placeHolder:{{inputPlace}},style:"padding:0;",input:{{it.amount}}}</app-components1-input-input>
+                    <blockchain-components-input-input>{itype:"number",placeHolder:{{inputPlace}},style:"padding:0 30px;",input:{{it.amount}}}</blockchain-components-input-input>
                 </div>
             </div>
 
             <div w-class="inner-tip" on-tap="chooseWithdrawAddr">
-                <span style="padding-left: 30px;"><pi-ui-lang>{{phrase[2]}}</pi-ui-lang></span>
-                <img src="../../res/images/right_arrow_blue.png" style="border: 20px solid transparent;margin-right: 10px;"/>
+                <span w-class="box"><img src="../../res/images/location.png" style="margin-right: 15px;"/><pi-ui-lang>{{phrase[2]}}</pi-ui-lang></span>
+                <img src="../../res/images/arrow_right.png" w-class="arrow"/>
             </div>
             <div w-class="input-father1" >
                 {{it.withdrawAddr}}
             </div>
 
             <div w-class="item2">
-                <div w-class="inner-tip" >
-                    <div>
-                        <pi-ui-lang>{{phrase[3]}}</pi-ui-lang>
-                        <span w-class="fee">{{it.minerFee}}&nbsp;{{it.currencyName}}</span>
-                    </div>
-                    <img src="../../res/images/41_gray.png" on-tap="minerFeeDescClick" style="border: 20px solid transparent;width: 32px;"/>
+                <div w-class="inner-tip1" >
+                    <img src="../../res/images/41_gray.png" on-tap="minerFeeDescClick" style="width: 32px;margin-right: 15px;"/>
+                    <pi-ui-lang>{{phrase[3]}}</pi-ui-lang>
+                    <span w-class="fee">{{it.minerFee}}&nbsp;{{it.currencyName}}</span>
                 </div>
             </div>
 
@@ -60,7 +58,7 @@
                 {{end}}
                 <div ev-btn-tap="withdrawClick" w-class="btn">
                     {{: btnName = {"zh_Hans":"提币","zh_Hant":"提幣","en":""} }}    
-                    <app-components1-btn-btn>{"name":{{btnName}},"types":"big","color":"blue"}</app-components1-btn-btn>
+                    <blockchain-components-btn-btn>{"name":{{btnName}},"types":"big","color":"blue"}</blockchain-components-btn-btn>
                 </div>
             </div>    
         </div>

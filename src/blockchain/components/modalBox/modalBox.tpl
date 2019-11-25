@@ -1,5 +1,6 @@
 <div w-class="modal-mask" class="new-page">
     <div w-class="body">
+        {{if it.title}}
         <div w-class="title">
             {{if typeof(it.title)==='string'}}
                 {{it.title}}
@@ -7,6 +8,7 @@
                 <pi-ui-lang>{{it.title}}</pi-ui-lang>
             {{end}}
         </div>
+        {{end}}
         <div w-class="content" style="{{it.style?it.style:''}}">
             {{if typeof(it.content)==='string'}}
                 {{it.content}}
