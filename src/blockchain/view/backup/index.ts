@@ -29,6 +29,8 @@ export class BackupIndex extends Widget {
         });
     }
     public fragmentsBackupClick() {
-        popNew('blockchain-view-backup-shareMnemonic',{ fragments:this.props.fragments });
+        popNew('blockchain-view-backup-shareMnemonic',{ fragments:this.props.fragments },() => {
+            this.ok && this.ok();
+        });
     }
 }

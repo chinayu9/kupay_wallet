@@ -37,12 +37,6 @@ export class CloudWalletHome extends Widget {
             ...this.props,
             topBarTitle:this.props.currencyName,
             tabs:[{
-                tab:this.language.total,
-                components:'blockchain-view-cloudWallet-totalRecord'
-            },{  
-                tab:this.language.other,
-                components:'blockchain-view-cloudWallet-otherRecord'
-            },{
                 tab:this.language.recharge,
                 components:'blockchain-view-cloudWallet-rechargeRecord'
             },{

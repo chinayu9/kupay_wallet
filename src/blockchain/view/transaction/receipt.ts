@@ -6,7 +6,7 @@ import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { makeScreenShot } from '../../logic/native';
-import { copyToClipboard, getCurrentAddrByCurrencyName, getUserInfo, popNewMessage } from '../../utils/tools';
+import { copyToClipboard, getCurrentAddrByCurrencyName, popNewMessage } from '../../utils/tools';
 
 interface Props {
     currencyName:string;

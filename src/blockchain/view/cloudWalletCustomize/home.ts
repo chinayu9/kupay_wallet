@@ -36,13 +36,10 @@ export class CloudWalletHome extends Widget {
             ...this.props,
             titleShow,
             tabs:[{
-                tab:{ zh_Hans:'全部',zh_Hant:'全部',en:'' },
-                components:'blockchain-view-cloudWalletCustomize-totalRecord'
-            },{
-                tab:{ zh_Hans:'入账',zh_Hant:'入賬',en:'' },
+                tab:'入账',
                 components:'blockchain-view-cloudWalletCustomize-accountEntry'
             },{
-                tab:{ zh_Hans:'出账',zh_Hant:'出賬',en:'' },
+                tab:'出账',
                 components:'blockchain-view-cloudWalletCustomize-accountOut'
             }],
             activeNum:0,
