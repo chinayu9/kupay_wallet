@@ -1,8 +1,6 @@
 .top-box{
-    border-radius: 12px;
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
     background-color: #fff;
-    padding: 35px 30px 30px;
+    padding: 25px 0;
 }
 .top-tip-title{
     line-height: 50px;

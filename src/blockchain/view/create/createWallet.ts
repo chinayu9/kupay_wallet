@@ -30,8 +30,7 @@ export class CreateWallet extends Widget {
             pswEqualed: false,
             userProtocolReaded: true,
             walletPswAvailable: false,
-            avatarHtml: '',
-            imagePicker:null
+            walletPswConfirmAvailable: false
         };
         console.log(this.props);
     }
@@ -44,6 +43,7 @@ export class CreateWallet extends Widget {
         this.cancel && this.cancel();
     }
     public pswConfirmChange(r: any) {
+        this.props.walletPswConfirmAvailable = r.success;
         this.props.walletPswConfirm = r.value;
         this.props.pswEqualed = pswEqualed(this.props.walletPsw, this.props.walletPswConfirm);
         this.paint();
@@ -104,7 +104,7 @@ export class CreateWallet extends Widget {
      * 查看隐私条约
      */
     public agreementClick() {
-        popNew('app-view-mine-other-privacypolicy');
+        popNew('blockchain-view-account-privacypolicy');
     }
 
     /**

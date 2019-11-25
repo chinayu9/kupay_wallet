@@ -42,7 +42,6 @@ export class ShareMnemonic extends Widget {
         popNew('app-components-share-share',{ comment:fragment,text:fragment,shareType:ShareType.TYPE_IMG },(success) => {
             this.props.successList[index] = true;
             this.paint();
-            this.allShared();
         });
     }
 
@@ -61,4 +60,5 @@ export class ShareMnemonic extends Widget {
             this.ok && this.ok();
         }
     }
+
 }

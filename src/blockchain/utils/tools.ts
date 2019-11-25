@@ -1066,3 +1066,20 @@ export const currencyType = (str:string) => {
         return str;
     }
 };
+
+/**
+ * 过滤表情符号
+ */
+export const filterEomoji = (str:string) => {
+    const patt = /[\ud800-\udbff][\udc00-\udfff]/g;
+    str = str.replace(patt, (char) => {
+        if (char.length === 2) {   // 辅助平面字符（我们需要做处理的一类）
+
+            return '';
+        } else {
+            return char;
+        }
+    });
+
+    return str;
+};

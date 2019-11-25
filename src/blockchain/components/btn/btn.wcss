@@ -7,11 +7,12 @@
     margin: 10px 0;
     color:#fff;
     background:rgba(66,133,244,1);
-    border: 2px dashed rgba(66,133,244,1);
+    border: 2px solid rgba(66,133,244,1);
+    border-radius: 12px;
 }
 
 .btn-cannotClick{
     background:rgba(242,242,242,1);
-    border: 2px dashed rgba(136,136,136,1);
+    border: 2px solid rgba(242,242,242,1);
     color:rgba(136,136,136,1);
 }

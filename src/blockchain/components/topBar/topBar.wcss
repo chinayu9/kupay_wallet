@@ -68,11 +68,17 @@
     font-size:32px;
     font-weight:400;
     color:rgba(34,34,34,1);
-    margin-right: 30px;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .avatar{
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    margin-left: 25px;
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
 }

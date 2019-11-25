@@ -11,6 +11,7 @@ import { Json } from '../../../pi/lang/type';
 import { Forelet } from '../../../pi/widget/forelet';
 import { Widget } from '../../../pi/widget/widget';
 import { fetchUserInfo } from '../../logic/wrap';
+import { Wallet } from '../../store/interface';
 import { getStore, register } from '../../store/memstore';
 
 interface Props {
@@ -25,21 +26,30 @@ declare var module: any;
 export const forelet = new Forelet();
 export const WIDGET_NAME = module.id.replace(/\//g, '-');
 
+let isInit = false;
 export class TopBar extends Widget {
     public props:Props;
-    
-    public setProps(props:Json,oldProps:Json) {
-        super.setProps(props,oldProps);
-        const isBackup = getStore('wallet/isBackup');
-        forelet.paint({ isBackup });
-        fetchUserInfo().then(res => {
-            console.log(res);
-            forelet.paint({ isBackup,avatar:res.avatar });
-        });
+    public create() {
+        super.create();
+        if (!isInit) {
+            fetchUserInfo().then(res => {
+                const isBackup = getStore('wallet/isBackup');
+                STATE.isBackup = isBackup;
+                STATE.avatar = res.avatar;
+                console.log(res);
+                forelet.paint(STATE);
+            });
+            isInit = true;
+        }
+        
     }
-
 }
+const STATE = {
+    isBackup:false,
+    avatar:''
+};
 
-register('wallet/isBackup',(isBackup:boolean) => {
-    forelet.paint({ isBackup });
+register('wallet',(wallet:Wallet) => {
+    STATE.isBackup = wallet.isBackup;
+    forelet.paint(STATE);
 });

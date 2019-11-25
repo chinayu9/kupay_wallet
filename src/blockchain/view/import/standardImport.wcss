@@ -4,7 +4,7 @@
     background-color: #fff;
 }
 .body{
-    padding: 0 40px;
+    padding: 0 50px;
 }
 .create-tips{
     margin-top: 10%;
@@ -48,12 +48,12 @@
 }
 .textarea-father{
     position: relative;
-    height: 80vh;
+    height: 440px;
     border: 1px solid #888;
     border-radius: 2px;
 }
 .btn{
-    margin: 10% 20px 10%;
+    margin-top: 160px;
 }
 .other-btns{
     display: flex;

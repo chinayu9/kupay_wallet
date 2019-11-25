@@ -13,18 +13,19 @@
                 <widget w-tag="pi-ui-html" w-class="ui-html">{{it.imageHtml}}</widget>
                 {{end}}
             </div>
+            <div w-class="box">
+                <div w-class="box-title"><pi-ui-lang>{"zh_Hans":"图片密码","zh_Hant":"圖片密碼","en":""}</pi-ui-lang></div>
+                <div w-class="box-content"><pi-ui-lang>{"zh_Hans":"记住原图片和字符，可以用于登录钱包","zh_Hant":"記住原圖片和字符，可以用於登錄錢包","en":""}</pi-ui-lang></div>
+            </div>
             <div w-class="image-psw-container" on-tap="imagePswClick">
-                {{: inputPlace = {"zh_Hans":"给照片取个名字","zh_Hant":"給照片取個名字","en":""} }}
+                {{: inputPlace = {"zh_Hans":"4个中文字符或者8个英文字符以上","zh_Hant":"4個中文字元或者8個英文字元以上","en":""} }}
                 <div w-class="input-father" ev-input-change="imagePswChange">
-                    <app-components-input-suffixInput>{isCenter:true,itype:"text",placeHolder:{{inputPlace}},clearable:true,available:{{it.imagePswAvailable}},closeEye:false}</app-components-input-suffixInput>
-                </div>
-                <div w-class="place-holder">
-                    <pi-ui-lang>{"zh_Hans":"4个中文字符或者8个英文字符以上","zh_Hant":"4個中文字元或者8個英文字元以上","en":""}</pi-ui-lang>
+                    <blockchain-components-input-suffixInput>{isCenter:true,itype:"text",placeHolder:{{inputPlace}},clearable:true,available:{{it.imagePswAvailable}},closeEye:false}</blockchain-components-input-suffixInput>
                 </div>
             </div>
             <div ev-btn-tap="nextClick" w-class="btn">
                 {{: btnName = {"zh_Hans":"继续","zh_Hant":"繼續","en":""} }}
-                <app-components1-btn-btn>{"name":{{btnName}},"types":"big","color":"blue"}</app-components1-btn-btn>
+                <blockchain-components-btn-btn>{"name":{{btnName}},"types":"big","color":"blue"}</blockchain-components-btn-btn>
             </div>
         </div>
     </div>

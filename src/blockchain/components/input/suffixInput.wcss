@@ -1,0 +1,80 @@
+.pi-input-box{
+    position: relative;
+    height: 100%;
+    color: #222;
+    font-size: 32px;
+    overflow: hidden;
+}
+.input-focused-true{
+    /* border-bottom:1px solid #318DE6; */
+    border:2px solid rgba(66,133,244,1);
+}
+
+.input-focused-false{
+    /* border-bottom:1px solid #DBDBE5; */
+    border:2px solid rgba(242,242,242,1);
+}
+.pi-input__inner{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    background-color: #fff;
+    background-image: none;
+    background:rgba(242,242,242,1);
+    border-radius: 4px;
+    border: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: inherit;
+    height: 100%;
+    line-height: 40px;
+    outline: 0;
+    -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+    width: 100%;
+    padding: 30px;
+    color: #222;
+    font-size: 32px;
+}
+
+
+.pi-input__suffix{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    border: 20px solid transparent;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.pi-input__suffixBox{
+    width: 80px;
+    height: 100px;
+    position: absolute;
+    right: 80px;
+    top: 0;
+}
+.close-eyes{
+    position:absolute;
+    right:0px;
+    top:50%;
+    transform: translateY(-55%);
+    width: 40px;
+    height: 25px;
+    border: 20px solid transparent;
+    border-radius: 50%;
+}
+.close-eyesBox{
+    width: 80px;
+    height: 100px;
+    position:absolute;
+    right:0px;
+    top:0;
+}
+.pi-input__inner1{
+    text-align: center;
+}

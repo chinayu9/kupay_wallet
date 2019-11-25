@@ -1,4 +1,4 @@
-<div class="new-page" w-class="new-page" ev-back-click="backPrePage">
+<div class="new-page1" w-class="new-page" ev-back-click="backPrePage">
     {{: topBarTitle = {"zh_Hans":"备份助记词","zh_Hant":"備份助記詞","en":""} }}
     <app-components-topBar-topBar>{"title":{{topBarTitle}} }</app-components-topBar-topBar>
     <div w-class="body">
@@ -13,8 +13,8 @@
                 {{: btnNames = 
                 [{"zh_Hans":"我已妥善保管","zh_Hant":"我已妥善保管","en":""},
                 {"zh_Hans":"请好友协助保管","zh_Hant":"請好友協助保管","en":""}] }}
-                <div ev-btn-tap="standardBackupClick" w-class="btn"><app-components1-btn-btn>{"name":{{btnNames[0]}},"types":"big","color":"blue"}</app-components1-btn-btn></div>
-                <div ev-btn-tap="fragmentsBackupClick" w-class="btn"><app-components1-btn-btn>{"name":{{btnNames[1]}},"types":"big","color":"white"}</app-components1-btn-btn></div>
+                <div ev-btn-tap="standardBackupClick" w-class="btn"><blockchain-components-btn-btn>{"name":{{btnNames[0]}},"types":"big","color":"blue"}</blockchain-components-btn-btn></div>
+                <div ev-btn-tap="fragmentsBackupClick" w-class="btn"><app-components1-btn-btn>{"name":{{btnNames[1]}},"types":"big","color":"gray"}</app-components1-btn-btn></div>
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@ export class StandardImport extends Widget {
     }
 
     public whatIsMnemonicClick() {
-        popNew('app-view-wallet-import-mnemonicDesc');
+        popNew('blockchain-view-import-mnemonicDesc');
     }
 
     public imageImportClick() {

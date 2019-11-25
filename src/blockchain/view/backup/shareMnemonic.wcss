@@ -4,7 +4,7 @@
 }
 .body{
     flex: 1 0 0;
-    padding: 30px 20px 20px;
+    padding: 30px 50px;
     display: flex;
     flex-direction: column;
 }
@@ -14,23 +14,26 @@
     margin-top: 30px;
 }
 .item{
-    height: 180px;
+    height: 100px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #dbdbe5;
-    padding: 0 40px;
+    padding: 0 20px;
+    margin-top: 20px;
+    background:rgba(66,133,244,1);
+    border-radius:12px;
+    color: #fff;
+}
+.item-active{
+    background:rgba(242,242,242,1);
+    color:rgba(136,136,136,1);
 }
 .share-box{
-    
-    margin-left: 30px;
-    font-size: 32px;
-    line-height: 45px;
-    color: #222;
+    font-size: 28px;
     flex: 1 0 0;
 }
 .share-fragment{
     width: 320px;
-    line-height: 33px;
     font-size: 24px;
     margin-top: 10px;
     overflow: hidden;
@@ -40,12 +43,10 @@
 .choose-box{
     width: 50px;
     height: 50px;
-    border: 5px solid #eee;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
 }
 .choose-inner{
     width: 36px;
@@ -57,4 +58,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
+}
+.btn{
+    margin-top: 200px;
 }

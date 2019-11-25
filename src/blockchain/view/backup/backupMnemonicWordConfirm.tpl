@@ -1,4 +1,4 @@
-<div class="new-page" w-class="new-page" ev-back-click="backPrePage">
+<div class="new-page1" w-class="new-page" ev-back-click="backPrePage">
 	{{: topBarTitle = {"zh_Hans":"备份助记词","zh_Hant":"備份助記詞","en":""} }}
 	<app-components-topBar-topBar>{title:{{topBarTitle}} }</app-components-topBar-topBar>
 	<div w-class="body">
@@ -26,7 +26,7 @@
 
 			<div w-class="btnBox">
 				{{: sure = {"zh_Hans":"确定","zh_Hant":"確定","en":""} }}
-				<div ev-btn-tap="nextStepClick" w-class="btn"><app-components1-btn-btn>{"name":{{sure}},"types":"big","color":"blue"}</app-components1-btn-btn></div>
+				<div ev-btn-tap="nextStepClick" w-class="btn"><blockchain-components-btn-btn>{"name":{{sure}},"types":"big","color":"blue"}</blockchain-components-btn-btn></div>
 
 			</div>
 		</div>

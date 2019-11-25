@@ -3,6 +3,7 @@
  */
 import { popNew } from '../../../pi/ui/root';
 import { Widget } from '../../../pi/widget/widget';
+import { fetchModulConfig } from '../../logic/wrap';
 
 interface Props {
     mnemonic: string;
@@ -11,6 +12,13 @@ interface Props {
 // tslint:disable-next-line:completed-docs
 export class BackupIndex extends Widget {
     public ok:() => void;
+    public setProps(props:Props) {
+        this.props = {
+            ...props,
+            walletName:fetchModulConfig('WALLET_NAME')
+        };
+        super.setProps(this.props);
+    }
     public backPrePage() {
         this.ok && this.ok();
     }

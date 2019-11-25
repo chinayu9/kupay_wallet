@@ -1,6 +1,7 @@
 /**
  * mnemonic backup confirm page
  */
+import { popNew } from '../../../pi/ui/root';
 import { getLang } from '../../../pi/util/lang';
 import { Widget } from '../../../pi/widget/widget';
 import { deleteMnemonic, helpWord } from '../../logic/localWallet';
@@ -32,7 +33,11 @@ export class BackupMnemonicWordConfirm extends Widget {
     }
     
     public backPrePage() {
-        this.cancel && this.cancel();
+        const props = { title:'确认备份',content:'确认您已经保留助记词或其它登录数据，下次登录需要重新导入钱包',sureText:'继续备份',cancelText:'等会再来' };
+        popNew('blockchain-components-modalBox-modalBox',props,undefined,() => {
+            this.cancel && this.cancel();
+        });
+        
     }
 
     // 对助记词乱序和标识处理

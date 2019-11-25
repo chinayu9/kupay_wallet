@@ -86,7 +86,7 @@ export const createWalletRandom = async (option: Option) => {
     const user = getStore('user');
     user.id = gwlt.glwtId;
     user.publicKey = gwlt.publicKey;
-    setStore('wallet', wallet,false);
+    setStore('wallet', wallet);
     setStore('user', user);
 
     return secrectHash;
@@ -120,7 +120,7 @@ export const createWalletByImage = async (option: Option) => {
     const user = getStore('user');
     user.id = gwlt.glwtId;
     user.publicKey = gwlt.publicKey;
-    setStore('wallet', wallet,false);
+    setStore('wallet', wallet);
     setStore('user', user);
 
     return secrectHash;
@@ -161,7 +161,7 @@ export const importWalletByMnemonic = async (option: Option) => {
     const user = getStore('user');
     user.id = gwlt.glwtId;
     user.publicKey = gwlt.publicKey;
-    setStore('wallet', wallet,false);
+    setStore('wallet', wallet);
     setStore('user', user);
     
     return secrectHash;
