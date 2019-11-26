@@ -11,7 +11,7 @@ import { lookup } from '../../pi/widget/widget';
 import { Config, ERC20Tokens, MainChainCoin } from '../config';
 import { toMnemonic } from '../core/genmnemonic';
 import { fetchModulConfig } from '../logic/wrap';
-import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType, User } from '../store/interface';
+import { CloudCurrencyType, Currency2USDT, MinerFeeLevel, TxHistory, TxStatus, TxType, User, Wallet } from '../store/interface';
 import { getCloudBalances, getStore,initCloudWallets, setStore } from '../store/memstore';
 import { decrypt } from './cipherTools';
 import {  piLoadDir } from './commonjsTools';
@@ -909,10 +909,8 @@ export const updateLocalTx = (tx: TxHistory) => {
 /**
  * 删除本地交易记录
  */
-export const deletLocalTx = (tx: TxHistory) => {
+export const deletLocalTx = (currencyName:string, hash:string,addr:string) => {
     const wallet = getStore('wallet');
-    const currencyName = tx.currencyName;
-    const addr = tx.addr;
     wallet.currencyRecords.forEach(record => {
         if (record.currencyName === currencyName) {
             record.addrs.forEach(addrInfo => {
@@ -920,7 +918,8 @@ export const deletLocalTx = (tx: TxHistory) => {
                     let index = -1;
                     const txHistory = addrInfo.txHistory;
                     for (let i = 0; i < txHistory.length; i++) {
-                        if (txHistory[i].hash === tx.hash) {
+                        // tslint:disable-next-line:possible-timing-attack
+                        if (txHistory[i].hash === hash) {
                             index = i;
                             break;
                         }
@@ -941,17 +940,11 @@ export const deletLocalTx = (tx: TxHistory) => {
  * 只取ETH地址下的nonce
  */
 export const getEthNonce = (addr: string) => {
-    const wallet = getStore('wallet');
-    for (const record of wallet.currencyRecords) {
-        if (record.currencyName === 'ETH') {
-            for (const addrInfo of record.addrs) {
-                if (addrInfo.addr === addr) {
-                    return addrInfo.nonce;
-                }
-            }
-        }
+    const wallet:Wallet = getStore('wallet');
+    const record = wallet.currencyRecords.filter(record => record.currencyName === 'ETH')[0];
+    const addrInfo = record.addrs.filter(addrInfo => addrInfo.addr === addr)[0];
 
-    }
+    return addrInfo.nonce;
 };
 
 /**

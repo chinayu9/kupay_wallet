@@ -97,15 +97,14 @@ export class GlobalWallet {
      * 通过助记词创建对应钱包对象
      */
     public static createWltByMnemonic(mnemonic: string, currencyName: string, i: number) {
-        let wlt;
-        if (currencyName === 'ETH') {
+        let wlt:EthWallet | BTCWallet;
+        if (currencyName === 'ETH' || ERC20Tokens[currencyName]) {
             const ethWallet = EthWallet.fromMnemonic(mnemonic, lang);
             wlt = ethWallet.selectAddressWlt(i);
         } else if (currencyName === 'BTC') {
             wlt = BTCWallet.fromMnemonic(mnemonic, btcNetwork, lang);
-        } else if (ERC20Tokens[currencyName]) {
-            const ethWallet = EthWallet.fromMnemonic(mnemonic, lang);
-            wlt = ethWallet.selectAddressWlt(i);
+        } else {
+            throw new Error('Invalid currency');
         }
 
         return wlt;
@@ -145,15 +144,11 @@ export class GlobalWallet {
      */
     private static initGwlt(gwlt: GlobalWallet, mnemonic: string) {
         // 创建ETH钱包
-        console.time('pi_create createEthGwlt');
         const ethCurrencyRecord = this.createEthGwlt(mnemonic);
-        console.timeEnd('pi_create createEthGwlt');
         gwlt._currencyRecords.push(ethCurrencyRecord);
 
         // 创建BTC钱包
-        console.time('pi_create createBtcGwlt');
         const btcCurrencyRecord = this.createBtcGwlt(mnemonic);
-        console.timeEnd('pi_create createBtcGwlt');
         gwlt._currencyRecords.push(btcCurrencyRecord);
 
         const ethTokenList = [];

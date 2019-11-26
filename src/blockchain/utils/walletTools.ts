@@ -8,6 +8,7 @@ import { BTCWallet } from '../core/btc/wallet';
 import { ibanToAddress, isValidIban } from '../core/eth/helper';
 import { EthWallet } from '../core/eth/wallet';
 import { toMnemonic } from '../core/genmnemonic';
+import { Wallet } from '../store/interface';
 import { getStore, setStore } from '../store/memstore';
 import { decrypt, encrypt } from './cipherTools';
 import { defaultGasLimit, lang, MAX_SHARE_LEN, MIN_SHARE_LEN, timeOfArrival } from './constants';
@@ -225,17 +226,11 @@ export const getMnemonicByHash = (hash:string) => {
  * 获取钱包地址的位置
  */
 export const getWltAddrIndex = (addr: string, currencyName: string) => {
-    
-    const wallet = getStore('wallet');
+    const wallet:Wallet = getStore('wallet');
     const currencyRecord = wallet.currencyRecords.filter(v => v.currencyName === currencyName)[0];
     const addrs = currencyRecord.addrs;
-    for (let i = 0;i < addrs.length;i++) {
-        if (addrs[i].addr.toLocaleLowerCase() === addr.toLocaleLowerCase()) {
-            return i;
-        }
-    }
-    
-    return -1;
+
+    return addrs.findIndex(addrInfo => addrInfo.addr.toLocaleLowerCase() === addr.toLocaleLowerCase());
 };
 
 /**

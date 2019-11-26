@@ -330,7 +330,7 @@ export class BTCWallet {
         return [];
     }
 
-    public async buildRawTransactionFromSingleAddress(address: string, output: Output, minerFee: number): Promise<any> {
+    public async buildRawTransactionFromSingleAddress(address: string, output: Output, minerFee: number) {
         const utxos = await this.coinSelector(address, output.amount * 1e8 + minerFee);
 
         output.amount = bitcore.Unit.fromBTC(output.amount).toSatoshis();
@@ -371,7 +371,7 @@ export class BTCWallet {
         return sum;
     }
 
-    public async resendTx(originTxid: string, minerFee: number): Promise<any> {
+    public async resendTx(originTxid: string, minerFee: number) {
         let txInfo;
         try {
             txInfo = await BtcApi.getTxInfo(originTxid);

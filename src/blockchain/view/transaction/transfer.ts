@@ -147,30 +147,25 @@ export class Transfer extends Widget {
         };
         const passwd = await popPswBox();
         if (!passwd) return;
-        let ret;
+        let loading;
         if (!this.props.tx) {
-            const loading = popNewLoading(getStaticLanguage().transfer.loading);
-            transfer(passwd,txPayload).then(([err,tx]) => {
-                if (!err) {
-                    updateLocalTx(tx);
-                    dataCenter.updateAddrInfo(tx.addr,tx.currencyName);
-                    popNewMessage(getStaticLanguage().transfer.transSuccess);
-                    popNew('blockchain-view-transaction-transactionDetails', { hash:tx.hash });
-                    this.ok && this.ok();
-                } else {
-                    doErrorShow(err);
-                }
-                loading.callback(loading.widget);
-            });
+            loading = popNewLoading(getStaticLanguage().transfer.loading);
+            transfer(passwd,txPayload).then((tx) => {
+                popNewMessage(getStaticLanguage().transfer.transSuccess);
+                popNew('blockchain-view-transaction-transactionDetails', { hash:tx.hash });
+                this.ok && this.ok();
+            }).catch(doErrorShow);
         } else {
+            loading = popNewLoading(getStaticLanguage().transfer.againSend);
             const tx = { ...this.props.tx };
             tx.minerFeeLevel = minerFeeLevel;
-            ret = await resendNormalTransfer(passwd,tx);
-            if (ret) {
+            resendNormalTransfer(passwd,tx).then(ret => {
+                popNewMessage(getStaticLanguage().transfer.againSuccess);
+                popNew('app-view-wallet-transaction-transactionDetails', { hash:tx.hash });
                 this.ok && this.ok();
-            }
+            }).catch(doErrorShow);
         }
-        
+        loading.callback(loading.widget);
     }
 
     /**
