@@ -3,11 +3,11 @@
  */
 import { base64ToArrayBuffer } from '../../pi/util/base64';
 import { ERC20Tokens } from '../config';
-import { generateByHash, sha3, toMnemonic } from '../core/genmnemonic';
+import { generateByHash, sha3 } from '../core/genmnemonic';
 import { GlobalWallet } from '../core/globalWallet';
 import { AddrInfo, Wallet } from '../store/interface';
 import { getStore, setStore } from '../store/memstore';
-import { defalutShowCurrencys, lang } from '../utils/constants';
+import { defalutShowCurrencys } from '../utils/constants';
 import { restoreSecret } from '../utils/secretsBase';
 import { calcHashValuePromise,getMnemonic,getXOR,hexstrToU8Array,popNewLoading, popNewMessage, u8ArrayToHexstr } from '../utils/tools';
 import { dataCenter } from './dataCenter';
@@ -38,42 +38,51 @@ export enum CreateWalletType {
  * @param option 相关参数
  */
 export const createWallet = async (itype: CreateWalletType, option: Option) => {
-    let secrectHash;
-    if (itype === CreateWalletType.Random) {
-        const close = popNewLoading({ zh_Hans:'创建中...',zh_Hant:'創建中...',en:'' });
-        secrectHash = await createWalletRandom(option);
+    try {
+        const close = popNewLoading(getLoadingText(itype));
+        const secrectHash = await calcHashValuePromise(option.psw,getStore('user/salt'));
+        if (itype === CreateWalletType.Random) {
+            createWalletRandom(secrectHash);
+        } else if (itype === CreateWalletType.Image) {
+            await createWalletByImage(secrectHash);
+        } else if (itype === CreateWalletType.StrandarImport) {
+            importWalletByMnemonic(secrectHash,option.mnemonic);
+        } else if (itype === CreateWalletType.ImageImport) {
+            await createWalletByImage(secrectHash);
+        } else if (itype === CreateWalletType.FragmentImport) {
+            importWalletByFragment(secrectHash,option.fragment1,option.fragment2);
+        }
         close.callback(close.widget);
-    } else if (itype === CreateWalletType.Image) {
-        const close = popNewLoading({ zh_Hans:'创建中...',zh_Hant:'創建中...',en:'' });
-        secrectHash = await createWalletByImage(option);
-        close.callback(close.widget);
-    } else if (itype === CreateWalletType.StrandarImport) {
-        const close = popNewLoading({ zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' });
-        secrectHash = await importWalletByMnemonic(option);
-        close.callback(close.widget);
-    } else if (itype === CreateWalletType.ImageImport) {
-        const close = popNewLoading({ zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' });
-        secrectHash = await createWalletByImage(option);
-        close.callback(close.widget);
-    } else if (itype === CreateWalletType.FragmentImport) {
-        const close = popNewLoading({ zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' });
-        secrectHash = await importWalletByFragment(option);
-        close.callback(close.widget);
+        // 刷新本地钱包
+        dataCenter.refreshAllTx();
+        dataCenter.initErc20GasLimit();
+    
+        return secrectHash;
+    } catch (err) {
+        return '';
     }
-
-    // 刷新本地钱包
-    dataCenter.refreshAllTx();
-    dataCenter.initErc20GasLimit();
-
-    return secrectHash;
 };
 
+const getLoadingText = (itype: CreateWalletType) => {
+    if (itype === CreateWalletType.Random) {
+        return { zh_Hans:'创建中...',zh_Hant:'創建中...',en:'' };
+    } else if (itype === CreateWalletType.Image) {
+        return { zh_Hans:'创建中...',zh_Hant:'創建中...',en:'' };
+    } else if (itype === CreateWalletType.StrandarImport) {
+        return { zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' };
+    } else if (itype === CreateWalletType.ImageImport) {
+        return { zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' };
+    } else if (itype === CreateWalletType.FragmentImport) {
+        return { zh_Hans:'导入中...',zh_Hant:'導入中...',en:'' };
+    } else {
+        return { zh_Hans:'创建中...',zh_Hant:'創建中...',en:'' };
+    }
+};
 /**
- * 随机创建钱包
+ * 钱包创建成功操作
+ * @param gwlt GlobalWallet
  */
-export const createWalletRandom = async (option: Option) => {
-    const secrectHash = await calcHashValuePromise(option.psw,getStore('user/salt'));
-    const gwlt = GlobalWallet.generate(secrectHash);
+const walletCreated = (gwlt:GlobalWallet) => {
     // 创建钱包基础数据
     const wallet: Wallet = {
         vault: gwlt.vault,
@@ -88,42 +97,41 @@ export const createWalletRandom = async (option: Option) => {
     user.publicKey = gwlt.publicKey;
     setStore('wallet', wallet);
     setStore('user', user);
+};
 
-    return secrectHash;
+/**
+ * 随机创建钱包
+ */
+const createWalletRandom = (secrectHash:string) => {
+    walletCreated(GlobalWallet.generate(secrectHash));
 };
 
 /**
  * 图片创建钱包
  * @param option 参数
  */
-export const createWalletByImage = async (option: Option) => {
-    const secrectHashPromise = calcHashValuePromise(option.psw,getStore('user/salt'));
+const createWalletByImage = async (secrectHash:string) => {
+    const vault = await getStore('flags').imgArgon2HashPromise;
+    walletCreated(GlobalWallet.generate(secrectHash,vault));
+};
 
-    const imgArgon2HashPromise = getStore('flags').imgArgon2HashPromise;
+/**
+ * 通过助记词导入钱包
+ */
+const importWalletByMnemonic = (secrectHash:string,mnemonic:string) => {
+    walletCreated(GlobalWallet.fromMnemonic(secrectHash, mnemonic));
+};
 
-    console.time('pi_create Promise all need');
-    const [secrectHash,vault] = await Promise.all([secrectHashPromise,imgArgon2HashPromise]);
-    console.timeEnd('pi_create Promise all need');
+/**
+ * 冗余助记词导入
+ */
+const importWalletByFragment = (secrectHash:string,fragment1:string,fragment2:string) => {
+    const shares = [fragment1, fragment2].map(v =>
+    u8ArrayToHexstr(new Uint8Array(base64ToArrayBuffer(v)))
+  );
+    const comb = restoreSecret(shares);
     
-    console.time('pi_create GlobalWallet generate need');
-    const gwlt = GlobalWallet.generate(secrectHash, vault);
-    console.timeEnd('pi_create GlobalWallet generate need');
-    // 创建钱包基础数据
-    const wallet: Wallet = {
-        vault: gwlt.vault,
-        isBackup: gwlt.isBackup,
-        showCurrencys: defalutShowCurrencys,
-        currencyRecords: gwlt.currencyRecords,
-        changellyPayinAddress:[],
-        changellyTempTxs:[]
-    };
-    const user = getStore('user');
-    user.id = gwlt.glwtId;
-    user.publicKey = gwlt.publicKey;
-    setStore('wallet', wallet);
-    setStore('user', user);
-
-    return secrectHash;
+    walletCreated(GlobalWallet.generate(secrectHash,hexstrToU8Array(comb)));
 };
 
 /**
@@ -141,47 +149,6 @@ export const ahashToArgon2Hash = async (ahash: string, imagePsw: string) => {
     const sha3Hash2 = getXOR(sha3Hash1.slice(0, len / 2),sha3Hash1.slice(len / 2));
 
     return generateByHash(sha3Hash2);
-};
-
-/**
- * 通过助记词导入钱包
- */
-export const importWalletByMnemonic = async (option: Option) => {
-    const secrectHash = await calcHashValuePromise(option.psw,getStore('user/salt'));
-    const gwlt = GlobalWallet.fromMnemonic(secrectHash, option.mnemonic);
-  // 创建钱包基础数据
-    const wallet: Wallet = {
-        vault: gwlt.vault,
-        isBackup: gwlt.isBackup,
-        showCurrencys: defalutShowCurrencys,
-        currencyRecords: gwlt.currencyRecords,
-        changellyPayinAddress:[],
-        changellyTempTxs:[]
-    };
-    const user = getStore('user');
-    user.id = gwlt.glwtId;
-    user.publicKey = gwlt.publicKey;
-    setStore('wallet', wallet);
-    setStore('user', user);
-    
-    return secrectHash;
-};
-
-/**
- * 冗余助记词导入
- */
-export const importWalletByFragment = async (option: Option) => {
-    const shares = [option.fragment1, option.fragment2].map(v =>
-    u8ArrayToHexstr(new Uint8Array(base64ToArrayBuffer(v)))
-  );
-    const comb = restoreSecret(shares);
-    
-    const mnemonic = await toMnemonic(lang, hexstrToU8Array(comb));
-    option.mnemonic = mnemonic;
-    // tslint:disable-next-line:no-unnecessary-local-variable
-    const secretHash = await importWalletByMnemonic(option);
-
-    return secretHash;
 };
 
 /**

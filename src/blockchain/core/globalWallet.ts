@@ -76,18 +76,10 @@ export class GlobalWallet {
     public static generate(secrectHash:string, vault?: Uint8Array) {
         const gwlt = new GlobalWallet();
         vault = vault || generateRandomValues(strength);
-        console.time('pi_create generate encrypt need');
-        gwlt._vault = encrypt(u8ArrayToHexstr(vault),secrectHash);
-        console.timeEnd('pi_create generate encrypt need');
-        console.time('pi_create generate toMnemonic need');
         const mnemonic = toMnemonic(lang, vault);
-        console.timeEnd('pi_create generate toMnemonic need');
-        console.time('pi_create generate initGwlt need');
+        gwlt._vault = encrypt(u8ArrayToHexstr(vault),secrectHash);
         gwlt._glwtId = this.initGwlt(gwlt, mnemonic);
-        console.timeEnd('pi_create generate initGwlt need');
-        console.time('pi_create generate getPublicKeyByMnemonic need');
         gwlt._publicKey = EthWallet.getPublicKeyByMnemonic(mnemonic, lang);
-        console.timeEnd('pi_create generate getPublicKeyByMnemonic need');
 
         return gwlt;
     }
@@ -107,12 +99,8 @@ export class GlobalWallet {
     public static createWltByMnemonic(mnemonic: string, currencyName: string, i: number) {
         let wlt;
         if (currencyName === 'ETH') {
-            console.time('trans EthWallet.fromMnemonic');
             const ethWallet = EthWallet.fromMnemonic(mnemonic, lang);
-            console.timeEnd('trans EthWallet.fromMnemonic');
-            console.time('trans ethWallet.selectAddressWlt');
             wlt = ethWallet.selectAddressWlt(i);
-            console.timeEnd('trans ethWallet.selectAddressWlt');
         } else if (currencyName === 'BTC') {
             wlt = BTCWallet.fromMnemonic(mnemonic, btcNetwork, lang);
         } else if (ERC20Tokens[currencyName]) {
@@ -195,12 +183,8 @@ export class GlobalWallet {
     }
 
     private static createEthGwlt(mnemonic: string) {
-        console.time('pi_create EthWallet.fromMnemonic');
         const ethWallet = EthWallet.fromMnemonic(mnemonic, lang);
-        console.timeEnd('pi_create EthWallet.fromMnemonic');
-        console.time('pi_create ethWallet.selectAddress');
         const address = ethWallet.selectAddress(0);
-        console.timeEnd('pi_create ethWallet.selectAddress');
         const addrInfo:AddrInfo = {
             addr: address,                  // 地址
             balance: 0,              // 余额
@@ -219,13 +203,9 @@ export class GlobalWallet {
     }
 
     private static createBtcGwlt(mnemonic: string) {
-        console.time('pi_create BTCWallet.fromMnemonic');
         const btcWallet = BTCWallet.fromMnemonic(mnemonic, btcNetwork, lang);
-        console.timeEnd('pi_create BTCWallet.fromMnemonic');
         btcWallet.unlock();
-        console.time('pi_create btcWallet.derive');
         const address = btcWallet.derive(0);
-        console.timeEnd('pi_create btcWallet.derive');
         btcWallet.lock();
         const addrInfo:AddrInfo = {
             addr: address,                  // 地址
