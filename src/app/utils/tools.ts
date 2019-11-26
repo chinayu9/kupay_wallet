@@ -603,13 +603,7 @@ export const logoutAccount = async (del:boolean = false,noLogin:boolean = false)
             purchaseHistories: null
         }
     };
-    const game = {
-        allGame:[],// 全部游戏
-        hotGame:[],// 热门游戏
-        oftenGame:[],// 最近在玩的游戏
-        recommendGame:[]// 推荐游戏
-    };
-    setStore('game',game);
+    setStore('game/oftenGame',[]);
     setStore('activity',activity);
     setStore('flags/saveAccount', false);  
     logoutWalletSuccess();
